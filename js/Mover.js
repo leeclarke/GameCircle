@@ -1,7 +1,6 @@
 /**
- * Mover, responsable for moving animate Entities.
+ * Mover, Will be responsable Moving center point of users view and for moving Movable tiles.
  * 
- * Requires:  astar.js
  */
 function Mover(){
 	

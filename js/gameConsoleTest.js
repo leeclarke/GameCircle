@@ -38,12 +38,12 @@ function windowReady() {
 	GameEngine.player.name = "Lee";
 	GameEngine.player.spriteImg.src = "res/player.png";
 	//GameEngine.player.deadImg.src = "res/bones.png";
-	GameEngine.player.weaponWielded = EntityManager.weaponFactory('Sword');
+	
 	
 	setUpPlayerImg();
 	//set up player spriteSheet for animation. ABOVE	
 	 
-	
+/*	
 	//Test Monster
 	dragon = EntityManager.createCreature('Green Dragon');
 	dragon.x = 12*32;
@@ -55,7 +55,7 @@ function windowReady() {
 	dragon.range = 5;
 	dragon.hp = 8;
  	dragon.hpMax = 8;
- 	setDragonImg(dragon);
+	setDragonImg(dragon);
 	
 	GameEngine.monsters.push(dragon);
 	
@@ -85,9 +85,10 @@ function windowReady() {
 	dragon3.hp = 8;
  	dragon3.hpMax = 8;
  	setDragonImg(dragon3);
+ 	
 	
 	GameEngine.monsters.push(dragon3);
-
+*/
 	testManagerConfig = {"tileWidth":32, "tileHeight":32, "src":"res/dungeontiles.gif", "namedTiles":[
 		{"id":0,"name":"WALL1","col":0,"row":0},
 		{"id":1,"name":"FLOOR1","col":1,"row":8},
@@ -209,9 +210,10 @@ function main () {
 	GameEngine.lastMouseEvent += GameEngine.elapsed;
 	handleInput();
 	update();
-	if(tics%30===0) {
+	/*if(tics%30===0) {
+	//TODO: Add check to ping server for data update.
 		GameEngine.moveMonsters();
-	}
+	}*/
 	GameEngine.render();
 };
 
@@ -246,7 +248,7 @@ $(function() {
 //REMOVE: TESTING only
 
 /**
- * Update player and Monster postion based on input.
+ * Update User Center point if they press keys etc. Also update changes in screen state.
  */
 function update() {
   mover = new Mover();
@@ -286,7 +288,7 @@ function update() {
   /**
    * TEMP toggle between sword and bow for testing 
    */
-  if(keydown['2']) {
+  /*if(keydown['2']) {
 	GameEngine.player.weaponWielded = EntityManager.weaponFactory('Bow');
 	keydown['2'] = false;
   }
@@ -295,7 +297,7 @@ function update() {
 	GameEngine.player.weaponWielded = EntityManager.weaponFactory('Sword');
 	keydown['1'] = false;
   }
-  
+  */
   if (keydown.f2) {
 	keydown.f2 = false;
 	//toggle display stats bar
@@ -303,11 +305,11 @@ function update() {
   }
   
   //Test attack animation
-  if (keydown.a) {
+/*  if (keydown.a) {
 	keydown.a = false;
 	GameEngine.player.currentSequence = 'attack_left'
   }
-  
+*/  
   if(keydown.g) {
 	GameEngine.DisplayGrid = (GameEngine.DisplayGrid)?false:true;
 	keydown.g = false;

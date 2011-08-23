@@ -1,7 +1,17 @@
 NOTES:
 
+Mover: Moving center point of users view and for moving Movable tiles.
 canvasUtils: Keep. Add drag/Drop functions here if not in the Main. should be doing drag/drop and verifying that new graid point is valid. Also it could limit move per round in later version.
 EntityManager: still needed for managing tiles but not for Player/weapon generation. Just tiles.
 GameEngine: Rename to MapBuilderManager and GameCircleManager
 SpriteTileManager: could be useful, keep as is.
 TiledMap: Thats what we are here for. Refactor if need. 
+
+
+TODOS:
+* DONE  
+*1. Get MapBuilder to load clean.
+1. Detect click and hold. (Code present in targeting) Mouse down with half sec timer? or dblclick or simply regular click.? What else would click do in Builder?
+2. Work out high-lighting grid square
+3. Select Mutiple Grids with highlight.
+4. Set seelcted grid with default tile.
