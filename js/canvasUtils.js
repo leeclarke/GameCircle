@@ -1,9 +1,9 @@
 /**
  * Just utils for rendering to the canvas
- * //TODO might consider moving this to GameEngine.
  */
 
 function paintGrid(context, mapWidth, mapHeight) {
+//TODO: Extract to configurable properties. Same with grid line thickness?
 	context.strokeStyle = 'rgb(255, 255, 51)' ;
 	
 	context.lineWidth = "0.5";
@@ -27,6 +27,9 @@ function paintGrid(context, mapWidth, mapHeight) {
 		drawLine(context,0,yPos,mapWidth,yPos);
 		context.fillRect(xPos,2, 2, 2) ;
 	}
+	
+	//IF tile is selected highlite it.
+	drawSelectBoxOnGrid(context);
 }
 
 /**
@@ -40,3 +43,14 @@ function drawLine(contextO, startx, starty, endx, endy) {
   contextO.stroke();
 }
 
+/**
+ * When a grid square is clicked it becomes selected and the borders change colors.
+ */
+ function drawSelectBoxOnGrid(context) {
+ 	if(GameEngine.selectedTile !== null){
+ 		if(GameEngine.selectedTile.leftTop !== null) {
+ 			//TODO: Draw lines for square based on selected tile.
+ 			//call drawLine(context,)!
+ 		}
+ 	}
+ }

@@ -29,6 +29,7 @@ GameEngine.dblClickTimeLimit = 8000;
 GameEngine.lastMouseEvent = 0; //in ms
 GameEngine.watchedMouseEvents = [];
 GameEngine.missiles = [];  //in flight
+GameEngine.selectedTile = null;
 
 /**
  * Adds Messages to the Message queue to display to player.

@@ -15,3 +15,4 @@ TODOS:
 2. Work out high-lighting grid square
 3. Select Mutiple Grids with highlight.
 4. Set seelcted grid with default tile.
+5. Change name of gameConsoleTest.js

@@ -154,7 +154,6 @@ window.addEventListener("dblclick", function(e) {
  * @param lastMouseEvent number of ms since last processing of mouse events. reset to 0 if over the dblClcik tie limit.
  */
 function handleInput() {
-	
   // Here is where we respond to the click
   if(GameEngine.mouseQueue.length > 0 && GameEngine.lastMouseEvent > GameEngine.dblClickTimeLimit) {   
     var mEvent = GameEngine.mouseQueue.pop();
@@ -164,38 +163,18 @@ function handleInput() {
     
     var clickedTile = GameEngine.currentMap.getTileAt(mapClickPoint.x, mapClickPoint.y);
 	if(clickedTile === null) {
-		return; //user probably clicked outside the map, do nothing.
+		GameEngine.selectedTile = null;	
+	} else {	
+		//TODO: ADD check to see if CTRL is held for multi select.	
+		//if(keydown.ctrl) {
+		//}
+		
+		//Note: Select is drawn when rendering the grid.
+		clickedTile.leftTop = upperLeft;
+		GameEngine.selectedTile = clickedTile;
 	}
 	
-	var monsterAtTile = GameEngine.isMonsterAtTile(clickedTile);
-	//If missile then create one and set start pos as center of player tile.
-	if(monsterAtTile !== null && monsterAtTile.alive && GameEngine.player.weaponWielded.weaponType === 'bow'){
-		var missile = EntityManager.createEntity('missile')//TODO Create factory
-		missile.currentPosition.x = GameEngine.player.x + ~~(GameEngine.player.spriteManager.tileWidth/2);
-		missile.currentPosition.y = GameEngine.player.y + ~~(GameEngine.player.spriteManager.tileHeight/2);
-		monsterAtTile.hostile = true;
-		missile.target = monsterAtTile;
-		GameEngine.missiles.push(missile);
-		//TODO: monster doesnt come alive unless call moveMonsters but this doesnt make since. goingto have to trace it.
-		GameEngine.moveMonsters();
-	} else {
-		//TODO: Check why the col and rows are off. YThey seem to be passed right.
-		var clickPath = a_star(GameEngine.player,clickedTile, GameEngine.currentMap);
-		if(clickPath.length > 1) {
-			//TODO: pull mover into GameEngine
-			try{
-				var moveDir = Mover.determineDirection(GameEngine.player, clickPath[1]);
-				
-				mover.movePlayer(GameEngine.player, (Mover.Coordinates[moveDir].x) , (Mover.Coordinates[moveDir].y), moveDir);
-				GameEngine.moveMonsters();//TODO: seems like this is going to put things out of sequence since update is called adter this method.
-			}
-			catch(e) {
-				GameEngine.addEventMessage("MouseIn Broke: "+e);
-			}
-		}
-	}
-	
-     
+	 
     GameEngine.mouseClick = null;
     GameEngine.lastMouseEvent = 0;
   }
@@ -211,8 +190,7 @@ function main () {
 	handleInput();
 	update();
 	/*if(tics%30===0) {
-	//TODO: Add check to ping server for data update.
-		GameEngine.moveMonsters();
+		//TODO: Add check to ping server for data update.	
 	}*/
 	GameEngine.render();
 };
