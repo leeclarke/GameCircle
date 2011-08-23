@@ -39,3 +39,4 @@ function drawLine(contextO, startx, starty, endx, endy) {
   contextO.closePath();
   contextO.stroke();
 }
+

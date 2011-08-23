@@ -1,0 +1,7 @@
+NOTES:
+
+canvasUtils: Keep. Add drag/Drop functions here if not in the Main. should be doing drag/drop and verifying that new graid point is valid. Also it could limit move per round in later version.
+EntityManager: still needed for managing tiles but not for Player/weapon generation. Just tiles.
+GameEngine: Rename to MapBuilderManager and GameCircleManager
+SpriteTileManager: could be useful, keep as is.
+TiledMap: Thats what we are here for. Refactor if need. 

@@ -208,7 +208,6 @@ function main () {
 	tics += 1; //test for moving creatures to a speed.
 	GameEngine.lastMouseEvent += GameEngine.elapsed;
 	handleInput();
-	GameEngine.processMissilesInFlight(context);
 	update();
 	if(tics%30===0) {
 		GameEngine.moveMonsters();

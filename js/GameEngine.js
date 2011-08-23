@@ -40,26 +40,6 @@ GameEngine.addEventMessage = function(msg,life) {
 	}
 };
 
-
-/**
- * Move the monsters if they can move, also updates visability
- */
-GameEngine.moveMonsters = function() {
-	mover = new Mover();
-	for(m = 0; m < this.monsters.length; m++) {		
-		this.checkMonsterVisability(m);
-		mover.moveMonster(this.monsters[m],this.player);
-	}	
-};
-
-/**
- * Check to see if monster is in players sight and sets monsters visable value acordingly.
- */
-GameEngine.checkMonsterVisability = function(m) {
-	area = this.getPlayerVisableArea();
-	this.monsters[m].visable = this.inRange(this.monsters[m], area);
-};
-
 /**
  * Responsable for rendering the ViewPort or Camera of the game.
  */
@@ -158,6 +138,7 @@ GameEngine.writeStatus = function(context) {
  * Draws the status display overlay. 
  */
 GameEngine.buildStatusDisplay = function(context) {
+	//TODO: Refactor
 	//position in upper left corner	
 	if(GameEngine.showPlayerStatus) {
 		context.save();
@@ -307,6 +288,7 @@ GameEngine.debug = function(source, msg) {
  * @return the monster at location or null if none.
  */
 GameEngine.isMonsterAtTile = function(clickedTile) {
+	//TODO: Refactor
 	var tileMonster = null;
 	if(clickedTile !== null) {
 		//TODO: TEST
@@ -316,52 +298,6 @@ GameEngine.isMonsterAtTile = function(clickedTile) {
 		}
 	}
 	return tileMonster;
-}
-
-/**
- * This should be called each game loop to update the position of missiles currently in flight. Call 
- * before updating player. They should be rendered last.
- */
-GameEngine.processMissilesInFlight = function(context) {
-	for(ms = 0; ms < GameEngine.missiles.length; ms++) {
-		//update on current course. target the center of tile. +16,+16? This should be adjusted when missile created.
-		var dx = (GameEngine.missiles[ms].target.x+16 )- GameEngine.missiles[ms].currentPosition.x;
-		var dy = (GameEngine.missiles[ms].target.y+16) - GameEngine.missiles[ms].currentPosition.y;
-		
-		var distance = Math.sqrt(dx*dx + dy*dy);
-		var moves = distance/GameEngine.missiles[ms].speed;
-		
-		//Then we find the distance to move both x and y on each call to drawScreen() . We name these variables xunits and yunits: 
-		var xunits = ((GameEngine.missiles[ms].target.x+16) - GameEngine.missiles[ms].currentPosition.x)/moves;
-		var yunits = ((GameEngine.missiles[ms].target.y+16) - GameEngine.missiles[ms].currentPosition.y)/moves;
-		
-		// set the new position of the missile.
-		GameEngine.missiles[ms].currentPosition.x += xunits;
-		GameEngine.missiles[ms].currentPosition.y += yunits;
-		
-		//Check for collision
-		//var hit = GameEngine.checkCollision(GameEngine.missiles[ms].currentPosition, GameEngine.missiles[ms].target);
-		if(isNaN(GameEngine.missiles[ms].currentPosition.x) || GameEngine.missiles[ms].currentPosition.x <=0 && GameEngine.missiles[ms].currentPosition.y <= 0){ 			
-			GameEngine.resolveMissileAttack(GameEngine.missiles[ms]);
-			GameEngine.missiles.splice(ms,1);
-			
-			//GameEngine.eventMesgsStack.push({"msg":"You hit the " +  GameEngine.missiles[ms].target.name + " for x damage!", "life":60});
-		}
-	}
-}
-
-/**
- * Process the results of a missile hit and make special adjustments.
- */
-GameEngine.resolveMissileAttack = function(missile) {
-	if(missile.target.type === 'player') {
-		//TODO: enable Missles from Monsters!
-	} else {
-		GameEngine.player.attack(missile.target, missile);
-		if(missile.target.range < GameEngine.player.vision ) {
-			missile.target.range = GameEngine.player.vision+1;
-		}
-	}
 }
 
 /****Array mods. These dont actually attach to the Array object..******/
