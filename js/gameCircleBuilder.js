@@ -1,10 +1,10 @@
-//Set Static Values on the GameEngine
-GameEngine.CANVAS_WIDTH = 1000;
-GameEngine.CANVAS_HEIGHT = 600;
-GameEngine.STATUS_WIDTH = 100;
-GameEngine.DisplayGrid = true;
-GameEngine.lightsOn = false;
-GameEngine.lastUpdate = Date.now();
+//Set Static Values on the GameCircle
+GameCircle.CANVAS_WIDTH = 1000;
+GameCircle.CANVAS_HEIGHT = 600;
+GameCircle.STATUS_WIDTH = 100;
+GameCircle.DisplayGrid = true;
+GameCircle.lightsOn = false;
+GameCircle.lastUpdate = Date.now();
 
 var context;
 
@@ -16,79 +16,32 @@ var context;
 function windowReady() {
 	var body = $(this).find("body");
 	
-	GameEngine.CANVAS_WIDTH = window.innerWidth;//body.width();
-	GameEngine.CANVAS_HEIGHT = window.innerHeight;//body.height();
+	GameCircle.CANVAS_WIDTH = window.innerWidth;//body.width();
+	GameCircle.CANVAS_HEIGHT = window.innerHeight;//body.height();
 	
 	//Create canvas
-	var canvasElement = $("<canvas width='" + GameEngine.CANVAS_WIDTH + 
-                      "' height='" + GameEngine.CANVAS_HEIGHT + "'></canvas>");
+	var canvasElement = $("<canvas width='" + GameCircle.CANVAS_WIDTH + 
+                      "' height='" + GameCircle.CANVAS_HEIGHT + "'></canvas>");
 	context = canvasElement.get(0).getContext("2d");
 	canvasElement.appendTo('body');
 	//Set up background.
 	context.fillStyle = 'rgb(0, 0, 0)' ;
-	context.fillRect(0, 0, GameEngine.CANVAS_WIDTH, GameEngine.CANVAS_HEIGHT ) ;
+	context.fillRect(0, 0, GameCircle.CANVAS_WIDTH, GameCircle.CANVAS_HEIGHT ) ;
 	
-	//TODO refactor this into GameEngine.tiledMap.
-	GameEngine.currentMap = new TiledMap(GameEngine.CANVAS_WIDTH+300,GameEngine.CANVAS_HEIGHT+300,32,32);
+	//TODO refactor this into GameCircle.tiledMap. Build load process to set theis up.
+	GameCircle.currentMap = new TiledMap(GameCircle.CANVAS_WIDTH+300,GameCircle.CANVAS_HEIGHT+300,32,32);
 
 	//add fake player sprite, centerd in middle of screen
-	GameEngine.player = EntityManager.createEntity('Player');
-	GameEngine.player.x = (3*32);
-	GameEngine.player.y = (11*32);
-	GameEngine.player.name = "Lee";
-	GameEngine.player.spriteImg.src = "res/player.png";
-	//GameEngine.player.deadImg.src = "res/bones.png";
+	GameCircle.player = EntityManager.createEntity('Player');
+	GameCircle.player.x = (3*32);
+	GameCircle.player.y = (11*32);
+	GameCircle.player.name = "Lee";
+	GameCircle.player.spriteImg.src = "res/player.png";
+	//GameCircle.player.deadImg.src = "res/bones.png";
 	
 	
 	setUpPlayerImg();
-	//set up player spriteSheet for animation. ABOVE	
-	 
-/*	
-	//Test Monster
-	dragon = EntityManager.createCreature('Green Dragon');
-	dragon.x = 12*32;
-	dragon.y = 8*32;
-	dragon.name = "Green Dragon";
-	dragon.spriteImg.src = "res/dragon.png";
-	dragon.deadImg.src = "res/bones.png";
-	dragon.agression = 7; //yikes!
-	dragon.range = 5;
-	dragon.hp = 8;
- 	dragon.hpMax = 8;
-	setDragonImg(dragon);
-	
-	GameEngine.monsters.push(dragon);
-	
-	dragon2 = EntityManager.createCreature('Green Dragon');
-	dragon2.x = 3*32;
-	dragon2.y = 4*32;
-	dragon2.name = "Puff The Dragon";
-	dragon2.spriteImg.src = "res/dragon.png";
-	dragon2.deadImg.src = "res/bones.png";
-	dragon2.agression = 2;
-	dragon2.range = 4;
-	dragon2.hp = 9;
-	dragon2.ac = 10;
- 	dragon2.hpMax = 8;
-	setDragonImg(dragon2);
-	
-	GameEngine.monsters.push(dragon2);
-	
-	dragon3 = EntityManager.createCreature('Green Dragon');
-	dragon3.x = 14*32;
-	dragon3.y = 13*32;
-	dragon3.name = "Green Dragon";
-	dragon3.spriteImg.src = "res/dragon.png";
-	dragon3.deadImg.src = "res/bones.png";
-	dragon3.agression = 7; //yikes!
-	dragon3.range = 5;
-	dragon3.hp = 8;
- 	dragon3.hpMax = 8;
- 	setDragonImg(dragon3);
- 	
-	
-	GameEngine.monsters.push(dragon3);
-*/
+
 	testManagerConfig = {"tileWidth":32, "tileHeight":32, "src":"res/dungeontiles.gif", "namedTiles":[
 		{"id":0,"name":"WALL1","col":0,"row":0},
 		{"id":1,"name":"FLOOR1","col":1,"row":8},
@@ -99,6 +52,7 @@ function windowReady() {
 	tileMapManager = new SpriteTileManager(testManagerConfig);
 
 	//'id' is the sprite id and type is the 
+	//TODO: This should be loaded from the saved data.
 	mapTiles = [
 				[{},{}],
 				[{},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0}],
@@ -119,11 +73,11 @@ function windowReady() {
 				[{},{},{"id":0, "type":0},{"id":1, "type":1},{"id":1, "type":1},{"id":1, "type":1},{"id":1, "type":1},{"id":1, "type":1},{"id":1, "type":1},{"id":3, "type":1},{"id":1, "type":1},{"id":1, "type":1},{"id":1, "type":1},{"id":1, "type":1},{"id":1, "type":1},{"id":0, "type":0}],		
 				[{},{},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0},{"id":0, "type":0}]
 		];
-	GameEngine.currentMap.tileMapManager = tileMapManager;
-	GameEngine.currentMap.updateMap(mapTiles);
+	GameCircle.currentMap.tileMapManager = tileMapManager;
+	GameCircle.currentMap.updateMap(mapTiles);
 	
 	//draw to canvas		
-	GameEngine.render();
+	GameCircle.render();
 	setInterval(main, 30);
 }
 
@@ -131,23 +85,11 @@ function windowReady() {
  * Capture click events to use for game play.
  */
 window.addEventListener("mousedown", function(e) {
-  //GameEngine.addEventMessage(("Mouse Event [ button="+e.button+" pageX=" + e.pageX + " pageY=" + e.pageY));
-  GameEngine.mouseQueue.push(e);
-  GameEngine.mouseClick = e;
+  //GameCircle.addEventMessage(("Mouse Event [ button="+e.button+" pageX=" + e.pageX + " pageY=" + e.pageY));
+  GameCircle.mouseQueue.push(e);
+  GameCircle.mouseClick = e;
 }, false);
 
-
-/**
- * Capture dblclick events to use for game play.
- *
-window.addEventListener("dblclick", function(e) {
-	/*TODO: this will only work if I create some sort of queing of clicks with  sshort delay giving time 
-	 * for the dblckcik to happen 
-	 * then I need to inspect the stack and popoff the 2 clicks that come before the dblClcik. PIA?
-  GameEngine.addEventMessage(("Mouse dblClick Event [ button="+e.button+" pageX=" + e.pageX + " pageY=" + e.pageY));
-  GameEngine.mouseQueue.push(e);
-  GameEngine.mouseClick = e;
-}, false);*/
 
 /**
  * Do something with click events. Only want to fire this every 250ms to allow time for dblCLick detection.
@@ -155,25 +97,34 @@ window.addEventListener("dblclick", function(e) {
  */
 function handleInput() {
   // Here is where we respond to the click
-  if(GameEngine.mouseQueue.length > 0 && GameEngine.lastMouseEvent > GameEngine.dblClickTimeLimit) {   
-    var mEvent = GameEngine.mouseQueue.pop();
-    var upperLeft = GameEngine.getMapUpperLeftPosition();
+  if(GameCircle.mouseQueue.length > 0 && GameCircle.lastMouseEvent > GameCircle.dblClickTimeLimit) {   
+    var mEvent = GameCircle.mouseQueue.pop();
+    var upperLeft = GameCircle.getMapUpperLeftPosition();
     
     var mapClickPoint = {"x":~~(mEvent.x-upperLeft.x), "y":~~(mEvent.y-upperLeft.y)};
     
-    var clickedTile = GameEngine.currentMap.getTileAt(mapClickPoint.x, mapClickPoint.y);
+    var clickedTile = GameCircle.currentMap.getTileAt(mapClickPoint.x, mapClickPoint.y);
 	if(clickedTile !== null) {	
-		//TODO: ADD check to see if CTRL is held for multi select.	
-		//if(keydown.ctrl) {
-		//}
-		
 		//Note: Select is drawn when rendering the grid.
-		GameEngine.selectedTile = clickedTile;
+		if(keydown.ctrl) {
+			if(GameCircle.selectedTileRangeStart == null) {
+				//Assume Start
+				GameCircle.selectedTile == clickedTile;
+			} else {
+				//Set end
+				GameCircle.selectedTileEnd == clickedTile;
+			}
+		} else {
+			GameCircle.selectedTile = clickedTile;
+			GameCircle.selectedTileEnd = null;
+			//TODO: Verify above needs to be done.
+		}		
+		
 	}
 	
 	 
-    GameEngine.mouseClick = null;
-    GameEngine.lastMouseEvent = 0;
+    GameCircle.mouseClick = null;
+    GameCircle.lastMouseEvent = 0;
   }
 };
 
@@ -183,19 +134,19 @@ var tics = 0;
  */
 function main () {
 	tics += 1; //test for moving creatures to a speed.
-	GameEngine.lastMouseEvent += GameEngine.elapsed;
+	GameCircle.lastMouseEvent += GameCircle.elapsed;
 	handleInput();
 	update();
 	/*if(tics%30===0) {
 		//TODO: Add check to ping server for data update.	
 	}*/
-	GameEngine.render();
+	GameCircle.render();
 };
 
 
 window.onload = windowReady;
 
-
+//TODO: Decide if this is really used.
 //TODO: REMOVE this is for testing only,  with out running a game loop.  add key_status.js to html page for actual support.
 $(function() {
   window.keydown = {};
@@ -218,7 +169,7 @@ $(function() {
 
 /*function fakeLoop() {
 	update();
-	GameEngine.render();
+	GameCircle.render();
 }
 //REMOVE: TESTING only
 
@@ -229,8 +180,8 @@ function update() {
   mover = new Mover();
   if(keydown.ctrl) {
 	  if(keydown.x){
-		GameEngine.debugOn = (GameEngine.debugOn)?false:true;
-		GameEngine.addEventMessage("debug On.");
+		GameCircle.debugOn = (GameCircle.debugOn)?false:true;
+		GameCircle.addEventMessage("debug On.");
 		keydown.x = false;
 	  }
 	  keydown.ctrl = false;
@@ -238,67 +189,64 @@ function update() {
   
   //Esc clears things like selected tile
   if (keydown.esc) {
-	GameEngine.selectedTile = null;	
+	GameCircle.selectedTile = null;	
+	GameCircle.selectedTileEnd = null;
 	keydown.esc = false;
   }
   
   if (keydown.left) {
 	keydown.left = false;
-	mover.movePlayer(GameEngine.player, -32,0, Mover.MoveDir.LEFT);
-	//GameEngine.moveMonsters();
+	mover.movePlayer(GameCircle.player, -32,0, Mover.MoveDir.LEFT);
   }
 
   if (keydown.right) {
 	keydown.right = false;
-	mover.movePlayer(GameEngine.player, 32,0, Mover.MoveDir.RIGHT);
-	//GameEngine.moveMonsters();
+	mover.movePlayer(GameCircle.player, 32,0, Mover.MoveDir.RIGHT);
   }
   
   if (keydown.up) {
 	keydown.up = false;
-	mover.movePlayer(GameEngine.player, 0,-32, Mover.MoveDir.UP);
-	//GameEngine.moveMonsters();
+	mover.movePlayer(GameCircle.player, 0,-32, Mover.MoveDir.UP);
   }
   
   if (keydown.down) {
 	keydown.down = false;
-	mover.movePlayer(GameEngine.player, 0,32, Mover.MoveDir.DOWN);
-	//GameEngine.moveMonsters();
+	mover.movePlayer(GameCircle.player, 0,32, Mover.MoveDir.DOWN);
   }
   
   /**
    * TEMP toggle between sword and bow for testing 
    */
   /*if(keydown['2']) {
-	GameEngine.player.weaponWielded = EntityManager.weaponFactory('Bow');
+	GameCircle.player.weaponWielded = EntityManager.weaponFactory('Bow');
 	keydown['2'] = false;
   }
   
   if(keydown['1']) {
-	GameEngine.player.weaponWielded = EntityManager.weaponFactory('Sword');
+	GameCircle.player.weaponWielded = EntityManager.weaponFactory('Sword');
 	keydown['1'] = false;
   }
   */
   if (keydown.f2) {
 	keydown.f2 = false;
 	//toggle display stats bar
-	GameEngine.showPlayerStatus = (GameEngine.showPlayerStatus)?false:true;
+	GameCircle.showPlayerStatus = (GameCircle.showPlayerStatus)?false:true;
   }
   
   //Test attack animation
 /*  if (keydown.a) {
 	keydown.a = false;
-	GameEngine.player.currentSequence = 'attack_left'
+	GameCircle.player.currentSequence = 'attack_left'
   }
 */  
   if(keydown.g) {
-	GameEngine.DisplayGrid = (GameEngine.DisplayGrid)?false:true;
+	GameCircle.DisplayGrid = (GameCircle.DisplayGrid)?false:true;
 	keydown.g = false;
   }
   
 }
 
-
+//TODO: remove this.
 function setUpPlayerImg() {
 	var player_testManagerConfig = {"tileWidth":32, "tileHeight":32, "src":"res/hero2.png", "namedTiles":[
 		{"id":0,"name":"FRONT","col":0,"row":0},
@@ -337,7 +285,7 @@ function setUpPlayerImg() {
 		"direction":Mover.MoveDir.DOWN}
 		];
 		
-	GameEngine.player.initSpriteManager(player_testManagerConfig,attackAnimation);
+	GameCircle.player.initSpriteManager(player_testManagerConfig,attackAnimation);
 }
 
 

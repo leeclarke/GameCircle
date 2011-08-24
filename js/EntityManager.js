@@ -76,10 +76,10 @@ function addLocation(entity) {
 	entity.x = 0; //test
 	entity.y = 0;
 	entity.getCol = function() {
-		return ~~(this.x/GameEngine.currentMap.getTileWidth())
+		return ~~(this.x/GameCircle.currentMap.getTileWidth())
 	}
 	entity.getRow = function() {
-		return ~~(this.y/GameEngine.currentMap.getTileHeight())
+		return ~~(this.y/GameCircle.currentMap.getTileHeight())
 	}
 }
 
@@ -104,7 +104,7 @@ function addPlayer(entity) {
 	entity.str = 16;
 	entity.strMax = 16;
 	entity.pack = [];
-	entity.vision = GameEngine.playerDefaltVisonRange; //number of tiles the player can see in any direction
+	entity.vision = GameCircle.playerDefaltVisonRange; //number of tiles the player can see in any direction
 }
 
 /**

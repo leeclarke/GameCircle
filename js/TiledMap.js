@@ -149,7 +149,7 @@ TiledMap.prototype.renderMap = function() {
 					}
 					continue;
 				}
-				if(GameEngine.lightsOn == false && currTile.explored == false){
+				if(GameCircle.lightsOn == false && currTile.explored == false){
 					continue; //not visable yet, skip render
 				}
 				
@@ -167,7 +167,7 @@ TiledMap.prototype.renderMap = function() {
  {"upperLeft":{"row":0,"col":0},"bottomRight":{"row":0,"col":0}}
  */
 TiledMap.prototype.exploreTiles = function() {	
-	expArea = this.getSurroundingTiles(GameEngine.player.getRow(),GameEngine.player.getCol(),GameEngine.player.vision,GameEngine.player.vision);
+	expArea = this.getSurroundingTiles(GameCircle.player.getRow(),GameCircle.player.getCol(),GameCircle.player.vision,GameCircle.player.vision);
 	maxRow = (expArea.bottomRight.row>this.tiles.length)?this.tiles.length:expArea.bottomRight.row;
 	for(var rows = expArea.upperLeft.row; rows < maxRow ;rows++) {
 		bRight = (expArea.bottomRight.col>this.tiles[rows].length-1)?this.tiles[rows].length-1:expArea.bottomRight.col
@@ -175,4 +175,25 @@ TiledMap.prototype.exploreTiles = function() {
 			this.tiles[rows][cols].explored = true;	
 		}
 	}
+}
+
+/**
+ * Given start and end point tiles, return multi array of tiles in range.
+ */
+TiledMap.prototype.getTileRange = function(tileStart, tileEnd) {	
+	range = [];
+	
+	//TODO: Determine which of the two tiles is the upper Left, the could be backwards depending on how use selects.
+	upperLeft = tileStart;
+	bottomRight = tileEnd;
+	
+	maxRow = (expArea.bottomRight.row>this.tiles.length)?this.tiles.length:expArea.bottomRight.row;
+	for(var rows = upperLeft.row; rows < maxRow ;rows++) {
+		bRight = (bottomRight.col>this.tiles[rows].length-1)?this.tiles[rows].length-1:expArea.bottomRight.col
+		for(var cols = expArea.upperLeft.col; cols <= bRight; cols++){
+			range.push(this.tiles[rows][cols]);
+		}
+	}
+	
+	return range;
 }

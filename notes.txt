@@ -14,7 +14,7 @@ TODOS:
 *1. Detect click and hold. (Code present in targeting) Mouse down with half sec timer? or dblclick or simply regular click.? What else would click do in Builder?
 *2. Work out high-lighting grid square
 3. Select Mutiple Grids with highlight. Using CTRL key!
-4. Set seelcted grid with default tile.
-5. Change name of gameConsoleTest.js
-6. Change name of GameEngine.js
+4. Set selected grid with default tile.
+*5. Change name of gameConsoleTest.js
+*6. Change name of GameEngine.js
 7. Remove little player icon.

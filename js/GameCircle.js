@@ -1,40 +1,43 @@
 /**
- * GameEngine runs the show, this is the game controller.
+ * GameCircle runs the show, this is the Main controller.
  */
-function GameEngine(){
+function GameCircle(){
 	
 };
 
-GameEngine.debugOn = false;
-GameEngine.CANVAS_WIDTH = 0;
-GameEngine.CANVAS_HEIGHT = 0;
-GameEngine.ViewPortCenterX = 0;
-GameEngine.ViewPortCenterY = 0;
-GameEngine.STATUS_WIDTH = 0;
-GameEngine.playerDefaltVisonRange = 5;
-GameEngine.DisplayGrid = false;
-GameEngine.lightsOn = false; //Toggles visability, true makes whole map explored.
-GameEngine.showPlayerStatus = true;
-GameEngine.elapsed = 0;
-GameEngine.lastUpdate = 0;
-GameEngine.lastUpdateTime = 0;
-GameEngine.fps = 0;
-GameEngine.buttonStates = [];
-GameEngine.player = {};
-GameEngine.monsters = [];
-GameEngine.eventMesgsStack = [];
-GameEngine.currentMap = null;
-GameEngine.mouseQueue = [];
-GameEngine.dblClickTimeLimit = 8000;
-GameEngine.lastMouseEvent = 0; //in ms
-GameEngine.watchedMouseEvents = [];
-GameEngine.missiles = [];  //in flight
-GameEngine.selectedTile = null;
+GameCircle.debugOn = false;
+GameCircle.CANVAS_WIDTH = 0;
+GameCircle.CANVAS_HEIGHT = 0;
+GameCircle.ViewPortCenterX = 0;
+GameCircle.ViewPortCenterY = 0;
+GameCircle.STATUS_WIDTH = 0;
+GameCircle.playerDefaltVisonRange = 5;
+GameCircle.DisplayGrid = false;
+GameCircle.lightsOn = false; //Toggles visability, true makes whole map explored.
+GameCircle.showPlayerStatus = true;
+GameCircle.elapsed = 0;
+GameCircle.lastUpdate = 0;
+GameCircle.lastUpdateTime = 0;
+GameCircle.fps = 0;
+GameCircle.buttonStates = [];
+GameCircle.player = {};
+GameCircle.monsters = [];
+GameCircle.eventMesgsStack = [];
+GameCircle.currentMap = null;
+GameCircle.mouseQueue = [];
+GameCircle.dblClickTimeLimit = 8000;
+GameCircle.lastMouseEvent = 0; //in ms
+GameCircle.watchedMouseEvents = [];
+GameCircle.missiles = [];  //in flight
+/* selectedTile can indicate either a single tile or the starting tile in a range. 
+Ranges are only set when ctrl is held and only valid when selectedTileEnd is not null.*/
+GameCircle.selectedTile = null;
+GameCircle.selectedTileEnd = null;
 
 /**
  * Adds Messages to the Message queue to display to player.
  */
-GameEngine.addEventMessage = function(msg,life) {
+GameCircle.addEventMessage = function(msg,life) {
 	if(msg) {
 		life = (life || life == null)?60:life;
 		this.eventMesgsStack.push({"msg":msg, "life":life})
@@ -44,11 +47,11 @@ GameEngine.addEventMessage = function(msg,life) {
 /**
  * Responsable for rendering the ViewPort or Camera of the game.
  */
-GameEngine.render = function() {
+GameCircle.render = function() {
 	vpX = (this.CANVAS_WIDTH/2)-(this.currentMap.getTileWidth()/2); //viewPort Center.
 	vpY = (this.CANVAS_HEIGHT/2)-(this.currentMap.getTileHeight()/2);
-	GameEngine.ViewPortCenterX = vpX;
-	GameEngine.ViewPortCenterY = vpY;
+	GameCircle.ViewPortCenterX = vpX;
+	GameCircle.ViewPortCenterY = vpY;
 	context.fillStyle = 'rgb(0, 0, 0)' ;
 	context.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT ) ;
 	this.renderViewPort(context, vpX,vpY); 
@@ -61,27 +64,27 @@ GameEngine.render = function() {
  * @param vpCtrX - ViewPort's center X position, adjusted to the UL corner of the center player tile.
  * @param vpCtrY - ViewPort's center Y position, adjusted to the UL corner of the center player tile.
  */
-GameEngine.renderViewPort = function(context, vpCtrX, vpCtrY) {
+GameCircle.renderViewPort = function(context, vpCtrX, vpCtrY) {
 	var now = new Date().getTime();
-	GameEngine.elapsed = (now - this.lastUpdate);
-	GameEngine.fps = ~~(1000/(now - GameEngine.elapsed));
-	GameEngine.lastUpdateTime = now;
-	renderedMap = GameEngine.currentMap.renderMap();
+	GameCircle.elapsed = (now - this.lastUpdate);
+	GameCircle.fps = ~~(1000/(now - GameCircle.elapsed));
+	GameCircle.lastUpdateTime = now;
+	renderedMap = GameCircle.currentMap.renderMap();
 	context.save();  //save position to return to later.
-	context.translate(vpCtrX-GameEngine.player.x,vpCtrY-GameEngine.player.y); //Move to point on map where player stands
+	context.translate(vpCtrX-GameCircle.player.x,vpCtrY-GameCircle.player.y); //Move to point on map where player stands
 	context.drawImage(renderedMap, 0, 0);
 	//render missiles in play.
-	for(mis = 0; mis < GameEngine.missiles.length; mis++){
-		GameEngine.missiles[mis].render(context);
+	for(mis = 0; mis < GameCircle.missiles.length; mis++){
+		GameCircle.missiles[mis].render(context);
 		
 	}
 	
 	//Draw monsters
-	for(m = 0; m < GameEngine.monsters.length; m++){
-		if(GameEngine.monsters[m].visable == false) {
+	for(m = 0; m < GameCircle.monsters.length; m++){
+		if(GameCircle.monsters[m].visable == false) {
 			continue;
 		}		
-		GameEngine.monsters[m].renderImg(context,GameEngine.monsters[m].x, GameEngine.monsters[m].y);
+		GameCircle.monsters[m].renderImg(context,GameCircle.monsters[m].x, GameCircle.monsters[m].y);
 	}
 
 	if(this.DisplayGrid) {
@@ -90,17 +93,17 @@ GameEngine.renderViewPort = function(context, vpCtrX, vpCtrY) {
 	context.restore(); //pop the canvas back to where it was which moves the map.
 	this.buildStatusDisplay(context);
 	this.writeStatus(context);
-	GameEngine.player.renderImg(context, vpCtrX, vpCtrY);
+	GameCircle.player.renderImg(context, vpCtrX, vpCtrY);
 };
 
 /**
  * Displays the Messages overlay at the top of the viewPort, it doesnt display if no messages.
  */
-GameEngine.writeStatus = function(context) {
+GameCircle.writeStatus = function(context) {
 	var vertPosStart = 20;
 	var statusMargin = 5;
-	var statusHeight = vertPosStart*GameEngine.eventMesgsStack.length + vertPosStart;
-	if(GameEngine.eventMesgsStack.length === 0) {
+	var statusHeight = vertPosStart*GameCircle.eventMesgsStack.length + vertPosStart;
+	if(GameCircle.eventMesgsStack.length === 0) {
 		//nothing to display
 		return;
 	}
@@ -119,15 +122,15 @@ GameEngine.writeStatus = function(context) {
 	var msgCt = 1;
 	
 	//context.fillText("TEST2", STATUS_WIDTH+(statusMargin*2), 30);
-	//while(GameEngine.length >0) {
-	for(m = 0; m < GameEngine.eventMesgsStack.length ;m++)	{
-		//e = GameEngine.eventMesgsStack.pop();
-		e = GameEngine.eventMesgsStack[m];
+	//while(GameCircle.length >0) {
+	for(m = 0; m < GameCircle.eventMesgsStack.length ;m++)	{
+		//e = GameCircle.eventMesgsStack.pop();
+		e = GameCircle.eventMesgsStack[m];
 		context.fillText(e.msg, this.STATUS_WIDTH+statusMargin, vertPosStart*msgCt);	
 		if(e.life > 0) {
 			e.life--;
 		} else {
-			GameEngine.eventMesgsStack.splice(m,1);
+			GameCircle.eventMesgsStack.splice(m,1);
 		}
 		msgCt++;	
 	}
@@ -138,10 +141,10 @@ GameEngine.writeStatus = function(context) {
 /**
  * Draws the status display overlay. 
  */
-GameEngine.buildStatusDisplay = function(context) {
+GameCircle.buildStatusDisplay = function(context) {
 	//TODO: Refactor
 	//position in upper left corner	
-	if(GameEngine.showPlayerStatus) {
+	if(GameCircle.showPlayerStatus) {
 		context.save();
 		context.translate(0,0);
 		
@@ -155,19 +158,19 @@ GameEngine.buildStatusDisplay = function(context) {
 		
 		//Write some text for Debugging
 		context.fillStyle = "#FFFF33"; // Set color to black
-/*		context.fillText(GameEngine.player.name, 8, 20);
-		context.fillText("HP: "+GameEngine.player.hp, 8, 40);
-		context.fillText("AC: "+GameEngine.player.getArmor(), 8, 60);
-		context.fillText("Wep: "+GameEngine.player.weaponWielded.name, 8, 80);*/
-		if(GameEngine.selectedTile !== null) {
-			context.fillText("SEL: c:"+GameEngine.selectedTile.col+" r:"+GameEngine.selectedTile.row, 8, 100);
+/*		context.fillText(GameCircle.player.name, 8, 20);
+		context.fillText("HP: "+GameCircle.player.hp, 8, 40);
+		context.fillText("AC: "+GameCircle.player.getArmor(), 8, 60);
+		context.fillText("Wep: "+GameCircle.player.weaponWielded.name, 8, 80);*/
+		if(GameCircle.selectedTile !== null) {
+			context.fillText("SEL: c:"+GameCircle.selectedTile.col+" r:"+GameCircle.selectedTile.row, 8, 100);
 		} else {
 			context.fillText("SEL: c:0 r:0", 8, 100);
 		}
-		context.fillText("Col: "+GameEngine.player.getCol()+" Row: "+GameEngine.player.getRow(), 8, 120);
-		context.fillText("fps: "+GameEngine.fps,8, 140);
-		context.fillText("ctPt-x: "+ ~~(GameEngine.ViewPortCenterX),8, 160);
-		context.fillText("ctPt-y: "+ ~~(GameEngine.ViewPortCenterY),8, 180);
+		context.fillText("Col: "+GameCircle.player.getCol()+" Row: "+GameCircle.player.getRow(), 8, 120);
+		context.fillText("fps: "+GameCircle.fps,8, 140);
+		context.fillText("ctPt-x: "+ ~~(GameCircle.ViewPortCenterX),8, 160);
+		context.fillText("ctPt-y: "+ ~~(GameCircle.ViewPortCenterY),8, 180);
 		var upperLeft = this.getMapUpperLeftPosition();
 		context.fillText("mapPt-x: "+ upperLeft.x,8, 200);
 		context.fillText("mapPt-y: "+ ~~(upperLeft.y),8, 220);
@@ -180,30 +183,30 @@ GameEngine.buildStatusDisplay = function(context) {
  * click locations relative to the map.
  * @return the usual point response. {"x":0,"y":0}
  */
-GameEngine.getMapUpperLeftPosition = function() {
-	var ulX = GameEngine.ViewPortCenterX - GameEngine.player.x;
-	var ulY = GameEngine.ViewPortCenterY - GameEngine.player.y;
+GameCircle.getMapUpperLeftPosition = function() {
+	var ulX = GameCircle.ViewPortCenterX - GameCircle.player.x;
+	var ulY = GameCircle.ViewPortCenterY - GameCircle.player.y;
 	return {"x":ulX, "y":ulY};
 }
 
 /**
  * Generate rnd number between 2 numbers including the from and to values.
  */
-GameEngine.randomInt = function(from, to) {
+GameCircle.randomInt = function(from, to) {
    return Math.floor(Math.random() * (to - from + 1) + from);
 };
 
 /**
  * Random number gen that simulates dice rolls just for simple understanding..
  */
-GameEngine.diceRoll = function( sides, numDice) {
+GameCircle.diceRoll = function( sides, numDice) {
 	return this.randomInt(sides, sides*numDice);       
 };
 
 /**
  * Checks 2 entities to see if they have collided.
  */
-GameEngine.checkCollision = function(a, b) {
+GameCircle.checkCollision = function(a, b) {
   return a.x < b.x + b.width &&
          a.x + a.width > b.x &&
          a.y < b.y + b.height &&
@@ -217,7 +220,7 @@ GameEngine.checkCollision = function(a, b) {
  * @area - defined area with upperLeft and bottomRight positions.  ex. {"upperLeft":{"row":0,"col":0},"bottomRight":{"row":0,"col":0}}
  * @return - true if entity lies with-in area  
  */
-GameEngine.inRange = function(entity, area) {
+GameCircle.inRange = function(entity, area) {
 	if(area.upperLeft.row <= entity.getRow() && area.bottomRight.row >= entity.getRow()) {
 			if(area.upperLeft.col <= entity.getCol() && area.bottomRight.col >= entity.getCol())
 				return true;
@@ -228,7 +231,7 @@ GameEngine.inRange = function(entity, area) {
 /**
  * Simple helper to simplify the retrival of the players visable area. 
  */
-GameEngine.getPlayerVisableArea = function() {
+GameCircle.getPlayerVisableArea = function() {
 	return this.currentMap.getSurroundingTiles(this.player.getRow(),this.player.getCol(),this.player.vision,this.player.vision);
 };
 
@@ -236,7 +239,7 @@ GameEngine.getPlayerVisableArea = function() {
  * To make this work you would register an Objects events
  *From http://www.geekdaily.net/2008/04/02/javascript-defining-and-using-custom-events/
  */
-GameEngine.CustomEvent = function() {
+GameCircle.CustomEvent = function() {
 	//name of the event
 	this.eventName = arguments[0];
 	var mEventName = this.eventName;
@@ -264,7 +267,7 @@ GameEngine.CustomEvent = function() {
 /**
  * Adds additional CustomeEvents to the listener queue which responds to mouse events.
  */
-GameEngine.addMouseEventListener = function(custEvent) {
+GameCircle.addMouseEventListener = function(custEvent) {
 	if(custEvent && custEvent !== null) {
 		this.watchedMouseEvents.push(custEvent);
 	}
@@ -273,7 +276,7 @@ GameEngine.addMouseEventListener = function(custEvent) {
 /**
  * 
  */
-GameEngine.processMouseEvents = function(mouseEvent){
+GameCircle.processMouseEvents = function(mouseEvent){
 	for(e = 0 ; e < watchedEvents.length; e++) {
 			this.watchedEvents[e].fire(null, {message: eventTestMsg + " " + watchedEvents[e].eventName, event: mouseEvent});
 	}
@@ -282,9 +285,9 @@ GameEngine.processMouseEvents = function(mouseEvent){
 /**
  * Debug method to display debug in game.
  */
-GameEngine.debug = function(source, msg) {
-	if(GameEngine.debugOn){
-		GameEngine.addEventMessage("["+source+"] "+msg);
+GameCircle.debug = function(source, msg) {
+	if(GameCircle.debugOn){
+		GameCircle.addEventMessage("["+source+"] "+msg);
 	}
 }
 
@@ -292,14 +295,14 @@ GameEngine.debug = function(source, msg) {
  * Check for monster at location.
  * @return the monster at location or null if none.
  */
-GameEngine.isMonsterAtTile = function(clickedTile) {
+GameCircle.isMonsterAtTile = function(clickedTile) {
 	//TODO: Refactor
 	var tileMonster = null;
 	if(clickedTile !== null) {
 		//TODO: TEST
-		for(m = 0; m < GameEngine.monsters.length; m++) {
-			var collide = GameEngine.checkCollision(clickedTile, GameEngine.monsters[m]);
-			if(collide) {tileMonster = GameEngine.monsters[m]};
+		for(m = 0; m < GameCircle.monsters.length; m++) {
+			var collide = GameCircle.checkCollision(clickedTile, GameCircle.monsters[m]);
+			if(collide) {tileMonster = GameCircle.monsters[m]};
 		}
 	}
 	return tileMonster;
@@ -311,7 +314,7 @@ GameEngine.isMonsterAtTile = function(clickedTile) {
  * Select random item from an Array.
  */
 Array.prototype.ramdomItem =  function(){	
-	return this[GameEngine.randomInt(0, this.length - 1)];
+	return this[GameCircle.randomInt(0, this.length - 1)];
 };
 
 /**
