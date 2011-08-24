@@ -158,9 +158,13 @@ GameEngine.buildStatusDisplay = function(context) {
 /*		context.fillText(GameEngine.player.name, 8, 20);
 		context.fillText("HP: "+GameEngine.player.hp, 8, 40);
 		context.fillText("AC: "+GameEngine.player.getArmor(), 8, 60);
-		context.fillText("Wep: "+GameEngine.player.weaponWielded.name, 8, 80);
-		context.fillText("x:"+GameEngine.player.x+" y:"+GameEngine.player.y, 8, 100);
-		context.fillText("Col: "+GameEngine.player.getCol()+" Row: "+GameEngine.player.getRow(), 8, 120);*/
+		context.fillText("Wep: "+GameEngine.player.weaponWielded.name, 8, 80);*/
+		if(GameEngine.selectedTile !== null) {
+			context.fillText("SEL: c:"+GameEngine.selectedTile.col+" r:"+GameEngine.selectedTile.row, 8, 100);
+		} else {
+			context.fillText("SEL: c:0 r:0", 8, 100);
+		}
+		context.fillText("Col: "+GameEngine.player.getCol()+" Row: "+GameEngine.player.getRow(), 8, 120);
 		context.fillText("fps: "+GameEngine.fps,8, 140);
 		context.fillText("ctPt-x: "+ ~~(GameEngine.ViewPortCenterX),8, 160);
 		context.fillText("ctPt-y: "+ ~~(GameEngine.ViewPortCenterY),8, 180);

@@ -162,15 +162,12 @@ function handleInput() {
     var mapClickPoint = {"x":~~(mEvent.x-upperLeft.x), "y":~~(mEvent.y-upperLeft.y)};
     
     var clickedTile = GameEngine.currentMap.getTileAt(mapClickPoint.x, mapClickPoint.y);
-	if(clickedTile === null) {
-		GameEngine.selectedTile = null;	
-	} else {	
+	if(clickedTile !== null) {	
 		//TODO: ADD check to see if CTRL is held for multi select.	
 		//if(keydown.ctrl) {
 		//}
 		
 		//Note: Select is drawn when rendering the grid.
-		clickedTile.leftTop = upperLeft;
 		GameEngine.selectedTile = clickedTile;
 	}
 	
@@ -237,6 +234,12 @@ function update() {
 		keydown.x = false;
 	  }
 	  keydown.ctrl = false;
+  }
+  
+  //Esc clears things like selected tile
+  if (keydown.esc) {
+	GameEngine.selectedTile = null;	
+	keydown.esc = false;
   }
   
   if (keydown.left) {

@@ -48,9 +48,18 @@ function drawLine(contextO, startx, starty, endx, endy) {
  */
  function drawSelectBoxOnGrid(context) {
  	if(GameEngine.selectedTile !== null){
- 		if(GameEngine.selectedTile.leftTop !== null) {
- 			//TODO: Draw lines for square based on selected tile.
- 			//call drawLine(context,)!
- 		}
+		selTile = GameEngine.selectedTile;
+		
+		//Get uperleftCorner
+		leftX = selTile.col*selTile.width;
+		leftY = selTile.row*selTile.height;
+		
+		context.strokeStyle = 'rgb(0, 204, 0)' ;//green
+		context.lineWidth = "0.75";
+		
+		drawLine(context,leftX, leftY, leftX+selTile.width,leftY);
+		drawLine(context,leftX, leftY, leftX,leftY+selTile.height);
+		drawLine(context,leftX, leftY+selTile.height, leftX+selTile.width, leftY+selTile.height);
+		drawLine(context,leftX+selTile.width, leftY, leftX+selTile.width,leftY+selTile.height);
  	}
  }
