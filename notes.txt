@@ -19,7 +19,7 @@ TODOS:
 *3.3 BUG: selecting a negative diff between start and end tiles causes nothing to be drawn. finish method..
 *5. Change name of gameConsoleTest.js
 *6. Change name of GameEngine.js
-4. Set selected grid with default tile.
-
+*4. Set selected grid with default tile.  ALT+z
 7. Remove little player icon.
 8. Remove blocking checks for moving center point of view.
+9. Clear grid tile or selected range with ALT+x

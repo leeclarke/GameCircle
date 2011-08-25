@@ -56,6 +56,11 @@ function windowReady() {
 	
 	GameCircle.currentMap.updateMap(mapTiles);
 	
+	//TODO: set for test
+	GameCircle.lightsOn = true;
+	//TODO: For testing setting a default Sprite Tile, remove later.
+	//GameCircle.placementTile = ;
+	
 	//draw to canvas		
 	GameCircle.render();
 	setInterval(main, 30);
@@ -167,6 +172,12 @@ function update() {
 	GameCircle.selectedMode = !GameCircle.selectedMode;
 	keydown.s = false;
 	keydown.alt = false;
+  }
+  
+  if(keydown.alt && keydown.z) {
+  	GameCircle.setSelectedTiles();
+  	keydown.z = false;
+  	keydown.alt = false;
   }
   
   //Esc clears things like selected tile

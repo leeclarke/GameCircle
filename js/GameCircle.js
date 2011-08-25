@@ -34,6 +34,7 @@ Ranges are only set when ctrl is held and only valid when selectedTileEnd is not
 GameCircle.selectedTile = null;
 GameCircle.selectedTileEnd = null;
 GameCircle.selectedMode = false;
+GameCircle.placementTile = {"id":1, "type":1};
 
 /**
  * Adds Messages to the Message queue to display to player.
@@ -308,6 +309,28 @@ GameCircle.isMonsterAtTile = function(clickedTile) {
 	}
 	return tileMonster;
 }
+
+
+/**
+ * Setsa selected Tiles to the Sprite set in GameCircle.placementTile
+ */
+GameCircle.setSelectedTiles = function() {
+	if( GameCircle.selectedTile !== null) {  //addd GameCircle.placementTile !== null &&
+		//get range if there is one and set all tiles to the new sprite.
+		if(GameCircle.selectedTileEnd != null){
+			//set Multi - get the range again.
+			range = GameCircle.currentMap.getTileRange(GameCircle.selectedTile, GameCircle.selectedTileEnd);
+			for(var r = 0; r < range.length;r++) {
+				GameCircle.currentMap.setGridTile(range[r].row,range[r].col,GameCircle.placementTile); 	
+			}
+		} else {
+			GameCircle.currentMap.setGridTile(GameCircle.selectedTile.row,GameCircle.selectedTile.col,GameCircle.placementTile);
+		}
+	}
+
+}
+
+
 
 /****Array mods. These dont actually attach to the Array object..******/
 

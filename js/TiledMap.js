@@ -95,6 +95,24 @@ TiledMap.prototype.getSurroundingTiles = function(startRow, startCol, radialHeig
 TiledMap.prototype.movementAttributes = { "unpassable":0,"open":1, "locked":2, "slow":3, "blocked":4, "trapped":5, "stairsUp":6, "stairsDown":7, "portal":8}
 
 /**
+ * Sets a grid tile to be soemthing other then it was.
+ * @param tileData - {"id":1, "type":1}
+ */
+TiledMap.prototype.setGridTile = function(tileRow, tileCol, tileData) {
+	if(!(typeof(tileData) === undefined) && tileData !== null) {
+		tile = EntityManager.createEntity('MapTile');
+		tile.init(tileData); 
+		tile.col = tileCol;
+		tile.row = tileRow;
+		tile.x = (tile.col*this.tileMapManager.tileWidth); 
+		tile.y = (tile.row*this.tileMapManager.tileHeight); 
+		tile.width = this.tileMapManager.tileWidth; 
+		tile.height = this.tileMapManager.tileHeight;
+		GameCircle.currentMap.tiles[tile.row][tile.col] = tile;
+	}
+}
+
+/**
  * Use to provide control over updating internals when the map layout data changes.
  * Use in place of setting tiles directly or the row/col values wont be set!
  * @param mapData  - data format is [[{"id":0,"type":0},{"id":0,"type":0}],[{"id":0,"type":0},{"id":0,"type":0}]]
@@ -106,7 +124,7 @@ TiledMap.prototype.updateMap = function(mapData) {
 	{
 		newCol = [];
 		for(var cols = 0; cols < mapData[rows].length; cols++){
-			tile = EntityManager.createEntity('MapTile')
+			tile = EntityManager.createEntity('MapTile');
 			
 			if(mapData[rows].length) {
 				tile.init(mapData[rows][cols]);
