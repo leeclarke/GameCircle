@@ -188,16 +188,19 @@ TiledMap.prototype.exploreTiles = function() {
  */
 TiledMap.prototype.getTileRange = function(tileStart, tileEnd) {	
 	range = [];
-//TODO: This isnt selecting the right stuff! Selects playerVisable instead. duh.		
-	//TODO: Determine which of the two tiles is the upper Left, the could be backwards depending on how use selects.
-	upperLeft = tileStart;
-	bottomRight = tileEnd;
 	
-	maxRow = (expArea.bottomRight.row>this.tiles.length)?this.tiles.length:expArea.bottomRight.row;
-	for(var rows = upperLeft.row; rows < maxRow ;rows++) {
-		bRight = (bottomRight.col>this.tiles[rows].length-1)?this.tiles[rows].length-1:expArea.bottomRight.col
-		for(var cols = expArea.upperLeft.col; cols <= bRight; cols++){
-			range.push(this.tiles[rows][cols]);
+	//make sure the right tile is set to start since the click start and end could be reversed.
+	leftStartRow = (tileStart.row > tileEnd.row) ? tileEnd.row : tileStart.row;
+	leftStartCol = (tileStart.col > tileEnd.col) ? tileEnd.col : tileStart.col;
+	bottomEndRow = (tileEnd.row < tileStart.row) ? tileStart.row: tileEnd.row;
+	bottomEndCol = (tileEnd.col < tileStart.col) ? tileStart.col: tileEnd.col;
+	
+	upperLeft = this.getTile(leftStartRow,leftStartCol);
+	bottomRight = this.getTile(bottomEndRow,bottomEndCol);
+	
+	for(var rows = upperLeft.row; rows <= bottomRight.row ;rows++) {
+		for(var cols = upperLeft.col; cols <= bottomRight.col; cols++){					
+			range.push(this.getTile(rows,cols));
 		}
 	}
 	

@@ -13,11 +13,13 @@ TODOS:
 *1. Get MapBuilder to load clean.
 *1. Detect click and hold. (Code present in targeting) Mouse down with half sec timer? or dblclick or simply regular click.? What else would click do in Builder?
 *2. Work out high-lighting grid square
-3. Select Mutiple Grids with highlight. Using CTRL key!
+*3. Select Mutiple Grids with highlight. Using ALT+s key!
 *3.1 BUG: If a tile doesn't have a tileEntity in the map array it isnt Selectable. Finish TiledMap.updateMap()
-3.2 BUG: TiledMap.getTileRange not returning correct, returns player visable.
-4. Set selected grid with default tile.
+*3.2 BUG: TiledMap.getTileRange not returning correct, returns player visable.
+*3.3 BUG: selecting a negative diff between start and end tiles causes nothing to be drawn. finish method..
 *5. Change name of gameConsoleTest.js
 *6. Change name of GameEngine.js
+4. Set selected grid with default tile.
+
 7. Remove little player icon.
 8. Remove blocking checks for moving center point of view.
