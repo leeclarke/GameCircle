@@ -21,7 +21,7 @@ TODOS:
 *6. Change name of GameEngine.js
 *4. Set selected grid with default tile.  ALT+z
 *7. Remove little player icon.
-8. Remove blocking checks for moving center point of view.
+*8. Remove blocking checks for moving center point of view.
 9. Clear grid tile or selected range with ALT+x   ?? could just select blank from tile pallet?
 10. Build Tile pallet for selecting an active tile type.
 10.1 Design Info Display area. (Left side.)  Need Current Tile, selected grid c/r, Selection Mode Indicator, Tile Pallet,Monster/Item Pallet.

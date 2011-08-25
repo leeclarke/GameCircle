@@ -78,39 +78,6 @@ Mover.prototype.movePlayer = function(player, xDir, yDir, mvVector) {
 		return;
 	}
 
-	//get targeted tile.
-	var targetTile = GameCircle.currentMap.getTile(player.getRow(),player.getCol());
-	if(targetTile !== null && targetTile.id !== -1) {
-		var colls = this.checkCollision(player, targetTile);
-		if(colls) {//looks like there would always be a collision so the question is, does this offer anything?
-			//TODO: add logic for checking variables involved in diff tile types. doing simple 0|1 for now.
-			//if collision, see if blocked.
-			if(!targetTile.hasOwnProperty('type') || targetTile.type === GameCircle.currentMap.movementAttributes.unpassable) {
-				//blocked
-				player.x = playerOldX;
-				player.y = playerOldY;
-				return;
-			}
-			//check monster Collision.
-			for(m = 0; m < GameCircle.monsters.length; m++) {
-				if(this.checkCollision(GameCircle.player,GameCircle.monsters[m]) && GameCircle.monsters[m].alive === true) {
-					//blocked
-					player.x = playerOldX;
-					player.y = playerOldY;
-					
-					if(mvVector !== null) {
-						GameCircle.player.currentSequence = GameCircle.player.spriteManager.getSequenceSpriteByDirection(mvVector).name;
-					}
-					
-					player.attack(GameCircle.monsters[m]);
-					return;
-				}
-			}
-		} 
-	} else {
-		player.x = playerOldX;
-		player.y = playerOldY;
-	}
 };
 
 /**
