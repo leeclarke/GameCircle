@@ -6,10 +6,10 @@
  * @object TiledMap
  * Manages a Game Map, both the data and rendered images.
  */
-function TiledMap(width, height, tileWidth, tileHeight) {
+function TiledMap(width, height, tileWidth, tileHeight, rowCount, colCount) {
 	map = document.createElement('canvas');
-	rows = 0;
-	cols = 0;
+	this.rows = rowCount;
+	this.cols = colCount;
 	height = (~~(height/tileHeight))*tileHeight;
 	width = (~~(width/tileWidth))*tileWidth;
 	map.width = (~~(width/tileWidth))*tileWidth; //faster then calling floor
@@ -100,22 +100,28 @@ TiledMap.prototype.movementAttributes = { "unpassable":0,"open":1, "locked":2, "
  * @param mapData  - data format is [[{"id":0,"type":0},{"id":0,"type":0}],[{"id":0,"type":0},{"id":0,"type":0}]]
  */
 TiledMap.prototype.updateMap = function(mapData) {
-	this.tiles = mapData;
+	this.tiles = [];
+
 	for(var rows = 0; rows < mapData.length ;rows++)
 	{
+		newCol = [];
 		for(var cols = 0; cols < mapData[rows].length; cols++){
 			tile = EntityManager.createEntity('MapTile')
-			tile.init(mapData[rows][cols]);
+			
+			if(mapData[rows].length) {
+				tile.init(mapData[rows][cols]);
+			} else {
+				tile.init({});
+			}
 			tile.col = cols;
 			tile.row = rows;
 			tile.x = (cols*this.tileMapManager.tileWidth); tile.y = (rows*this.tileMapManager.tileHeight); 
 			tile.width = this.tileMapManager.tileWidth; tile.height = this.tileMapManager.tileHeight;
-			this.tiles[rows][cols] = tile;	
-		}		
+			newCol.push(tile);
+			
+		}	
+		this.tiles[rows] = newCol;		
 	}
-	
-	this.rows = this.tiles.length;
-	this.cols = this.getCols();
 }
 
 /**
@@ -182,7 +188,7 @@ TiledMap.prototype.exploreTiles = function() {
  */
 TiledMap.prototype.getTileRange = function(tileStart, tileEnd) {	
 	range = [];
-	
+//TODO: This isnt selecting the right stuff! Selects playerVisable instead. duh.		
 	//TODO: Determine which of the two tiles is the upper Left, the could be backwards depending on how use selects.
 	upperLeft = tileStart;
 	bottomRight = tileEnd;

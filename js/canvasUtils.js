@@ -54,11 +54,8 @@ function drawLine(contextO, startx, starty, endx, endy) {
  		if(GameCircle.selectedTileEnd === null) { 	
  			drawSingleSquareSelect(context, GameCircle.selectedTile);
 		} else { //Draw square range.
-			//TODO: compleate
-			//1. build tile list.
 			tileRange = GameCircle.currentMap.getTileRange(GameCircle.selectedTile, GameCircle.selectedTileEnd);
-			
-			//2. iterate list calling drawSingleSquareSelect()
+		
 			for(var t = 0; t < tileRange.length ;t++) {
 				drawSingleSquareSelect(context, tileRange[t]);
 			}

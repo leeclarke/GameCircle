@@ -33,6 +33,7 @@ GameCircle.missiles = [];  //in flight
 Ranges are only set when ctrl is held and only valid when selectedTileEnd is not null.*/
 GameCircle.selectedTile = null;
 GameCircle.selectedTileEnd = null;
+GameCircle.selectedMode = false;
 
 /**
  * Adds Messages to the Message queue to display to player.
@@ -158,8 +159,8 @@ GameCircle.buildStatusDisplay = function(context) {
 		
 		//Write some text for Debugging
 		context.fillStyle = "#FFFF33"; // Set color to black
-/*		context.fillText(GameCircle.player.name, 8, 20);
-		context.fillText("HP: "+GameCircle.player.hp, 8, 40);
+		context.fillText("Select:"+GameCircle.selectedMode, 8, 20);
+/*		context.fillText("HP: "+GameCircle.player.hp, 8, 40);
 		context.fillText("AC: "+GameCircle.player.getArmor(), 8, 60);
 		context.fillText("Wep: "+GameCircle.player.weaponWielded.name, 8, 80);*/
 		if(GameCircle.selectedTile !== null) {
