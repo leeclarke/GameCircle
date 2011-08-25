@@ -16,8 +16,8 @@ var context;
 function windowReady() {
 	var body = $(this).find("body");
 	
-	GameCircle.CANVAS_WIDTH = window.innerWidth;//body.width();
-	GameCircle.CANVAS_HEIGHT = window.innerHeight;//body.height();
+	GameCircle.CANVAS_WIDTH = window.innerWidth;
+	GameCircle.CANVAS_HEIGHT = window.innerHeight;
 	
 	//Create canvas
 	var canvasElement = $("<canvas width='" + GameCircle.CANVAS_WIDTH + 
@@ -25,19 +25,19 @@ function windowReady() {
 	context = canvasElement.get(0).getContext("2d");
 	canvasElement.appendTo('body');
 	//Set up background.
-	context.fillStyle = 'rgb(0, 0, 0)' ;
+	context.fillStyle = 'rgb(0, 0, 0)' ;  //TODO: Config Param.
 	context.fillRect(0, 0, GameCircle.CANVAS_WIDTH, GameCircle.CANVAS_HEIGHT ) ;
 	
-	//TODO refactor this into GameCircle.tiledMap. Build load process to set theis up.
+	//TODO refactor this into GameCircle.tiledMap. Build load process to set this up.
 	GameCircle.currentMap = new TiledMap(GameCircle.CANVAS_WIDTH+300,GameCircle.CANVAS_HEIGHT+300,32,32, 26,26);
 
-	//add fake player sprite, centerd in middle of screen
+	//TODO: This esentally sets the point of view of the view port. should probably default to centered.
 	GameCircle.player = EntityManager.createEntity('Player');
 	GameCircle.player.x = (3*32);
 	GameCircle.player.y = (11*32);
-	GameCircle.player.name = "Lee";
+	GameCircle.player.name = "DM";
 	GameCircle.player.spriteImg.src = "res/player.png";
-	//GameCircle.player.deadImg.src = "res/bones.png";
+	
 	
 	
 	setUpPlayerImg();
@@ -56,10 +56,10 @@ function windowReady() {
 	
 	GameCircle.currentMap.updateMap(mapTiles);
 	
-	//TODO: set for test
+	//TODO: set for test, in Edit Mode it should always be true.
 	GameCircle.lightsOn = true;
 	//TODO: For testing setting a default Sprite Tile, remove later.
-	//GameCircle.placementTile = ;
+	GameCircle.placementTile = {"id":1, "type":1};
 	
 	//draw to canvas		
 	GameCircle.render();

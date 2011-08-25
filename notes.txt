@@ -20,6 +20,11 @@ TODOS:
 *5. Change name of gameConsoleTest.js
 *6. Change name of GameEngine.js
 *4. Set selected grid with default tile.  ALT+z
-7. Remove little player icon.
+*7. Remove little player icon.
 8. Remove blocking checks for moving center point of view.
-9. Clear grid tile or selected range with ALT+x
+9. Clear grid tile or selected range with ALT+x   ?? could just select blank from tile pallet?
+10. Build Tile pallet for selecting an active tile type.
+10.1 Design Info Display area. (Left side.)  Need Current Tile, selected grid c/r, Selection Mode Indicator, Tile Pallet,Monster/Item Pallet.
+11. Display Selected Tile Type in control/info Display.
+12. Make Maps Load/Save-able.  (Design out other File activities) For JSON design, expand the map to include Editor info as loading sprites for SpriteManager data.
+13. Center Point of view (Player object.)

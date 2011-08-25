@@ -34,7 +34,7 @@ Ranges are only set when ctrl is held and only valid when selectedTileEnd is not
 GameCircle.selectedTile = null;
 GameCircle.selectedTileEnd = null;
 GameCircle.selectedMode = false;
-GameCircle.placementTile = {"id":1, "type":1};
+GameCircle.placementTile = {"id":-1, "type":-1};
 
 /**
  * Adds Messages to the Message queue to display to player.
@@ -95,7 +95,7 @@ GameCircle.renderViewPort = function(context, vpCtrX, vpCtrY) {
 	context.restore(); //pop the canvas back to where it was which moves the map.
 	this.buildStatusDisplay(context);
 	this.writeStatus(context);
-	GameCircle.player.renderImg(context, vpCtrX, vpCtrY);
+	//GameCircle.player.renderImg(context, vpCtrX, vpCtrY);
 };
 
 /**
