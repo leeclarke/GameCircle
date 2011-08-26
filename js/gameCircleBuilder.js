@@ -24,6 +24,10 @@ function windowReady() {
                       "' height='" + GameCircle.CANVAS_HEIGHT + "'></canvas>");
 	context = canvasElement.get(0).getContext("2d");
 	canvasElement.appendTo('body');
+	
+	//TODO: Try input dialog.
+	//var dialog = $("<div></div>");
+	
 	//Set up background.
 	context.fillStyle = 'rgb(0, 0, 0)' ;  //TODO: Config Param.
 	context.fillRect(0, 0, GameCircle.CANVAS_WIDTH, GameCircle.CANVAS_HEIGHT ) ;
@@ -180,10 +184,24 @@ function update() {
   	keydown.alt = false;
   }
   
+  if(keydown.alt && keydown.d) {
+	openDialog('#dialog', '<p>This is just a test dialog<br><button type="button" onclick="hideDialog();">Click Me!</button></p>');
+	keydown.d = false;
+  	keydown.alt = false;
+  }
+  
+  if(keydown.alt && keydown.t) {
+	openToolDialog('#dialog', 'Tool Pallet Here', 10, 10);
+	keydown.t = false;
+  	keydown.alt = false;
+  }
+  
   //Esc clears things like selected tile
   if (keydown.esc) {
 	GameCircle.selectedTile = null;	
 	GameCircle.selectedTileEnd = null;
+	//TODO: Remove this when done with Dialogs.
+	hideDialog();
 	keydown.esc = false;
   }
   
@@ -293,5 +311,53 @@ function setDragonImg(monster){
 	monster.initSpriteManager(monster_testManagerConfig,monsterAnimation);
 }
 
+/**
+ * Open Dialog above Canvas for data input.
+ */
+function openDialog(id, content){
+	    var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+     
+        //Set height and width to mask to fill up the whole screen
+        $('#mask').css({'width':maskWidth,'height':maskHeight});
+         
+        //transition effect     
+        $('#mask').fadeIn(1000);    
+        $('#mask').fadeTo("slow",0.8);  
+     
+        //Get the window height and width
+        var winH = $(window).height();
+        var winW = $(window).width();
+               
+        //Set the popup window to center
+        $(id).html(content);
+        $(id).css('top',  winH/2-$(id).height()/2);
+        $(id).css('left', winW/2-$(id).width()/2);
+     
+        //transition effect
+        $(id).fadeIn(1000); 
+}
 
+/**
+ * Display Dialog w/o mask
+ */
+function openToolDialog(id, content, top, left){
+	    var maskHeight = $(document).height();
+        var maskWidth = $(window).width();
+     
+        //Set the popup window to center
+        $(id).html(content);
+        $(id).css('top',  top);
+        $(id).css('left', left);
+     
+        //transition effect
+        $(id).fadeIn(1000); 
+}
 
+/**
+ * Hides any visable dialog box.
+ */
+function hideDialog() {
+	$('#mask').hide();
+    $('.window').hide();
+}

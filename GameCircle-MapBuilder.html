@@ -2,6 +2,7 @@
 <html> 
   <head> 
     <title>GameCircle</title> 
+    <link type="text/css" href="css/maincircle.css" rel="Stylesheet" />	
     <script type="text/javascript" src="js/jquery-1.5.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.hotkeys.js"></script>
     <script type="text/javascript" src="js/FileManager.js"></script>
@@ -12,19 +13,19 @@
     <script type="text/javascript" src="js/canvasUtils.js"></script>
     <script type="text/javascript" src="js/Mover.js"></script>
     <script type="text/javascript" src="js/gameCircleBuilder.js"></script>
-    <script>
-		
-    </script>
-    <style>
-		html,body {
-			background: #CCCCCC;
-			margin: 0;
-			padding: 0;
-			overflow:hidden;
-		}
 
-    </style>
   </head> 
-  <body></body> 
+  <body>
+<div id="boxes">
+    <!-- #customize your modal window here -->
+    <div id="dialog" class="window">
+        <b>Testing of Modal Window</b> | 
+        <!-- close button is defined as close class -->
+        <a href="#" class="close">Close it</a>
+    </div>   
+    <!-- Do not remove div#mask, because you'll need it to fill the whole screen --> 
+    <div id="mask"></div>
+</div>
+  </body> 
 </html>
 

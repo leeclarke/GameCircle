@@ -23,8 +23,9 @@ TODOS:
 *7. Remove little player icon.
 *8. Remove blocking checks for moving center point of view.
 9. Clear grid tile or selected range with ALT+x   ?? could just select blank from tile pallet?
-10. Build Tile pallet for selecting an active tile type.
-10.1 Design Info Display area. (Left side.)  Need Current Tile, selected grid c/r, Selection Mode Indicator, Tile Pallet,Monster/Item Pallet.
-11. Display Selected Tile Type in control/info Display.
-12. Make Maps Load/Save-able.  (Design out other File activities) For JSON design, expand the map to include Editor info as loading sprites for SpriteManager data.
-13. Center Point of view (Player object.)
+*10.1 Build Dialog and ToolDialog displays.
+10.2 Design Info Display area. (Left side.)  Need Current Tile, selected grid c/r, Selection Mode Indicator, Tile Pallet,Monster/Item Pallet.
+10.3 Build Tile pallet for selecting an active tile type.
+10.4 Display Selected Tile Type in control/info Display.
+11. Make Maps Load/Save-able.  (Design out other File activities) For JSON design, expand the map to include Editor info as loading sprites for SpriteManager data.
+12. Center Point of view (Player object.)
