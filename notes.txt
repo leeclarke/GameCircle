@@ -1,7 +1,7 @@
 NOTES:
 
 Mover: Moving center point of users view and for moving Movable tiles.
-canvasUtils: Keep. Add drag/Drop functions here if not in the Main. should be doing drag/drop and verifying that new graid point is valid. Also it could limit move per round in later version.
+canvasUtils: Keep. Add drag/Drop functions here if not in the Main. should be doing drag/drop and verifying that new grid point is valid. Also it could limit move per round in later version.
 EntityManager: still needed for managing tiles but not for Player/weapon generation. Just tiles.
 GameEngine: Rename to MapBuilderManager and GameCircleManager
 SpriteTileManager: could be useful, keep as is.
@@ -28,4 +28,10 @@ TODOS:
 10.3 Build Tile pallet for selecting an active tile type.
 10.4 Display Selected Tile Type in control/info Display.
 11. Make Maps Load/Save-able.  (Design out other File activities) For JSON design, expand the map to include Editor info as loading sprites for SpriteManager data.
+*11.1 Stub out data format/JSON.
+11.2 Make Maps array to allow for mutiple maps in a file.
+11.3 Make data savable in localStorage
+11.4 Make data savable Online
+11.5 Load data from localStorage
+11.6 Load data from Online
 12. Center Point of view (Player object.)
