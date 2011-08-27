@@ -35,6 +35,7 @@ GameCircle.selectedTile = null;
 GameCircle.selectedTileEnd = null;
 GameCircle.selectedMode = false;
 GameCircle.placementTile = {"id":-1, "type":-1};
+GameCircle.activeDialog = null;
 
 /**
  * Adds Messages to the Message queue to display to player.
@@ -330,6 +331,12 @@ GameCircle.setSelectedTiles = function() {
 
 }
 
+/**
+ * Setter looks up the Tile by name and sets it as the currently selected edit tile.
+ */
+GameCircle.setSelectedTileByName = function(tileName) {
+	GameCircle.placementTile = GameCircle.currentMap.tileMapManager.getNamedTile(tileName);
+}
 
 
 /****Array mods. These dont actually attach to the Array object..******/

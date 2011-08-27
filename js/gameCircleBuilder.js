@@ -25,9 +25,6 @@ function windowReady() {
 	context = canvasElement.get(0).getContext("2d");
 	canvasElement.appendTo('body');
 	
-	//TODO: Try input dialog.
-	//var dialog = $("<div></div>");
-	
 	//Set up background.
 	context.fillStyle = 'rgb(0, 0, 0)' ;  //TODO: Config Param.
 	context.fillRect(0, 0, GameCircle.CANVAS_WIDTH, GameCircle.CANVAS_HEIGHT ) ;
@@ -41,16 +38,23 @@ function windowReady() {
 	GameCircle.player.y = (11*32);
 	GameCircle.player.name = "DM";
 	GameCircle.player.spriteImg.src = "res/player.png";
-	
-	
-	
-	setUpPlayerImg();
 
 	testManagerConfig = {"tileWidth":32, "tileHeight":32, "src":"res/dungeontiles.gif", "namedTiles":[
 		{"id":0,"name":"WALL1","col":0,"row":0},
 		{"id":1,"name":"FLOOR1","col":1,"row":8},
 		{"id":2,"name":"DOOR1","col":4,"row":2},
-		{"id":3,"name":"DOOR2","col":1,"row":6}
+		{"id":3,"name":"DOOR2","col":0,"row":1},
+		{"id":4,"name":"DOOR3","col":0,"row":2},
+		{"id":5,"name":"DOOR4","col":0,"row":3},
+		{"id":6,"name":"WALL2","col":0,"row":4},
+		{"id":7,"name":"WALL3","col":0,"row":5},
+		{"id":8,"name":"DOOR5","col":0,"row":6},
+		{"id":9,"name":"DOOR6","col":0,"row":7},
+		{"id":10,"name":"FLOOR2","col":0,"row":8},
+		{"id":11,"name":"FLOOR3","col":0,"row":9},
+		{"id":12,"name":"DOOR7","col":2,"row":2},
+		{"id":13,"name":"DOOR8","col":2,"row":3},
+		{"id":14,"name":"DOOR9","col":2,"row":5}		
 	]};
 	
 	tileMapManager = new SpriteTileManager(testManagerConfig);
@@ -191,17 +195,16 @@ function update() {
   }
   
   if(keydown.alt && keydown.t) {
-	openToolDialog('#dialog', 'Tool Pallet Here', 10, 10);
+	displayToolPallet();
 	keydown.t = false;
   	keydown.alt = false;
   }
+  
   
   //Esc clears things like selected tile
   if (keydown.esc) {
 	GameCircle.selectedTile = null;	
 	GameCircle.selectedTileEnd = null;
-	//TODO: Remove this when done with Dialogs.
-	hideDialog();
 	keydown.esc = false;
   }
   
@@ -243,72 +246,12 @@ function update() {
 	//toggle display stats bar
 	GameCircle.showPlayerStatus = (GameCircle.showPlayerStatus)?false:true;
   }
-  
-  //Test attack animation
-/*  if (keydown.a) {
-	keydown.a = false;
-	GameCircle.player.currentSequence = 'attack_left'
-  }
-*/  
+ 
   if(keydown.g) {
 	GameCircle.DisplayGrid = (GameCircle.DisplayGrid)?false:true;
 	keydown.g = false;
   }
   
-}
-
-//TODO: remove this.
-function setUpPlayerImg() {
-	var player_testManagerConfig = {"tileWidth":32, "tileHeight":32, "src":"res/hero2.png", "namedTiles":[
-		{"id":0,"name":"FRONT","col":0,"row":0},
-		{"id":1,"name":"FRONT_RT","col":1,"row":0},
-		{"id":2,"name":"FRONT_LT","col":2,"row":0},
-		{"id":3,"name":"FRONT_SW","col":3,"row":0},
-		{"id":4,"name":"LEFT_1","col":0,"row":1},
-		{"id":5,"name":"LEFT_2","col":1,"row":1},
-		{"id":6,"name":"LEFT_3","col":2,"row":1},
-		{"id":7,"name":"LEFT_4","col":3,"row":1},
-		{"id":8,"name":"RIGHT_1","col":0,"row":2},
-		{"id":9,"name":"RIGHT_2","col":1,"row":2},
-		{"id":10,"name":"RIGHT_3","col":2,"row":2},
-		{"id":11,"name":"RIGHT_4","col":3,"row":2},
-		{"id":12,"name":"BACK_1","col":0,"row":3},
-		{"id":13,"name":"BACK_2","col":1,"row":3},
-		{"id":14,"name":"BACK_3","col":2,"row":3},
-		{"id":15,"name":"BACK_4","col":3,"row":3},
-		{"id":16,"name":"DEAD","col":0,"row":4},
-	]};
-	var attackAnimation = [{"name":"attack_left",
-		"sequence":[6,5,4,5,6,7,6,0], 
-		"sequenceFrameDuration":4,
-		"direction":Mover.MoveDir.LEFT},
-		{"name":"attack_right",
-		"sequence":[10,9,8,9,10,11,10,0], 
-		"sequenceFrameDuration":4,
-		"direction":Mover.MoveDir.RIGHT},
-		{"name":"attack_up",
-		"sequence":[13,12,13,14,13,15,13,0], 
-		"sequenceFrameDuration":4,
-		"direction":Mover.MoveDir.UP},
-		{"name":"attack_down",
-		"sequence":[0,3,0,2,0], 
-		"sequenceFrameDuration":4,
-		"direction":Mover.MoveDir.DOWN}
-		];
-		
-	GameCircle.player.initSpriteManager(player_testManagerConfig,attackAnimation);
-}
-
-
-function setDragonImg(monster){
-	var monster_testManagerConfig = {"tileWidth":32, "tileHeight":32, "src":"res/dragon.png", "namedTiles":[
-		{"id":0,"name":"FRONT","col":0,"row":0}]};
-		
-	var monsterAnimation = 	[{"name":"nothing",
-		"sequence":[0], 
-		"sequenceFrameDuration":4}];
-		
-	monster.initSpriteManager(monster_testManagerConfig,monsterAnimation);
 }
 
 /**
@@ -344,7 +287,7 @@ function openDialog(id, content){
 function openToolDialog(id, content, top, left){
 	    var maskHeight = $(document).height();
         var maskWidth = $(window).width();
-     
+		
         //Set the popup window to center
         $(id).html(content);
         $(id).css('top',  top);
@@ -361,3 +304,74 @@ function hideDialog() {
 	$('#mask').hide();
     $('.window').hide();
 }
+
+/**
+ * Builds the ToolShelf with Tile Pallet
+ */
+function displayToolPallet() {
+	if(GameCircle.activeDialog === null | GameCircle.activeDialog !== 'toolPallet') {  
+		$('#dialog').css('width',  '200px');
+		$('#dialog').css('height', '400px');
+		$('#dialog').css('background-color',  '#ffffcc');
+		GameCircle.activeDialog = 'toolPallet';
+		tileName = (typeof GameCircle.placementTile.name != 'undefined' || GameCircle.placementTile.name != null)?GameCircle.placementTile.name:"UnNamed Tile"
+		var palletContent = $("<div>Selected Tile:&nbsp;"+tileName+"</div>");
+		var activeTile = $('<canvas width="32" height="32"></canvas>');
+		activeTile.css('border','2px solid #00CC00');
+		
+		activeTileContext = activeTile.get(0).getContext("2d");
+		
+		//activeTile.appendTo(palletContent);
+		$('<hr>').appendTo(palletContent);
+		
+		activeTileContext.fillStyle = '#000'
+		activeTileContext.fillRect(0, 0, 32, 32 ) ;
+		
+		tileSprite = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(GameCircle.placementTile.id);
+		renderTile(activeTileContext, tileSprite, x, y)
+
+		//Draw Pallet Selector
+		var palletSelector = $("<div id='palletSelector'></div>");
+		palletSelector.css('border','1px solid #333333');
+		palletSelector.css('height','128px');
+		palletSelector.css('width','100%');
+		
+		//TODO: ADD Blank tile.
+		
+		for(var t = 0; t < GameCircle.currentMap.tileMapManager.namedTiles.length;t++){
+			curTile = GameCircle.currentMap.tileMapManager.namedTiles[t]
+			selected = (GameCircle.placementTile.id === curTile.id)? true:false;
+			tileSpr = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(curTile.id);
+			
+			clickSrc = "alert(\'name:"+ curTile.name +"\');GameCircle.setSelectedTileByName(\'"+ curTile.name +"\')"
+			var ptile = $('<canvas width="32" height="32" onClick="'+clickSrc+'"></canvas>');
+			ptile.attr('name', curTile.name);
+			ptileCtx = ptile.get(0).getContext("2d");
+			renderTile(ptileCtx, tileSpr, 0, 0);
+			if(selected){
+				ptile.css('border','2px solid #00CC00');
+			} else {
+				ptile.css('padding','2px');
+			}
+			//ptile.live('click',function() { alert('hi');GameCircle.setSelectedTileByName($(this).name)});
+			if(t>0 && t%5===0) {
+				$("<BR>").appendTo(palletSelector);
+			} 
+			ptile.appendTo(palletSelector);
+		}
+		palletSelector.appendTo(palletContent);
+		
+		//var pallet = $('<canvas width="32" height="32"></canvas>');
+		//activeTile.css('border','2px solid #00CC00');
+		
+		openToolDialog('#dialog', palletContent, 10, 10);
+	} else {
+		hideDialog();
+		GameCircle.activeDialog = null;
+	}
+}
+
+function setSelect(id){
+	GameCircle.placementTile = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(id);
+}
+

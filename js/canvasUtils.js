@@ -78,3 +78,15 @@ function drawSingleSquareSelect(context, selectedTile) {
 	drawLine(context,leftX, leftY+selectedTile.height, leftX+selectedTile.width, leftY+selectedTile.height);
 	drawLine(context,leftX+selectedTile.width, leftY, leftX+selectedTile.width,leftY+selectedTile.height);
 }
+
+/**
+ * Renders a tile Sprite to a 2d context ad the x,y position. 
+ */
+function renderTile(targetContext, tileSprite, x, y) {
+	if(targetContext != null){
+		targetContext.drawImage(GameCircle.currentMap.tileMapManager.spriteImage, tileSprite.xPos, tileSprite.yPos, 
+			GameCircle.currentMap.tileMapManager.tileWidth, GameCircle.currentMap.tileMapManager.tileHeight, 
+			x,y, GameCircle.currentMap.tileMapManager.tileWidth, GameCircle.currentMap.tileMapManager.tileHeight);
+		
+	}
+}

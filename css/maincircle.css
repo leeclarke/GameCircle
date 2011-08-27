@@ -23,11 +23,19 @@ html,body {
 }
 
 
-/* Customize your modal window here, you can add background image too */
+/* Dialog Styles */
 #boxes #dialog {
 	width:375px; 
 	height:203px;
 	background-color:#fff;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
+boxes #tilePallet {
+	width:200px; 
+	height:400px;
+	background-color:#ffffcc;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
 }
