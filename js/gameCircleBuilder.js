@@ -54,7 +54,8 @@ function windowReady() {
 		{"id":11,"name":"FLOOR3","col":0,"row":9},
 		{"id":12,"name":"DOOR7","col":2,"row":2},
 		{"id":13,"name":"DOOR8","col":2,"row":3},
-		{"id":14,"name":"DOOR9","col":2,"row":5}		
+		{"id":14,"name":"DOOR9","col":2,"row":5},
+		{"id":15,"name":"DOOR10","col":2,"row":6}		
 	]};
 	
 	tileMapManager = new SpriteTileManager(testManagerConfig);
@@ -67,7 +68,7 @@ function windowReady() {
 	//TODO: set for test, in Edit Mode it should always be true.
 	GameCircle.lightsOn = true;
 	//TODO: For testing setting a default Sprite Tile, remove later.
-	GameCircle.placementTile = {"id":1, "type":1};
+	GameCircle.placementTile = {"id":1,"name":"FLOOR1","col":1,"row":8};
 	
 	//draw to canvas		
 	GameCircle.render();
@@ -333,8 +334,12 @@ function displayToolPallet() {
 		//Draw Pallet Selector
 		var palletSelector = $("<div id='palletSelector'></div>");
 		palletSelector.css('border','1px solid #333333');
-		palletSelector.css('height','128px');
-		palletSelector.css('width','100%');
+		//TODO: Compute count of tiles mod 5 and add that to height.
+		tileRows = ((GameCircle.currentMap.tileMapManager.namedTiles.length/5)+1)*40;
+		
+		palletSelector.css('height',tileRows+'px');
+		//palletSelector.css('height','256px');
+		palletSelector.css('width','180px');
 		
 		//TODO: ADD Blank tile.
 		
@@ -342,27 +347,26 @@ function displayToolPallet() {
 			curTile = GameCircle.currentMap.tileMapManager.namedTiles[t]
 			selected = (GameCircle.placementTile.id === curTile.id)? true:false;
 			tileSpr = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(curTile.id);
-			
-			clickSrc = "alert(\'name:"+ curTile.name +"\');GameCircle.setSelectedTileByName(\'"+ curTile.name +"\')"
+	
+			clickSrc = "updatePallet(\'"+ curTile.name +"\');";
 			var ptile = $('<canvas width="32" height="32" onClick="'+clickSrc+'"></canvas>');
 			ptile.attr('name', curTile.name);
+			ptile.attr('id', 'tile_'+curTile.name);
 			ptileCtx = ptile.get(0).getContext("2d");
 			renderTile(ptileCtx, tileSpr, 0, 0);
 			if(selected){
 				ptile.css('border','2px solid #00CC00');
 			} else {
-				ptile.css('padding','2px');
+				ptile.css('border','2px solid #FFC');
+				//ptile.css('padding','2px');
 			}
-			//ptile.live('click',function() { alert('hi');GameCircle.setSelectedTileByName($(this).name)});
+			//ptile.live('click',function() { updatePallet($(this).name)});
 			if(t>0 && t%5===0) {
 				$("<BR>").appendTo(palletSelector);
 			} 
 			ptile.appendTo(palletSelector);
 		}
 		palletSelector.appendTo(palletContent);
-		
-		//var pallet = $('<canvas width="32" height="32"></canvas>');
-		//activeTile.css('border','2px solid #00CC00');
 		
 		openToolDialog('#dialog', palletContent, 10, 10);
 	} else {
@@ -371,7 +375,20 @@ function displayToolPallet() {
 	}
 }
 
+/**
+ * Refresh the pallet display when diff tile selected. and set newly selected.
+ */
+function updatePallet(tileName) {
+	$('#tile_'+GameCircle.placementTile.name).css('border','2px solid #FFC');
+	$('#tile_'+tileName).css('border','2px solid #00CC00');
+	//$('#tile_'+titleName).css('padding','0px');
+	GameCircle.setSelectedTileByName(tileName);
+}
+
+/**
+ * Set
+ *
 function setSelect(id){
 	GameCircle.placementTile = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(id);
-}
+}*/
 
