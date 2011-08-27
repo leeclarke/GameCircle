@@ -316,20 +316,16 @@ function displayToolPallet() {
 		$('#dialog').css('background-color',  '#ffffcc');
 		GameCircle.activeDialog = 'toolPallet';
 		tileName = (typeof GameCircle.placementTile.name != 'undefined' || GameCircle.placementTile.name != null)?GameCircle.placementTile.name:"UnNamed Tile"
-		var palletContent = $("<div>Selected Tile:&nbsp;"+tileName+"</div>");
-		var activeTile = $('<canvas width="32" height="32"></canvas>');
-		activeTile.css('border','2px solid #00CC00');
+		var palletContent = $("<div></div>");
 		
-		activeTileContext = activeTile.get(0).getContext("2d");
+		// Mode indicators.
+		var statusContent = $("<div></div>");
+		stat = (GameCircle.selectedMode)?'<span style="color:green">ON</span>':'OFF';
+		$('<b>Multi-Select:</b>&nbsp;' + stat + '<br>').appendTo(statusContent);
+		//$('<b>Multi-Select:&nbsp;<br>').appendTo(statusContent);
+		statusContent.appendTo(palletContent);
 		
-		//activeTile.appendTo(palletContent);
-		$('<hr>').appendTo(palletContent);
-		
-		activeTileContext.fillStyle = '#000'
-		activeTileContext.fillRect(0, 0, 32, 32 ) ;
-		
-		tileSprite = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(GameCircle.placementTile.id);
-		renderTile(activeTileContext, tileSprite, x, y)
+		$('<b>Selected Tile:</b>&nbsp;'+tileName+'<hr>').appendTo(palletContent);
 
 		//Draw Pallet Selector
 		var palletSelector = $("<div id='palletSelector'></div>");
@@ -381,14 +377,6 @@ function displayToolPallet() {
 function updatePallet(tileName) {
 	$('#tile_'+GameCircle.placementTile.name).css('border','2px solid #FFC');
 	$('#tile_'+tileName).css('border','2px solid #00CC00');
-	//$('#tile_'+titleName).css('padding','0px');
 	GameCircle.setSelectedTileByName(tileName);
 }
-
-/**
- * Set
- *
-function setSelect(id){
-	GameCircle.placementTile = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(id);
-}*/
 
