@@ -26,7 +26,7 @@ function windowReady() {
 	canvasElement.appendTo('body');
 	
 	//Set up background.
-	context.fillStyle = 'rgb(0, 0, 0)' ;  //TODO: Config Param.
+	context.fillStyle = GameCircle.backgroundColor;//'rgb(0, 0, 0)' ;  //TODO: Config Param.
 	context.fillRect(0, 0, GameCircle.CANVAS_WIDTH, GameCircle.CANVAS_HEIGHT ) ;
 	
 	//TODO refactor this into GameCircle.tiledMap. Build load process to set this up.
@@ -186,6 +186,12 @@ function update() {
   if(keydown.alt && keydown.z) {
   	GameCircle.setSelectedTiles();
   	keydown.z = false;
+  	keydown.alt = false;
+  }
+
+  if(keydown.alt && keydown.x) {
+  	GameCircle.clearSelectedTiles();
+  	keydown.x = false;
   	keydown.alt = false;
   }
   

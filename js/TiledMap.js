@@ -167,19 +167,22 @@ TiledMap.prototype.renderMap = function() {
 			currTile = this.tiles[rows][cols];
 			if(currTile.hasOwnProperty('id') && currTile.hasOwnProperty('type')) {
 				sprPos = tileMapManager.namedTileOrgPoint(currTile.id);
+				tileX = cols*tileMapManager.tileWidth;
+				tileY = rows*tileMapManager.tileHeight;
 				if(!sprPos) {
-					if(currTile.id != -1) { //-1 is a blank
-						console.log("Bad Tile named: "+ currTile.id);
-					}
+					oldFill = mapCtx.fillStyle;
+					mapCtx.fillStyle = GameCircle.backgroundColor; 
+					mapCtx.fillRect(tileX,tileY, tileMapManager.tileWidth, tileMapManager.tileHeight);
+					mapCtx.fillStyle = oldFill;
 					continue;
 				}
 				if(GameCircle.lightsOn == false && currTile.explored == false){
+					//TODO: If anything with visability comes up heres where its a problem no doubt. ;)
 					continue; //not visable yet, skip render
+				} else {				
+					
+					mapCtx.drawImage(tileMapManager.spriteImage, sprPos.xPos, sprPos.yPos, tileMapManager.tileWidth, tileMapManager.tileHeight, tileX,tileY, tileMapManager.tileWidth, tileMapManager.tileHeight);
 				}
-				
-				tileX = cols*tileMapManager.tileWidth;
-				tileY = rows*tileMapManager.tileHeight;
-				mapCtx.drawImage(tileMapManager.spriteImage, sprPos.xPos, sprPos.yPos, tileMapManager.tileWidth, tileMapManager.tileHeight, tileX,tileY, tileMapManager.tileWidth, tileMapManager.tileHeight);
 			}
 		}
 	}

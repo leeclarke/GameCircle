@@ -36,6 +36,9 @@ GameCircle.selectedTileEnd = null;
 GameCircle.selectedMode = false;
 GameCircle.placementTile = {"id":-1, "type":-1};
 GameCircle.activeDialog = null;
+GameCircle.BLANK = {"id":-1,"name":"BLANK", "type":-1};
+//Preferences:
+GameCircle.backgroundColor = '#000';
 
 /**
  * Adds Messages to the Message queue to display to player.
@@ -55,7 +58,7 @@ GameCircle.render = function() {
 	vpY = (this.CANVAS_HEIGHT/2)-(this.currentMap.getTileHeight()/2);
 	GameCircle.ViewPortCenterX = vpX;
 	GameCircle.ViewPortCenterY = vpY;
-	context.fillStyle = 'rgb(0, 0, 0)' ;
+	context.fillStyle = GameCircle.backgroundColor;//'rgb(0, 0, 0)' ;
 	context.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT ) ;
 	this.renderViewPort(context, vpX,vpY); 
 };
@@ -77,10 +80,10 @@ GameCircle.renderViewPort = function(context, vpCtrX, vpCtrY) {
 	context.translate(vpCtrX-GameCircle.player.x,vpCtrY-GameCircle.player.y); //Move to point on map where player stands
 	context.drawImage(renderedMap, 0, 0);
 	//render missiles in play.
-	for(mis = 0; mis < GameCircle.missiles.length; mis++){
+	/*for(mis = 0; mis < GameCircle.missiles.length; mis++){
 		GameCircle.missiles[mis].render(context);
 		
-	}
+	}*/
 	
 	//Draw monsters
 	for(m = 0; m < GameCircle.monsters.length; m++){
@@ -313,7 +316,7 @@ GameCircle.isMonsterAtTile = function(clickedTile) {
 
 
 /**
- * Setsa selected Tiles to the Sprite set in GameCircle.placementTile
+ * Sets selected Tiles to the Sprite set in GameCircle.placementTile
  */
 GameCircle.setSelectedTiles = function() {
 	if( GameCircle.selectedTile !== null) {  //addd GameCircle.placementTile !== null &&
@@ -328,7 +331,21 @@ GameCircle.setSelectedTiles = function() {
 			GameCircle.currentMap.setGridTile(GameCircle.selectedTile.row,GameCircle.selectedTile.col,GameCircle.placementTile);
 		}
 	}
+}
 
+GameCircle.clearSelectedTiles = function() {
+	if( GameCircle.selectedTile !== null) {  //addd GameCircle.placementTile !== null &&
+		//get range if there is one and set all tiles to the new sprite.
+		if(GameCircle.selectedTileEnd != null){
+			//set Multi - get the range again.
+			range = GameCircle.currentMap.getTileRange(GameCircle.selectedTile, GameCircle.selectedTileEnd);
+			for(var r = 0; r < range.length;r++) {
+				GameCircle.currentMap.setGridTile(range[r].row,range[r].col,GameCircle.BLANK); 	
+			}
+		} else {
+			GameCircle.currentMap.setGridTile(GameCircle.selectedTile.row,GameCircle.selectedTile.col,GameCircle.BLANK);
+		}
+	}
 }
 
 /**
