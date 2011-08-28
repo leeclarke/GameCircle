@@ -40,22 +40,22 @@ function windowReady() {
 	GameCircle.player.spriteImg.src = "res/player.png";
 
 	testManagerConfig = {"tileWidth":32, "tileHeight":32, "src":"res/dungeontiles.gif", "namedTiles":[
-		{"id":0,"name":"WALL1","col":0,"row":0},
-		{"id":1,"name":"FLOOR1","col":1,"row":8},
-		{"id":2,"name":"DOOR1","col":4,"row":2},
-		{"id":3,"name":"DOOR2","col":0,"row":1},
-		{"id":4,"name":"DOOR3","col":0,"row":2},
-		{"id":5,"name":"DOOR4","col":0,"row":3},
-		{"id":6,"name":"WALL2","col":0,"row":4},
-		{"id":7,"name":"WALL3","col":0,"row":5},
-		{"id":8,"name":"DOOR5","col":0,"row":6},
-		{"id":9,"name":"DOOR6","col":0,"row":7},
-		{"id":10,"name":"FLOOR2","col":0,"row":8},
-		{"id":11,"name":"FLOOR3","col":0,"row":9},
-		{"id":12,"name":"DOOR7","col":2,"row":2},
-		{"id":13,"name":"DOOR8","col":2,"row":3},
-		{"id":14,"name":"DOOR9","col":2,"row":5},
-		{"id":15,"name":"DOOR10","col":2,"row":6}		
+		{"id":0,"name":"WALL1","col":0,"row":0, "group":"wall"},
+		{"id":1,"name":"FLOOR1","col":1,"row":8, "group":"floor"},
+		{"id":2,"name":"DOOR1","col":4,"row":2, "group":"door"},
+		{"id":3,"name":"DOOR2","col":0,"row":1, "group":"door"},
+		{"id":4,"name":"DOOR3","col":0,"row":2, "group":"door"},
+		{"id":5,"name":"DOOR4","col":0,"row":3, "group":"door"},
+		{"id":6,"name":"WALL2","col":0,"row":4, "group":"wall"},
+		{"id":7,"name":"WALL3","col":0,"row":5, "group":"wall"},
+		{"id":8,"name":"DOOR5","col":0,"row":6, "group":"door"},
+		{"id":9,"name":"DOOR6","col":0,"row":7, "group":"door"},
+		{"id":10,"name":"FLOOR2","col":0,"row":8, "group":"floor"},
+		{"id":11,"name":"FLOOR3","col":0,"row":9, "group":"floor"},
+		{"id":12,"name":"DOOR7","col":2,"row":2, "group":"door"},
+		{"id":13,"name":"DOOR8","col":2,"row":3, "group":"door"},
+		{"id":14,"name":"DOOR9","col":2,"row":5, "group":"door"},
+		{"id":15,"name":"DOOR10","col":2,"row":6, "group":"door"}		
 	]};
 	
 	tileMapManager = new SpriteTileManager(testManagerConfig);
@@ -73,6 +73,10 @@ function windowReady() {
 	//draw to canvas		
 	GameCircle.render();
 	setInterval(main, 30);
+	
+	//Show Left Tray on start.
+	//TODO: Need to prevent this firingin until after the image load event happens. Depends on final app workflow.
+	displayToolPallet();
 }
 
 /**
@@ -179,6 +183,7 @@ function update() {
   
   if(keydown.alt && keydown.s) {
 	GameCircle.selectedMode = !GameCircle.selectedMode;
+	updateMultiSelectStat();
 	keydown.s = false;
 	keydown.alt = false;
   }
@@ -325,49 +330,44 @@ function displayToolPallet() {
 		var palletContent = $("<div></div>");
 		
 		// Mode indicators.
-		var statusContent = $("<div></div>");
+		var statusContent = $("<div id='selStatus'></div>");
 		stat = (GameCircle.selectedMode)?'<span style="color:green">ON</span>':'OFF';
 		$('<b>Multi-Select:</b>&nbsp;' + stat + '<br>').appendTo(statusContent);
-		//$('<b>Multi-Select:&nbsp;<br>').appendTo(statusContent);
 		statusContent.appendTo(palletContent);
 		
-		$('<b>Selected Tile:</b>&nbsp;'+tileName+'<hr>').appendTo(palletContent);
+		$('<span id="selTile"><b>Selected Tile:</b>&nbsp;'+tileName+'</span><hr>').appendTo(palletContent);
 
 		//Draw Pallet Selector
 		var palletSelector = $("<div id='palletSelector'></div>");
 		palletSelector.css('border','1px solid #333333');
-		//TODO: Compute count of tiles mod 5 and add that to height.
-		tileRows = ((GameCircle.currentMap.tileMapManager.namedTiles.length/5)+1)*40;
+	
+		tileRows = 8*40;
 		
 		palletSelector.css('height',tileRows+'px');
-		//palletSelector.css('height','256px');
 		palletSelector.css('width','180px');
+		palletSelector.css('margin-left','auto');
+		palletSelector.css('margin-right','auto');
 		
-		//TODO: ADD Blank tile.
+		//Add Selector
+		groupSelSrc = "buildPallet(\'#tileGroup\');";
+		var groupSel = $('<select id="tileGroup" name="tileGroup" onChange="'+groupSelSrc+'"></select>');
 		
-		for(var t = 0; t < GameCircle.currentMap.tileMapManager.namedTiles.length;t++){
-			curTile = GameCircle.currentMap.tileMapManager.namedTiles[t]
-			selected = (GameCircle.placementTile.id === curTile.id)? true:false;
-			tileSpr = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(curTile.id);
-	
-			clickSrc = "updatePallet(\'"+ curTile.name +"\');";
-			var ptile = $('<canvas width="32" height="32" onClick="'+clickSrc+'"></canvas>');
-			ptile.attr('name', curTile.name);
-			ptile.attr('id', 'tile_'+curTile.name);
-			ptileCtx = ptile.get(0).getContext("2d");
-			renderTile(ptileCtx, tileSpr, 0, 0);
-			if(selected){
-				ptile.css('border','2px solid #00CC00');
-			} else {
-				ptile.css('border','2px solid #FFC');
-				//ptile.css('padding','2px');
-			}
-			//ptile.live('click',function() { updatePallet($(this).name)});
-			if(t>0 && t%5===0) {
-				$("<BR>").appendTo(palletSelector);
-			} 
-			ptile.appendTo(palletSelector);
-		}
+		$("<option value='ALL'>All</option>").appendTo(groupSel);
+		$("<option value='wall'>Wall</option>").appendTo(groupSel);
+		$("<option value='floor'>Floor</option>").appendTo(groupSel);
+		$("<option value='door'>Door</option>").appendTo(groupSel);
+		groupSel.css('width','180px');
+		groupSel.css('margin-left','auto');
+		groupSel.css('margin-right','auto');
+		groupSel.css('margin-right','auto');
+		
+		groupSel.appendTo(palletSelector);
+			
+		//Build Pallet	
+		var pallet = $('<div id="pallet"></div>');
+		buildPallet(pallet);
+		pallet.appendTo(palletSelector);
+		
 		palletSelector.appendTo(palletContent);
 		
 		openToolDialog('#dialog', palletContent, 10, 10);
@@ -384,5 +384,75 @@ function updatePallet(tileName) {
 	$('#tile_'+GameCircle.placementTile.name).css('border','2px solid #FFC');
 	$('#tile_'+tileName).css('border','2px solid #00CC00');
 	GameCircle.setSelectedTileByName(tileName);
+	updateSelTile();
 }
 
+function updateMultiSelectStat() {
+	stat = (GameCircle.selectedMode)?'<span style="color:green">ON</span>':'OFF';
+	$('#selStatus').html('<b>Multi-Select:</b>&nbsp;' + stat + '<br>');
+}
+
+function updateSelTile() {
+	$('#selTile').html('<b>Selected Tile:</b>&nbsp;'+GameCircle.placementTile.name);
+}
+
+/**
+ * Lays out all of the tiles available to the pallet based on filter selected.
+ */
+function buildPallet(targetPallet) {
+	if(typeof targetPallet === "string") {
+		targetPallet = $(targetPallet);
+		targetPallet.html('');
+	}
+	filter = $('#tileGroup').val();
+	
+	//TODO: Debug here! Not updating the pallet, might not want to do it this way. 
+	
+	
+	//ADD Blank tile.
+	clickSrc = "updatePallet(\'"+ GameCircle.BLANK.name +"\');";
+	var ptile = $('<canvas width="32" height="32" onClick="'+clickSrc+'"></canvas>');
+	ptile.attr('name', GameCircle.BLANK.name);
+	ptile.attr('alt', GameCircle.BLANK.name);
+	ptile.attr('id', 'tile_'+GameCircle.BLANK.name);
+	ptileCtx = ptile.get(0).getContext("2d");
+	ptile.css('background',GameCircle.backgroundColor);
+	selected = (GameCircle.placementTile.id === GameCircle.BLANK.id)? true:false;
+	if(selected){
+		ptile.css('border','2px solid #00CC00');
+	} else {
+		ptile.css('border','2px solid #FFC');
+	}
+	ptile.appendTo(targetPallet);
+	
+	//Display
+	for(var t = 0; t < GameCircle.currentMap.tileMapManager.namedTiles.length;t++){
+			
+			//Filter list for display
+			if(filter !== 'ALL' && filter !== GameCircle.currentMap.tileMapManager.namedTiles[t].group) {
+				continue;
+			}
+			
+			curTile = GameCircle.currentMap.tileMapManager.namedTiles[t];
+			selected = (GameCircle.placementTile.id === curTile.id)? true:false;
+			tileSpr = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(curTile.id);
+	
+			clickSrc = "updatePallet(\'"+ curTile.name +"\');";
+			var ptile = $('<canvas width="32" height="32" onClick="'+clickSrc+'"></canvas>');
+			ptile.attr('name', curTile.name);
+			ptile.attr('id', 'tile_'+curTile.name);
+			ptileCtx = ptile.get(0).getContext("2d");
+			renderTile(ptileCtx, tileSpr, 0, 0);
+			if(selected){
+				ptile.css('border','2px solid #00CC00');
+			} else {
+				ptile.css('border','2px solid #FFC');
+			}
+
+			if(t>0 && (t+1)%5===0) {
+				$("<BR>").appendTo(targetPallet);
+			} 
+			ptile.appendTo(targetPallet);
+		}
+		
+}

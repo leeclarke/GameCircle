@@ -36,7 +36,7 @@ GameCircle.selectedTileEnd = null;
 GameCircle.selectedMode = false;
 GameCircle.placementTile = {"id":-1, "type":-1};
 GameCircle.activeDialog = null;
-GameCircle.BLANK = {"id":-1,"name":"BLANK", "type":-1};
+GameCircle.BLANK = {"id":-1,"name":"BLANK", "type":-1, "group":"blank"};
 //Preferences:
 GameCircle.backgroundColor = '#000';
 
@@ -58,6 +58,7 @@ GameCircle.render = function() {
 	vpY = (this.CANVAS_HEIGHT/2)-(this.currentMap.getTileHeight()/2);
 	GameCircle.ViewPortCenterX = vpX;
 	GameCircle.ViewPortCenterY = vpY;
+	context.fillStyle = GameCircle.backgroundColor;//'rgb(0, 0, 0)' ;
 	context.fillStyle = GameCircle.backgroundColor;//'rgb(0, 0, 0)' ;
 	context.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT ) ;
 	this.renderViewPort(context, vpX,vpY); 
@@ -352,7 +353,11 @@ GameCircle.clearSelectedTiles = function() {
  * Setter looks up the Tile by name and sets it as the currently selected edit tile.
  */
 GameCircle.setSelectedTileByName = function(tileName) {
-	GameCircle.placementTile = GameCircle.currentMap.tileMapManager.getNamedTile(tileName);
+	if(tileName === GameCircle.BLANK.name) {
+		GameCircle.placementTile = GameCircle.BLANK;
+	} else {
+		GameCircle.placementTile = GameCircle.currentMap.tileMapManager.getNamedTile(tileName);
+	}
 }
 
 

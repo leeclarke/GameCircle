@@ -22,14 +22,14 @@ TODOS:
 *4. Set selected grid with default tile.  ALT+z
 *7. Remove little player icon.
 *8. Remove blocking checks for moving center point of view.
-9. Clear grid tile or selected range with ALT+x   ?? could just select blank from tile pallet?
+*9. Clear grid tile or selected range with ALT+x   ?? could just select blank from tile pallet?
 *10.1 Build Dialog and ToolDialog displays.
 10.2 Design Info Display area. (Left side.)  Need Current Tile, selected grid c/r, Selection Mode Indicator, Tile Pallet,Monster/Item Pallet.
 *10.3 Build Tile pallet for selecting an active tile type.
 *10.4 Display Selected Tile Type in control/info Display.
 *10.5 BUG: After selecting the NEW tile need to refresh the Pallet.
 *10.6 Set Selected Tile Name
-10.7 BUG: Need to add Blank Tile.
+*10.7 BUG: Need to add Blank Tile.
 11. Make Maps Load/Save-able.  (Design out other File activities) For JSON design, expand the map to include Editor info as loading sprites for SpriteManager data.
 *11.1 Stub out data format/JSON.
 11.2 Make Maps array to allow for mutiple maps in a file.
