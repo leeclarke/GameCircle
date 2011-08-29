@@ -349,7 +349,7 @@ function displayToolPallet() {
 		palletSelector.css('margin-right','auto');
 		
 		//Add Selector
-		groupSelSrc = "buildPallet(\'#tileGroup\');";
+		groupSelSrc = "buildPallet(\'#pallet\');";
 		var groupSel = $('<select id="tileGroup" name="tileGroup" onChange="'+groupSelSrc+'"></select>');
 		
 		$("<option value='ALL'>All</option>").appendTo(groupSel);
@@ -406,12 +406,10 @@ function buildPallet(targetPallet) {
 	}
 	filter = $('#tileGroup').val();
 	
-	//TODO: Debug here! Not updating the pallet, might not want to do it this way. 
-	
-	
 	//ADD Blank tile.
 	clickSrc = "updatePallet(\'"+ GameCircle.BLANK.name +"\');";
 	var ptile = $('<canvas width="32" height="32" onClick="'+clickSrc+'"></canvas>');
+	
 	ptile.attr('name', GameCircle.BLANK.name);
 	ptile.attr('alt', GameCircle.BLANK.name);
 	ptile.attr('id', 'tile_'+GameCircle.BLANK.name);
@@ -425,6 +423,7 @@ function buildPallet(targetPallet) {
 	}
 	ptile.appendTo(targetPallet);
 	
+	itemCt = 0;
 	//Display
 	for(var t = 0; t < GameCircle.currentMap.tileMapManager.namedTiles.length;t++){
 			
@@ -432,7 +431,7 @@ function buildPallet(targetPallet) {
 			if(filter !== 'ALL' && filter !== GameCircle.currentMap.tileMapManager.namedTiles[t].group) {
 				continue;
 			}
-			
+			itemCt++;
 			curTile = GameCircle.currentMap.tileMapManager.namedTiles[t];
 			selected = (GameCircle.placementTile.id === curTile.id)? true:false;
 			tileSpr = GameCircle.currentMap.tileMapManager.namedTileOrgPoint(curTile.id);
@@ -449,7 +448,7 @@ function buildPallet(targetPallet) {
 				ptile.css('border','2px solid #FFC');
 			}
 
-			if(t>0 && (t+1)%5===0) {
+			if(itemCt>0 && itemCt%5===0) {
 				$("<BR>").appendTo(targetPallet);
 			} 
 			ptile.appendTo(targetPallet);

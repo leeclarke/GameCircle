@@ -43,3 +43,6 @@ TODOS:
 15. Add ability to add more Cols and Rows to the Map whn user realizes they are out of space.
 
 
+Game Play Notes
+1. P1. Need clear color marker to distinguish player from npc.
+2. P2. Need scenarios for DM to load. should contain npc positioning etc so DM doesnt have to set up on the fly. ?
