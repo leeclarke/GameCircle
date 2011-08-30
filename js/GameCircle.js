@@ -13,6 +13,7 @@ GameCircle.ViewPortCenterY = 0;
 GameCircle.STATUS_WIDTH = 0;
 GameCircle.playerDefaltVisonRange = 5;
 GameCircle.DisplayGrid = false;
+GameCircle.GridColor = 'rgb(255, 255, 51)';
 GameCircle.lightsOn = false; //Toggles visability, true makes whole map explored.
 GameCircle.showPlayerStatus = true;
 GameCircle.elapsed = 0;
@@ -39,6 +40,8 @@ GameCircle.activeDialog = null;
 GameCircle.BLANK = {"id":-1,"name":"BLANK", "type":-1, "group":"blank"};
 //Preferences:
 GameCircle.backgroundColor = '#000';
+//This is the in-memory version of the adventure file but there is no assurances that it is compleate if accessed directly so call GameCircle.getAdventureData().
+GameCircle.advData = {};
 
 /**
  * Adds Messages to the Message queue to display to player.
@@ -360,6 +363,17 @@ GameCircle.setSelectedTileByName = function(tileName) {
 	}
 }
 
+/**
+ * Managed retriaval of the Adventure data for saving.Need to update the 
+ * data before returning it because the map may have changed and is 
+ * maintained in the TiledMap Object.
+ */
+GameCircle.getAdventureData = function() {
+	//TODO: Need to update the data before returning it because the map may have changed and is maintained in the TiledMap Object.
+	GameCircle.advData;
+	//TOD: Update maps.
+	return GameCircle.advData;
+}
 
 /****Array mods. These dont actually attach to the Array object..******/
 

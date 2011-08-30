@@ -3,8 +3,8 @@
  */
 
 function paintGrid(context, mapWidth, mapHeight) {
-//TODO: Extract to configurable properties. Same with grid line thickness?
-	context.strokeStyle = 'rgb(255, 255, 51)' ;
+
+	context.strokeStyle = GameCircle.GridColor;
 	
 	context.lineWidth = "0.5";
 	gridWidth = ~~(mapWidth/GameCircle.currentMap.getTileWidth());
@@ -88,5 +88,15 @@ function renderTile(targetContext, tileSprite, x, y) {
 			GameCircle.currentMap.tileMapManager.tileWidth, GameCircle.currentMap.tileMapManager.tileHeight, 
 			x,y, GameCircle.currentMap.tileMapManager.tileWidth, GameCircle.currentMap.tileMapManager.tileHeight);
 		
+	}
+}
+
+
+/**
+ * Should check to see if can log..
+ */
+function debug(msg){
+	if (window.console && window.console.firebug) {
+		console.log(msg);
 	}
 }
