@@ -39,31 +39,15 @@ function windowReady() {
 	GameCircle.player.name = "DM";
 	GameCircle.player.spriteImg.src = "res/player.png";
 
-	testManagerConfig = {"tileWidth":32, "tileHeight":32, "src":"res/dungeontiles.gif", "namedTiles":[
-		{"id":0,"name":"WALL1","col":0,"row":0, "group":"wall"},
-		{"id":1,"name":"FLOOR1","col":1,"row":8, "group":"floor"},
-		{"id":2,"name":"DOOR1","col":4,"row":2, "group":"door"},
-		{"id":3,"name":"DOOR2","col":0,"row":1, "group":"door"},
-		{"id":4,"name":"DOOR3","col":0,"row":2, "group":"door"},
-		{"id":5,"name":"DOOR4","col":0,"row":3, "group":"door"},
-		{"id":6,"name":"WALL2","col":0,"row":4, "group":"wall"},
-		{"id":7,"name":"WALL3","col":0,"row":5, "group":"wall"},
-		{"id":8,"name":"DOOR5","col":0,"row":6, "group":"door"},
-		{"id":9,"name":"DOOR6","col":0,"row":7, "group":"door"},
-		{"id":10,"name":"FLOOR2","col":0,"row":8, "group":"floor"},
-		{"id":11,"name":"FLOOR3","col":0,"row":9, "group":"floor"},
-		{"id":12,"name":"DOOR7","col":2,"row":2, "group":"door"},
-		{"id":13,"name":"DOOR8","col":2,"row":3, "group":"door"},
-		{"id":14,"name":"DOOR9","col":2,"row":5, "group":"door"},
-		{"id":15,"name":"DOOR10","col":2,"row":6, "group":"door"}		
-	]};
+	//Get New File from FileManager
+	GameCircle.advData = FileManager.newFile("Test Adventure",30,30);
 	
-	tileMapManager = new SpriteTileManager(testManagerConfig);
+	tileMapManager = new SpriteTileManager(GameCircle.advData.tileManConfig);
 
 	GameCircle.currentMap.tileMapManager = tileMapManager;
-	mapTiles = FileManager.newFile(30,30);
+	//mapTiles = FileManager.newFile(30,30);
 	
-	GameCircle.currentMap.updateMap(mapTiles);
+	GameCircle.currentMap.updateMap(GameCircle.advData.mapData.map);
 	
 	//TODO: set for test, in Edit Mode it should always be true.
 	GameCircle.lightsOn = true;

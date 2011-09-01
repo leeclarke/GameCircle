@@ -31,8 +31,14 @@ FileManager.load = function(fileId) {
 }
 
 
-
-FileManager.newFile = function(rows, cols){
+/**
+ * Creates a new Adventure file with assigned dimentions.
+ */
+FileManager.newFile = function(advName, rows, cols){
+	var newAdventure = jQuery.extend(true, {}, emptyAdventureFile);
+	newAdventure.adventureId = advName;
+	newAdventure.mapData.rows = rows;
+	newAdventure.mapData.cols = cols;  //TODO: do these really need to be here?
 	mapData = [];
 	for(var r = 0; r < rows ;r++)
 	{
@@ -42,20 +48,54 @@ FileManager.newFile = function(rows, cols){
 			tile.init({"id":-1, "type":-1});
 			tile.col = cols;
 			tile.row = rows;
-			tile.x = (cols*GameCircle.currentMap.getTileWidth()); tile.y = (rows*GameCircle.currentMap.getTileHeight()); 
-			tile.width = GameCircle.currentMap.getTileWidth(); tile.height = GameCircle.currentMap.getTileHeight();
+			//TODO: Check GameCircle.currentMap.getTileHeight() for null and if so get data from this object.
+			
+			tile.x = (cols*newAdventure.tileManConfig.tileWidth); tile.y = (rows*newAdventure.tileManConfig.tileHeight); 
+			tile.width = newAdventure.tileManConfig.tileWidth; tile.height = newAdventure.tileManConfig.tileHeight;
 			newCol.push(tile);
 			
 		}	
-		mapData.push(newCol);		
+		newAdventure.mapData.map.push(newCol);		
 	}
 	
 	
-	return mapData;
+	return newAdventure;
 }
+
+emptyAdventureFile = {
+"adventureId":"Test",
+"prefs":{"gridColor":"", "bgColor":"#000", "placementTile":{"id":-1, "type":-1}},
+"tileManConfig":{"tileWidth":32, "tileHeight":32, "src":"res/dungeontiles.gif", "namedTiles":[
+		{"id":0,"name":"WALL1","col":0,"row":0, "group":"wall"},
+		{"id":1,"name":"FLOOR1","col":1,"row":8, "group":"floor"},
+		{"id":2,"name":"DOOR1","col":4,"row":2, "group":"door"},
+		{"id":3,"name":"DOOR2","col":0,"row":1, "group":"door"},
+		{"id":4,"name":"DOOR3","col":0,"row":2, "group":"door"},
+		{"id":5,"name":"DOOR4","col":0,"row":3, "group":"door"},
+		{"id":6,"name":"WALL2","col":0,"row":4, "group":"wall"},
+		{"id":7,"name":"WALL3","col":0,"row":5, "group":"wall"},
+		{"id":8,"name":"DOOR5","col":0,"row":6, "group":"door"},
+		{"id":9,"name":"DOOR6","col":0,"row":7, "group":"door"},
+		{"id":10,"name":"FLOOR2","col":0,"row":8, "group":"floor"},
+		{"id":11,"name":"FLOOR3","col":0,"row":9, "group":"floor"},
+		{"id":12,"name":"DOOR7","col":2,"row":2, "group":"door"},
+		{"id":13,"name":"DOOR8","col":2,"row":3, "group":"door"},
+		{"id":14,"name":"DOOR9","col":2,"row":5, "group":"door"},
+		{"id":15,"name":"DOOR10","col":2,"row":6, "group":"door"}		
+	]},
+"mapData":{
+	"title":"Test Map",
+	"rows":30,
+	"cols":30,
+	"createTimeDate":"",
+	"updateTimeDate":"",
+	"map":	[]
+	}
+};
 
 /* Reference sample file for validation of test and documentation.*/
 stubMapFile = {
+"adventureId":"Test",
 "prefs":{"gridColor":"", "bgColor":"#000", "placementTile":{"id":-1, "type":-1}},
 "tileManConfig":{"tileWidth":32, "tileHeight":32, "src":"res/dungeontiles.gif", "namedTiles":[
 		{"id":0,"name":"WALL1","col":0,"row":0},

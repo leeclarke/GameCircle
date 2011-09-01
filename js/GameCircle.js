@@ -43,6 +43,7 @@ GameCircle.backgroundColor = '#000';
 //This is the in-memory version of the adventure file but there is no assurances that it is compleate if accessed directly so call GameCircle.getAdventureData().
 GameCircle.advData = {};
 
+
 /**
  * Adds Messages to the Message queue to display to player.
  */
@@ -369,10 +370,17 @@ GameCircle.setSelectedTileByName = function(tileName) {
  * maintained in the TiledMap Object.
  */
 GameCircle.getAdventureData = function() {
-	//TODO: Need to update the data before returning it because the map may have changed and is maintained in the TiledMap Object.
-	GameCircle.advData;
-	//TOD: Update maps.
+	if(GameCircle.advData === null) {
+		GameCircle.advData = FileManager.newFile;
+	}
+	//Update maps.
+	GameCircle.advData.mapData = GameCircle.currentMap;	
+	
 	return GameCircle.advData;
+}
+
+GameCircle.saveAdventure = function() {
+	FileManager.save(GameCircle.getAdventureData());
 }
 
 /****Array mods. These dont actually attach to the Array object..******/
