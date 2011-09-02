@@ -165,6 +165,12 @@ function update() {
 	  keydown.ctrl = false;
   }
   
+  if(keydown.alt  && keydown.v) {
+	  GameCircle.addEventMessage("Saving File...");
+	  debug("Saving File...");
+	  FileManager.save(GameCircle.getAdventureData().adventureId);
+  }
+  
   if(keydown.alt && keydown.s) {
 	GameCircle.selectedMode = !GameCircle.selectedMode;
 	updateMultiSelectStat();

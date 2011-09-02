@@ -374,9 +374,17 @@ GameCircle.getAdventureData = function() {
 		GameCircle.advData = FileManager.newFile;
 	}
 	//Update maps.
-	GameCircle.advData.mapData = GameCircle.currentMap;	
+	GameCircle.advData.mapData.map = GameCircle.currentMap.tiles;	
 	
 	return GameCircle.advData;
+}
+
+/**
+ * After loading, all the sprite and map objects need to be updated to 
+ */
+GameCircle.setAdventureData = function(advDataParse) {
+	//TODO: 
+	
 }
 
 GameCircle.saveAdventure = function() {

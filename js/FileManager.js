@@ -2,11 +2,13 @@
  * FileManager loads and saves map files. 
  */
 function FileManager(){
-	SAVE_PREFIX = "GameCircle_";
+	
 };
 
+FileManager.SAVE_PREFIX = "GameCircle_";
+
 FileManager.save = function(fileId) {
-	localStorage[SAVE_PREFIX+fileId] = JSON.stringify(GameCircle.getAdventureData());
+	localStorage[FileManager.SAVE_PREFIX+fileId] = JSON.stringify(GameCircle.getAdventureData());
 }
 
 /**
@@ -16,14 +18,14 @@ FileManager.load = function(fileId) {
 	if(fileId !== null) {
 		//TODO: Add checks for local/web
 		
-		var objStr = localStorage[SAVE_PREFIX+fileId];
+		var objStr = localStorage[FileManager.SAVE_PREFIX+fileId];
 		var formDataParse;
 		if(objStr && objStr.length >2){
-			formDataParse = jQuery.parseJSON(objStr);
-			debug("FileManager == "+formDataParse + " name==" + formDataParse.$recName);
+			advDataParse = jQuery.parseJSON(objStr);
+			debug("FileManager == "+advDataParse );
 		}
 		
-		setFormValues(formData);
+		GameCircle.setAdventureData(advDataParse);
 	
 	} else {
 		return FileManager.newFile(30, 30);

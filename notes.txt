@@ -33,7 +33,7 @@ TODOS:
 11. Make Maps Load/Save-able.  (Design out other File activities) For JSON design, expand the map to include Editor info as loading sprites for SpriteManager data.
 *11.1 Stub out data format/JSON.
 11.2 Make Maps array to allow for mutiple maps in a file.
-11.3 Make data savable in localStorage
+*11.3 Make data savable in localStorage
 11.4 Make data savable Online
 11.5 Load data from localStorage
 11.6 Load data from Online
@@ -50,6 +50,7 @@ TODOS:
 16.6 DM Prefs - save offline, web, both.
 17.  Navigate Adventure - name change maps..
 
+TODO: finish GameCircle.setAdventureData() for loading.
 
 Game Play Notes
 1. P1. Need clear color marker to distinguish player from npc.
