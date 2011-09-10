@@ -383,12 +383,19 @@ GameCircle.getAdventureData = function() {
  * After loading, all the sprite and map objects need to be updated to 
  */
 GameCircle.setAdventureData = function(advDataParse) {
-	//TODO: 
+	GameCircle.advData = advDataParse;
+	tileMapManager = new SpriteTileManager(GameCircle.advData.tileManConfig);
+	GameCircle.currentMap.tileMapManager = tileMapManager;	
+	GameCircle.currentMap.updateMap(GameCircle.advData.mapData.map);
 	
 }
 
 GameCircle.saveAdventure = function() {
-	FileManager.save(GameCircle.getAdventureData());
+	FileManager.save(GameCircle.getAdventureData().adventureId);
+}
+
+GameCircle.loadAdventure = function() {
+	GameCircle.setAdventureData(FileManager.load("Test Adventure"));
 }
 
 /****Array mods. These dont actually attach to the Array object..******/

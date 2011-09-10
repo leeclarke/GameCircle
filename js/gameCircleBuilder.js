@@ -52,7 +52,7 @@ function windowReady() {
 	//TODO: set for test, in Edit Mode it should always be true.
 	GameCircle.lightsOn = true;
 	//TODO: For testing setting a default Sprite Tile, remove later.
-	GameCircle.placementTile = {"id":1,"name":"FLOOR1","col":1,"row":8};
+	//GameCircle.placementTile = {"id":1,"name":"FLOOR1","col":1,"row":8};
 	
 	//draw to canvas		
 	GameCircle.render();
@@ -60,7 +60,7 @@ function windowReady() {
 	
 	//Show Left Tray on start.
 	//TODO: Need to prevent this firingin until after the image load event happens. Depends on final app workflow.
-	displayToolPallet();
+	//displayToolPallet();
 }
 
 /**
@@ -307,6 +307,25 @@ function hideDialog() {
     $('.window').hide();
 }
 
+//TODO: ADD the HTML Dialog box #filedialog
+function displayFileManagementDialog() {
+	if(GameCircle.activeDialog === null | GameCircle.activeDialog !== 'fileManDialog') {  
+		GameCircle.activeDialog = 'fileManDialog';
+		var fileDialog = $("<div></div>");
+		
+		//TODO: Add select box with possible load files..
+		
+		
+		var openButton = $("<button onclick='GameCircle.loadAdventure();'>Load</button>")	;
+		openButton.appendTo(fileDialog);
+
+		var openButton = $("<button onclick='GameCircle.saveAdventure();'>Save</button>")	;
+		openButton.appendTo(fileDialog);
+		
+		openToolDialog('#filedialog', palletContent, GameCircle.CANVAS_WIDTH, GameCircle.CANVAS_HEIGHT);
+	}
+}
+
 /**
  * Builds the ToolShelf with Tile Pallet
  */
@@ -324,9 +343,16 @@ function displayToolPallet() {
 		stat = (GameCircle.selectedMode)?'<span style="color:green">ON</span>':'OFF';
 		$('<b>Multi-Select:</b>&nbsp;' + stat + '<br>').appendTo(statusContent);
 		statusContent.appendTo(palletContent);
+
 		
 		$('<span id="selTile"><b>Selected Tile:</b>&nbsp;'+tileName+'</span><hr>').appendTo(palletContent);
 
+		//TODO: Add test load button 
+		var openButton = $("<button onclick='GameCircle.loadAdventure();'>Load</button>")	;
+		openButton.appendTo(palletContent);
+
+		var openButton = $("<button onclick='GameCircle.saveAdventure();'>Save</button>")	;
+		openButton.appendTo(palletContent);
 		//Draw Pallet Selector
 		var palletSelector = $("<div id='palletSelector'></div>");
 		palletSelector.css('border','1px solid #333333');
@@ -337,6 +363,7 @@ function displayToolPallet() {
 		palletSelector.css('width','180px');
 		palletSelector.css('margin-left','auto');
 		palletSelector.css('margin-right','auto');
+
 		
 		//Add Selector
 		groupSelSrc = "buildPallet(\'#pallet\');";
@@ -361,6 +388,7 @@ function displayToolPallet() {
 		palletSelector.appendTo(palletContent);
 		
 		openToolDialog('#dialog', palletContent, 10, 10);
+		
 	} else {
 		hideDialog();
 		GameCircle.activeDialog = null;

@@ -50,7 +50,7 @@ TODOS:
 16.6 DM Prefs - save offline, web, both.
 17.  Navigate Adventure - name change maps..
 
-TODO: finish GameCircle.setAdventureData() for loading.
+TODO: finish GameCircle.loadAdventure() for loading.
 
 Game Play Notes
 1. P1. Need clear color marker to distinguish player from npc.

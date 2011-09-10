@@ -19,13 +19,15 @@ FileManager.load = function(fileId) {
 		//TODO: Add checks for local/web
 		
 		var objStr = localStorage[FileManager.SAVE_PREFIX+fileId];
-		var formDataParse;
+		var advDataParse;
 		if(objStr && objStr.length >2){
 			advDataParse = jQuery.parseJSON(objStr);
 			debug("FileManager == "+advDataParse );
-		}
+		} else {
+			advDataParse = FileManager.newFile(30, 30);
+		}		
 		
-		GameCircle.setAdventureData(advDataParse);
+		return advDataParse;
 	
 	} else {
 		return FileManager.newFile(30, 30);
