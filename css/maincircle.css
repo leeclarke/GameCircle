@@ -32,6 +32,11 @@ html,body {
 	border-radius: 15px;
 }
 
+#boxes #saveLoad {
+	-moz-border-radius: 15px;
+	border-radius: 15px;
+}
+
 boxes #tilePallet {
 	width:200px; 
 	height:400px;

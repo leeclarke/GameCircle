@@ -177,7 +177,7 @@ function update() {
 	keydown.s = false;
 	keydown.alt = false;
   }
-  
+    
   if(keydown.alt && keydown.z) {
   	GameCircle.setSelectedTiles();
   	keydown.z = false;
@@ -202,6 +202,11 @@ function update() {
   	keydown.alt = false;
   }
   
+  if(keydown.alt && keydown.o) {
+	openFileManager();
+	keydown.o = false;
+	keydown.alt = false;
+  }
   
   //Esc clears things like selected tile
   if (keydown.esc) {
@@ -326,13 +331,30 @@ function displayFileManagementDialog() {
 	}
 }
 
+function openFileManager() {
+	$('#saveLoad').css('width',  '200px');
+	$('#saveLoad').css('height', '300px');
+	$('#saveLoad').css('background-color',  '#ffffcc');
+	
+	var ioContent = $('<div><b>Manage Map File</b></div>');
+	
+	
+	var openButton = $("<button onclick='GameCircle.loadAdventure();'>Load</button>")	;
+	openButton.appendTo(ioContent);
+
+	var openButton = $("<button onclick='GameCircle.saveAdventure();'>Save</button>")	;
+	openButton.appendTo(ioContent);
+	
+	openToolDialog('#saveLoad', ioContent, (GameCircle.CANVAS_HEIGHT/2)-150,(GameCircle.CANVAS_WIDTH/2)-100);
+}
+
 /**
  * Builds the ToolShelf with Tile Pallet
  */
 function displayToolPallet() {
 	if(GameCircle.activeDialog === null | GameCircle.activeDialog !== 'toolPallet') {  
-		$('#dialog').css('width',  '200px');
-		$('#dialog').css('height', '400px');
+		$('#dialog').css('width',  '400px');
+		$('#dialog').css('height', '200px');
 		$('#dialog').css('background-color',  '#ffffcc');
 		GameCircle.activeDialog = 'toolPallet';
 		tileName = (typeof GameCircle.placementTile.name != 'undefined' || GameCircle.placementTile.name != null)?GameCircle.placementTile.name:"UnNamed Tile"
