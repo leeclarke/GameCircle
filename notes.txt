@@ -24,7 +24,7 @@ TODOS:
 *8. Remove blocking checks for moving center point of view.
 *9. Clear grid tile or selected range with ALT+x   ?? could just select blank from tile pallet?
 *10.1 Build Dialog and ToolDialog displays.
-10.2 Design Info Display area. (Left side.)  Need Current Tile, selected grid c/r, Selection Mode Indicator, Tile Pallet,Monster/Item Pallet.
+*10.2 Design Info Display area. (Left side.)  Need Current Tile, selected grid c/r, Selection Mode Indicator, Tile Pallet,Monster/Item Pallet.
 *10.3 Build Tile pallet for selecting an active tile type.
 *10.4 Display Selected Tile Type in control/info Display.
 *10.5 BUG: After selecting the NEW tile need to refresh the Pallet.
@@ -35,20 +35,22 @@ TODOS:
 11.2 Make Maps array to allow for mutiple maps in a file.
 *11.3 Make data savable in localStorage
 11.4 Make data savable Online
-11.5 Load data from localStorage
+*11.5 Load data from localStorage
 11.6 Load data from Online
 12. Center Point of view (Player object.)
 13. BUG: Fix grid, drawing too many cols.
 14. BUG: Make Grid size to match the size of the Map Data array.
 15. Add ability to add more Cols and Rows to the Map when user realizes they are out of space.
 16. Add DM preferences Dialog Display.
-16.1 DM Prefs select starting square.
-16.2 DM Prefs - set grid color.
-16.3 DM Prefs - show/hide color.
-16.4 DM Prefs - change Grid Size - defaults 32px
-16.5 DM Prefs - set Name.
-16.6 DM Prefs - save offline, web, both.
-17.  Navigate Adventure - name change maps..
+16.1 ADV Prefs select starting square.
+16.2 ADV Prefs - set grid color.
+16.3 ADV Prefs - show/hide color.
+16.4 ADV Prefs - change Grid Size - defaults 32px
+16.5 ADV Prefs - set Name.
+16.6 ADV Prefs - save offline, web, both.
+16.7 ADV Prefs - set NPC border color. default to white.
+17.  Navigate Adventure - name change maps.. eh??
+18. Sync up this doc with the Feature Spreadsheet.
 
 TODO: finish GameCircle.loadAdventure() for loading.
 
