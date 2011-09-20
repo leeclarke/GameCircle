@@ -331,23 +331,55 @@ function displayFileManagementDialog() {
 	}
 }
 
+function updateSaveInput(){
+	var selected = $("#selFileId").val();
+	$("#saveName").val(selected);
+}
+
 function openFileManager() {
-	$('#saveLoad').css('width',  '200px');
+	$('#saveLoad').css('width',  '250px');
 	$('#saveLoad').css('height', '300px');
 	$('#saveLoad').css('background-color',  '#ffffcc');
 	
-	var ioContent = $('<div><b>Manage Map File</b></div>');
+	var ioContent = $('<div><b>Manage Map Files</b></div>');
 	
+	//display in a select box
+	var fileSelect = $("<br><select id='selFileId' style='width:250px' size=5 onChange='updateSaveInput();'></select>");
 	
-	var openButton = $("<button onclick='GameCircle.loadAdventure();'>Load</button>")	;
+	for(opt=0; opt < FileManager.listFiles().length ;opt++) {
+		var fileId = FileManager.listFiles()[opt];
+		var option = $("<option value='" + fileId + "'>" + fileId + "</option>");
+		option.appendTo(fileSelect);
+	}
+	fileSelect.appendTo(ioContent);
+	
+	var openButton = $("<input id='saveName' size='35' maxlength=40><br><br><button onclick='doLoad();'>Load</button>");
 	openButton.appendTo(ioContent);
-
-	var openButton = $("<button onclick='GameCircle.saveAdventure();'>Save</button>")	;
+	
+	var openButton = $("&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='doSave();'>Save</button>");
+	openButton.appendTo(ioContent);
+	
+	var openButton = $("&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='hideDialog();'>Close</button>");
 	openButton.appendTo(ioContent);
 	
 	openToolDialog('#saveLoad', ioContent, (GameCircle.CANVAS_HEIGHT/2)-150,(GameCircle.CANVAS_WIDTH/2)-100);
 }
 
+function doLoad(){
+	if($("#selFileId").val() === null || $("#selFileId").val() === '') {
+		alert("No File was selected for Load!");
+	} else {
+		GameCircle.loadAdventure($("#selFileId").val());
+		hideDialog();
+	}
+}
+
+function doSave(){
+	//TODO: Remove  This is temp for testing
+	GameCircle.getAdventureData().adventureId = $("#saveName").val();
+	GameCircle.saveAdventure();
+	hideDialog();
+}
 /**
  * Builds the ToolShelf with Tile Pallet
  */
@@ -495,3 +527,6 @@ function buildPallet(targetPallet) {
 		}
 		
 }
+
+String.prototype.startsWith = function(str) 
+{return (this.match("^"+str)==str)}

@@ -394,8 +394,8 @@ GameCircle.saveAdventure = function() {
 	FileManager.save(GameCircle.getAdventureData().adventureId);
 }
 
-GameCircle.loadAdventure = function() {
-	GameCircle.setAdventureData(FileManager.load("Test Adventure"));
+GameCircle.loadAdventure = function(fileId) {
+	GameCircle.setAdventureData(FileManager.load(fileId));
 }
 
 /****Array mods. These dont actually attach to the Array object..******/

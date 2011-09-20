@@ -7,6 +7,20 @@ function FileManager(){
 
 FileManager.SAVE_PREFIX = "GameCircle_";
 
+/**
+ * Return Array list of FileIds that can be loaded.
+ */
+FileManager.listFiles = function() {
+	var fileList = [];
+	for (i=0; i<=localStorage.length-1; i++) {
+		if(localStorage.key(i).startsWith(FileManager.SAVE_PREFIX)) {
+			fileList.push(localStorage.key(i).replace(FileManager.SAVE_PREFIX,''));
+		}
+	}
+	
+	return fileList;
+}
+
 FileManager.save = function(fileId) {
 	localStorage[FileManager.SAVE_PREFIX+fileId] = JSON.stringify(GameCircle.getAdventureData());
 }
