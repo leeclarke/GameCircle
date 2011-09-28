@@ -54,6 +54,8 @@ TODOS:
 *19. Look into default size on canvas. 
 20. Should add resize even to browser to try to get the actual size if it changes.
 21. Add to the Tiles.
+22. Add Help Display.
+23. Add toggle to hide Programmer debug Display.
 
 Game Play Notes
 1. P1. Need clear color marker to distinguish player from npc.
