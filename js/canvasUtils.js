@@ -1,28 +1,36 @@
 /**
  * Just utils for rendering to the canvas
  */
-
-function paintGrid(context, mapWidth, mapHeight) {
-
+ 
+/**
+ * Renders Grid based on canvas size. 
+ */ 
+function paintGrid(context) {
+	renderedMap = GameCircle.currentMap.renderMap();
+	mapWidth = renderedMap.width;
+	mapHeight = renderedMap.height;
 	context.strokeStyle = GameCircle.GridColor;
 	
 	context.lineWidth = "0.5";
-	gridWidth = ~~(mapWidth/GameCircle.currentMap.getTileWidth());
-	gridHeight = ~~(mapHeight/GameCircle.currentMap.getTileHeight());
+	gridMaxTileWidth = ~~(mapWidth/GameCircle.currentMap.getTileWidth());
+	gridMaxTileHeight = ~~(mapHeight/GameCircle.currentMap.getTileHeight());
+	
+	//mapBorderWidth = GameCircle.advData.mapData.cols*GameCircle.currentMap.getTileWidth();
+	//mapBorderHeight = GameCircle.advData.mapData.rows*GameCircle.currentMap.getTileHeight()
 	
 	//drawFrame
-	context.strokeRect(0,0,mapWidth,mapHeight);
+	context.strokeRect(0,0, mapWidth,mapHeight); ///mapWidth,mapHeight);
 	
 	context.lineWidth = "0.25";
 	//drawVert
-	for(x = 0; x<= gridWidth; x++) {
+	for(x = 0; x<= gridMaxTileWidth; x++) {
 		xPos = GameCircle.currentMap.getTileWidth()*x;
 		drawLine(context,xPos,0,xPos,mapHeight);
 		context.fillRect(xPos,2, 2, 2) ;
 	}
 	
 	//drawHorz
-	for(y = 0; y<= gridWidth; y++) {
+	for(y = 0; y<= gridMaxTileHeight; y++) {
 		yPos = GameCircle.currentMap.getTileHeight()*y;
 		drawLine(context,0,yPos,mapWidth,yPos);
 		context.fillRect(xPos,2, 2, 2) ;

@@ -37,10 +37,10 @@ TODOS:
 11.4 Make data savable Online
 *11.5 Load data from localStorage
 11.6 Load data from Online
-12. Center Point of view (Player object.) ?
-13. BUG: Fix grid, drawing too many cols.
-14. BUG: Make Grid size to match the size of the Map Data array.
-15. Add ability to add more Cols and Rows to the Map when user realizes they are out of space.
+*12. Center Point of view (Player object.) ?
+*13. BUG: Fix grid, drawing too many cols.  
+*14. BUG: Make Grid size to match the size of the Map Data array.  Do I really want this? NO use default
+#15. Add ability to add more Cols and Rows to the Map when user realizes they are out of space.
 16. Add DM preferences Dialog Display.
 16.1 ADV Prefs select starting square.
 16.2 ADV Prefs - set grid color.
@@ -51,8 +51,9 @@ TODOS:
 16.7 ADV Prefs - set NPC border color. default to white.
 17.  Navigate Adventure - name change maps.. eh??
 18. Sync up this doc with the Feature Spreadsheet.
-
-TODO: finish GameCircle.loadAdventure() for loading.
+*19. Look into default size on canvas. 
+20. Should add resize even to browser to try to get the actual size if it changes.
+21. Add to the Tiles.
 
 Game Play Notes
 1. P1. Need clear color marker to distinguish player from npc.

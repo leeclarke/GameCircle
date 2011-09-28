@@ -58,8 +58,8 @@ GameCircle.addEventMessage = function(msg,life) {
  * Responsable for rendering the ViewPort or Camera of the game.
  */
 GameCircle.render = function() {
-	vpX = (this.CANVAS_WIDTH/2)-(this.currentMap.getTileWidth()/2); //viewPort Center.
-	vpY = (this.CANVAS_HEIGHT/2)-(this.currentMap.getTileHeight()/2);
+	vpX = (GameCircle.windowWd/2)-(this.currentMap.getTileWidth()/2); //viewPort Center.
+	vpY = (GameCircle.windowHt/2)-(this.currentMap.getTileHeight()/2);
 	GameCircle.ViewPortCenterX = vpX;
 	GameCircle.ViewPortCenterY = vpY;
 	context.fillStyle = GameCircle.backgroundColor;//'rgb(0, 0, 0)' ;
@@ -84,11 +84,6 @@ GameCircle.renderViewPort = function(context, vpCtrX, vpCtrY) {
 	context.save();  //save position to return to later.
 	context.translate(vpCtrX-GameCircle.player.x,vpCtrY-GameCircle.player.y); //Move to point on map where player stands
 	context.drawImage(renderedMap, 0, 0);
-	//render missiles in play.
-	/*for(mis = 0; mis < GameCircle.missiles.length; mis++){
-		GameCircle.missiles[mis].render(context);
-		
-	}*/
 	
 	//Draw monsters
 	for(m = 0; m < GameCircle.monsters.length; m++){
@@ -99,13 +94,24 @@ GameCircle.renderViewPort = function(context, vpCtrX, vpCtrY) {
 	}
 
 	if(this.DisplayGrid) {
-		paintGrid(context, renderedMap.width, renderedMap.height);
+		paintGrid(context);
 	}
 	context.restore(); //pop the canvas back to where it was which moves the map.
 	this.buildStatusDisplay(context);
 	this.writeStatus(context);
 	//GameCircle.player.renderImg(context, vpCtrX, vpCtrY);
 };
+
+/**
+ * Max number of tiles in col and rows
+ * @return {maxCols, maxRows}
+ */
+GameCircle.getMaxMapSize = function() {
+	renderedMap = GameCircle.currentMap.renderMap();
+	gridMaxTileWidth = ~~(renderedMap.width/GameCircle.currentMap.getTileWidth());
+	gridMaxTileHeight = ~~(renderedMap.height/GameCircle.currentMap.getTileHeight());
+	return {"maxCols":gridMaxTileWidth, "maxRows":gridMaxTileHeight};
+}
 
 /**
  * Displays the Messages overlay at the top of the viewPort, it doesnt display if no messages.
@@ -170,14 +176,25 @@ GameCircle.buildStatusDisplay = function(context) {
 		//Write some text for Debugging
 		context.fillStyle = "#FFFF33"; // Set color to black
 		context.fillText("Select:"+GameCircle.selectedMode, 8, 20);
-/*		context.fillText("HP: "+GameCircle.player.hp, 8, 40);
-		context.fillText("AC: "+GameCircle.player.getArmor(), 8, 60);
-		context.fillText("Wep: "+GameCircle.player.weaponWielded.name, 8, 80);*/
+
+		
+		context.fillText("SCreen W:"+GameCircle.windowWd +" H:"+GameCircle.windowHt, 8, 40);
+		//Show Max Map Size
+		context.fillText("Map: col:"+GameCircle.getMaxMapSize().maxCols +" row:"+GameCircle.getMaxMapSize().maxRows, 8, 60);
+		
+		//Show Map size.
+		if(typeof GameCircle.advData === 'undefined' ||  typeof GameCircle.advData.mapData === 'undefined') {
+			context.fillText("Map: x:0 y:0", 8, 80);
+		} else {
+			context.fillText("Map: col:"+GameCircle.advData.mapData.cols +" row:"+GameCircle.advData.mapData.rows, 8, 80);
+		}
+
 		if(GameCircle.selectedTile !== null) {
 			context.fillText("SEL: c:"+GameCircle.selectedTile.col+" r:"+GameCircle.selectedTile.row, 8, 100);
 		} else {
 			context.fillText("SEL: c:0 r:0", 8, 100);
 		}
+		
 		context.fillText("Col: "+GameCircle.player.getCol()+" Row: "+GameCircle.player.getRow(), 8, 120);
 		context.fillText("fps: "+GameCircle.fps,8, 140);
 		context.fillText("ctPt-x: "+ ~~(GameCircle.ViewPortCenterX),8, 160);

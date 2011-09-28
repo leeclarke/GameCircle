@@ -15,9 +15,10 @@ var context;
  */
 function windowReady() {
 	var body = $(this).find("body");
-	
-	GameCircle.CANVAS_WIDTH = window.innerWidth;
-	GameCircle.CANVAS_HEIGHT = window.innerHeight;
+	GameCircle.windowHt = window.innerHeight;
+	GameCircle.windowWd = window.innerWidth;
+	GameCircle.CANVAS_WIDTH = 32*50;//window.innerWidth;
+	GameCircle.CANVAS_HEIGHT = 32*50;//window.innerHeight;
 	
 	//Create canvas
 	var canvasElement = $("<canvas width='" + GameCircle.CANVAS_WIDTH + 
@@ -34,19 +35,17 @@ function windowReady() {
 
 	//TODO: This esentally sets the point of view of the view port. should probably default to centered.
 	GameCircle.player = EntityManager.createEntity('Player');
-	GameCircle.player.x = (3*32);
-	GameCircle.player.y = (11*32);
+	GameCircle.player.x = (12*32);
+	GameCircle.player.y = (6*32);
 	GameCircle.player.name = "DM";
 	GameCircle.player.spriteImg.src = "res/player.png";
 
 	//Get New File from FileManager
-	GameCircle.advData = FileManager.newFile("Test Adventure",30,30);
+	GameCircle.advData = FileManager.newFile("Test Adventure",50,50);
 	
 	tileMapManager = new SpriteTileManager(GameCircle.advData.tileManConfig);
 
-	GameCircle.currentMap.tileMapManager = tileMapManager;
-	//mapTiles = FileManager.newFile(30,30);
-	
+	GameCircle.currentMap.tileMapManager = tileMapManager;	
 	GameCircle.currentMap.updateMap(GameCircle.advData.mapData.map);
 	
 	//TODO: set for test, in Edit Mode it should always be true.
@@ -265,8 +264,8 @@ function update() {
  * Open Dialog above Canvas for data input.
  */
 function openDialog(id, content){
-	    var maskHeight = $(document).height();
-        var maskWidth = $(window).width();
+	    var maskHeight = GameCircle.windowHt//$(document).height();
+        var maskWidth = GameCircle.windowWd//$(window).width();
      
         //Set height and width to mask to fill up the whole screen
         $('#mask').css({'width':maskWidth,'height':maskHeight});
@@ -276,8 +275,8 @@ function openDialog(id, content){
         $('#mask').fadeTo("slow",0.8);  
      
         //Get the window height and width
-        var winH = $(window).height();
-        var winW = $(window).width();
+        var winH = GameCircle.windowHt;//$(window).height();
+        var winW = GameCircle.windowWd;//$(window).width();
                
         //Set the popup window to center
         $(id).html(content);
@@ -292,8 +291,8 @@ function openDialog(id, content){
  * Display Dialog w/o mask
  */
 function openToolDialog(id, content, top, left){
-	    var maskHeight = $(document).height();
-        var maskWidth = $(window).width();
+	    //var maskHeight = $(document).height();
+        //var maskWidth = $(window).width();
 		
         //Set the popup window to center
         $(id).html(content);
@@ -362,7 +361,7 @@ function openFileManager() {
 	var openButton = $("&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='hideDialog();'>Close</button>");
 	openButton.appendTo(ioContent);
 	
-	openToolDialog('#saveLoad', ioContent, (GameCircle.CANVAS_HEIGHT/2)-150,(GameCircle.CANVAS_WIDTH/2)-100);
+	openToolDialog('#saveLoad', ioContent, (GameCircle.windowHt/2)-150,(GameCircle.windowWd/2)-100);
 }
 
 function doLoad(){
