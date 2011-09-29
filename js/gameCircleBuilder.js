@@ -384,8 +384,8 @@ function doSave(){
  */
 function displayToolPallet() {
 	if(GameCircle.activeDialog === null | GameCircle.activeDialog !== 'toolPallet') {  
-		$('#dialog').css('width',  '400px');
-		$('#dialog').css('height', '200px');
+		$('#dialog').css('width',  '200px');
+		$('#dialog').css('height', '400px');
 		$('#dialog').css('background-color',  '#ffffcc');
 		GameCircle.activeDialog = 'toolPallet';
 		tileName = (typeof GameCircle.placementTile.name != 'undefined' || GameCircle.placementTile.name != null)?GameCircle.placementTile.name:"UnNamed Tile"
