@@ -35,6 +35,7 @@ html,body {
 #boxes #saveLoad {
 	-moz-border-radius: 15px;
 	border-radius: 15px;
+	font-family:sans-serif;
 }
 
 boxes #tilePallet {
@@ -43,4 +44,8 @@ boxes #tilePallet {
 	background-color:#ffffcc;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
+}
+
+#saveLoad #file-title {
+	text-align: center;
 }

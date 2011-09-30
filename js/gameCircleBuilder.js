@@ -336,14 +336,14 @@ function updateSaveInput(){
 }
 
 function openFileManager() {
-	$('#saveLoad').css('width',  '250px');
+	$('#saveLoad').css('width',  '260px');
 	$('#saveLoad').css('height', '300px');
 	$('#saveLoad').css('background-color',  '#ffffcc');
 	
-	var ioContent = $('<div><b>Manage Map Files</b></div>');
+	var ioContent = $('<div><h2 id="file-title">Game Circle</h2>Manage Map Files</div>');
 	
 	//display in a select box
-	var fileSelect = $("<br><select id='selFileId' style='width:250px' size=5 onChange='updateSaveInput();'></select>");
+	var fileSelect = $("<br><select id='selFileId' style='width:250px' size=8 onChange='updateSaveInput();'></select>");
 	
 	for(opt=0; opt < FileManager.listFiles().length ;opt++) {
 		var fileId = FileManager.listFiles()[opt];
@@ -357,6 +357,12 @@ function openFileManager() {
 	
 	var openButton = $("&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='doSave();'>Save</button>");
 	openButton.appendTo(ioContent);
+	
+	var newButton = $("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='resetMap();hideDialog();'>New</button>");
+	newButton.appendTo(ioContent);
+	
+	var deleteButton = $("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='hideDialog();'>Delete</button>");
+	deleteButton.appendTo(ioContent);
 	
 	var openButton = $("&nbsp;&nbsp;&nbsp;&nbsp;<button onclick='hideDialog();'>Close</button>");
 	openButton.appendTo(ioContent);
@@ -525,6 +531,14 @@ function buildPallet(targetPallet) {
 			ptile.appendTo(targetPallet);
 		}
 		
+}
+//TODO: Not working
+function resetMap() {
+	var newName = $('#saveName').val();
+	if(newName === '' ) {
+		newName = 'New Adventure';
+	}
+	GameCircle.advData = FileManager.newFile(newName,50,50);
 }
 
 String.prototype.startsWith = function(str) 
