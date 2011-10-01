@@ -59,7 +59,7 @@ TiledMap.prototype.getTileAt = function(x,y) {
  * Safely grab a single tile from map.
  */
 TiledMap.prototype.getTile = function(row, col) {
-	if(row <0 || col <0 || row > this.rows || col > this.cols){
+	if(row <0 || col <0 || row > this.tiles.length || col > this.tiles[0].length){
 		return null;
 	} else {
 		if(col > this.tiles[row].length) {

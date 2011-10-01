@@ -75,6 +75,9 @@ function drawLine(contextO, startx, starty, endx, endy) {
  * Draws the box around the given grid tile.
  */
 function drawSingleSquareSelect(context, selectedTile) {
+	if(typeof selectedTile === 'undefined' || selectedTile === null){
+		return;
+	}
 	leftX = selectedTile.col*selectedTile.width;
 	leftY = selectedTile.row*selectedTile.height;
 
