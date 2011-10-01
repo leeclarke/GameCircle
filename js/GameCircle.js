@@ -388,7 +388,7 @@ GameCircle.setSelectedTileByName = function(tileName) {
  */
 GameCircle.getAdventureData = function() {
 	if(GameCircle.advData === null) {
-		GameCircle.advData = FileManager.newFile;
+		GameCircle.advData = FileManager.newFile(50,50);
 	}
 	//Update maps.
 	GameCircle.advData.mapData.map = GameCircle.currentMap.tiles;	

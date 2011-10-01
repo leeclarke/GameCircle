@@ -538,7 +538,7 @@ function resetMap() {
 	if(newName === '' ) {
 		newName = 'New Adventure';
 	}
-	GameCircle.advData = FileManager.newFile(newName,50,50);
+	GameCircle.setAdventureData( FileManager.newFile(newName,50,50));
 }
 
 String.prototype.startsWith = function(str) 

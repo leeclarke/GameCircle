@@ -38,13 +38,13 @@ FileManager.load = function(fileId) {
 			advDataParse = jQuery.parseJSON(objStr);
 			debug("FileManager == "+advDataParse );
 		} else {
-			advDataParse = FileManager.newFile(30, 30);
+			advDataParse = FileManager.newFile(50, 50);
 		}		
 		
 		return advDataParse;
 	
 	} else {
-		return FileManager.newFile(30, 30);
+		return FileManager.newFile(50, 50);
 	}
 }
 
