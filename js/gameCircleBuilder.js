@@ -31,7 +31,7 @@ function windowReady() {
 	context.fillRect(0, 0, GameCircle.CANVAS_WIDTH, GameCircle.CANVAS_HEIGHT ) ;
 	
 	//TODO refactor this into GameCircle.tiledMap. Build load process to set this up.
-	GameCircle.currentMap = new TiledMap(GameCircle.CANVAS_WIDTH+300,GameCircle.CANVAS_HEIGHT+300,32,32, 26,26);
+	GameCircle.currentMap = new TiledMap(GameCircle.CANVAS_WIDTH+300,GameCircle.CANVAS_HEIGHT+300,32,32, 50, 50);
 
 	//TODO: This esentally sets the point of view of the view port. should probably default to centered.
 	GameCircle.player = EntityManager.createEntity('Player');
@@ -50,9 +50,7 @@ function windowReady() {
 	
 	//TODO: set for test, in Edit Mode it should always be true.
 	GameCircle.lightsOn = true;
-	//TODO: For testing setting a default Sprite Tile, remove later.
-	//GameCircle.placementTile = {"id":1,"name":"FLOOR1","col":1,"row":8};
-	
+
 	//draw to canvas		
 	GameCircle.render();
 	setInterval(main, 30);
@@ -66,7 +64,7 @@ function windowReady() {
  * Capture click events to use for game play.
  */
 window.addEventListener("mousedown", function(e) {
-  //GameCircle.addEventMessage(("Mouse Event [ button="+e.button+" pageX=" + e.pageX + " pageY=" + e.pageY));
+  GameCircle.addEventMessage(("Mouse Event [ button="+e.button+" pageX=" + e.pageX + " pageY=" + e.pageY));
   GameCircle.mouseQueue.push(e);
   GameCircle.mouseClick = e;
 }, false);
@@ -290,10 +288,7 @@ function openDialog(id, content){
 /**
  * Display Dialog w/o mask
  */
-function openToolDialog(id, content, top, left){
-	    //var maskHeight = $(document).height();
-        //var maskWidth = $(window).width();
-		
+function openToolDialog(id, content, top, left){		
         //Set the popup window to center
         $(id).html(content);
         $(id).css('top',  top);
@@ -311,7 +306,6 @@ function hideDialog() {
     $('.window').hide();
 }
 
-//TODO: ADD the HTML Dialog box #filedialog
 function displayFileManagementDialog() {
 	if(GameCircle.activeDialog === null | GameCircle.activeDialog !== 'fileManDialog') {  
 		GameCircle.activeDialog = 'fileManDialog';

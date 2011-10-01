@@ -61,11 +61,10 @@ GameCircle.render = function() {
 	vpX = (GameCircle.windowWd/2)-(this.currentMap.getTileWidth()/2); //viewPort Center.
 	vpY = (GameCircle.windowHt/2)-(this.currentMap.getTileHeight()/2);
 	GameCircle.ViewPortCenterX = vpX;
-	GameCircle.ViewPortCenterY = vpY;
-	context.fillStyle = GameCircle.backgroundColor;//'rgb(0, 0, 0)' ;
-	context.fillStyle = GameCircle.backgroundColor;//'rgb(0, 0, 0)' ;
+	GameCircle.ViewPortCenterY = vpY;  //TODO: Thes look to be offsets not the player denter point. Figure this out.
+	context.fillStyle = GameCircle.backgroundColor;
 	context.fillRect(0, 0, this.CANVAS_WIDTH, this.CANVAS_HEIGHT ) ;
-	this.renderViewPort(context, vpX,vpY); 
+	this.renderViewPort(context, GameCircle.ViewPortCenterX,GameCircle.ViewPortCenterY); 
 };
 
 /**
@@ -86,12 +85,12 @@ GameCircle.renderViewPort = function(context, vpCtrX, vpCtrY) {
 	context.drawImage(renderedMap, 0, 0);
 	
 	//Draw monsters
-	for(m = 0; m < GameCircle.monsters.length; m++){
+	/*for(m = 0; m < GameCircle.monsters.length; m++){
 		if(GameCircle.monsters[m].visable == false) {
 			continue;
 		}		
 		GameCircle.monsters[m].renderImg(context,GameCircle.monsters[m].x, GameCircle.monsters[m].y);
-	}
+	}*/
 
 	if(this.DisplayGrid) {
 		paintGrid(context);
