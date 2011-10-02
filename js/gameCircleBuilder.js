@@ -64,7 +64,7 @@ function windowReady() {
  * Capture click events to use for game play.
  */
 window.addEventListener("mousedown", function(e) {
-  GameCircle.addEventMessage(("Mouse Event [ button="+e.button+" pageX=" + e.pageX + " pageY=" + e.pageY));
+  //GameCircle.addEventMessage(("Mouse Event [ button="+e.button+" pageX=" + e.pageX + " pageY=" + e.pageY));
   GameCircle.mouseQueue.push(e);
   GameCircle.mouseClick = e;
 }, false);
@@ -166,6 +166,8 @@ function update() {
 	  GameCircle.addEventMessage("Saving File...");
 	  debug("Saving File...");
 	  FileManager.save(GameCircle.getAdventureData().adventureId);
+	  keydown.v = false;
+	  keydown.alt = false;
   }
   
   if(keydown.alt && keydown.s) {
@@ -187,11 +189,11 @@ function update() {
   	keydown.alt = false;
   }
   
-  if(keydown.alt && keydown.d) {
+ /* if(keydown.alt && keydown.d) {
 	openDialog('#dialog', '<p>This is just a test dialog<br><button type="button" onclick="hideDialog();">Click Me!</button></p>');
 	keydown.d = false;
   	keydown.alt = false;
-  }
+  }*/
   
   if(keydown.alt && keydown.t) {
 	displayToolPallet();
@@ -385,27 +387,33 @@ function doSave(){
 function displayToolPallet() {
 	if(GameCircle.activeDialog === null | GameCircle.activeDialog !== 'toolPallet') {  
 		$('#dialog').css('width',  '200px');
-		$('#dialog').css('height', '400px');
+		$('#dialog').css('height', GameCircle.windowHt);//'400px');
 		$('#dialog').css('background-color',  '#ffffcc');
 		GameCircle.activeDialog = 'toolPallet';
-		tileName = (typeof GameCircle.placementTile.name != 'undefined' || GameCircle.placementTile.name != null)?GameCircle.placementTile.name:"UnNamed Tile"
-		var palletContent = $("<div></div>");
+		tileName = (typeof GameCircle.placementTile.name != 'undefined' || GameCircle.placementTile.name != null)?GameCircle.placementTile.name:"Blank Tile"
+		var palletContent = $("<div class='tabs'><ul class='tabNavigation'>"+
+			"<li><a href='#tools'>Tiles</a></li>" +
+			'<li><a href="#players">Players</a></li>' +
+			'<li><a href="#options">Options</a></li>' + 
+			'</ul></div>');
 		
 		// Mode indicators.
-		var statusContent = $("<div id='selStatus'></div>");
+		var toolsTab = $("<div class='tools' id='tools'></div>");
+		toolsTab.appendTo(palletContent);
+		
+		var statusContent = $("<div id='selStatus'><p></p></div>");
 		stat = (GameCircle.selectedMode)?'<span style="color:green">ON</span>':'OFF';
 		$('<b>Multi-Select:</b>&nbsp;' + stat + '<br>').appendTo(statusContent);
-		statusContent.appendTo(palletContent);
+		statusContent.appendTo(toolsTab);
 
 		
-		$('<span id="selTile"><b>Selected Tile:</b>&nbsp;'+tileName+'</span><hr>').appendTo(palletContent);
+		$('<span id="selTile"><b>Selected Tile:</b>&nbsp;'+tileName+'</span><hr>').appendTo(toolsTab);
 
-		//TODO: Add test load button 
 		var openButton = $("<button onclick='GameCircle.loadAdventure();'>Load</button>")	;
-		openButton.appendTo(palletContent);
+		openButton.appendTo(toolsTab);
 
 		var openButton = $("<button onclick='GameCircle.saveAdventure();'>Save</button>")	;
-		openButton.appendTo(palletContent);
+		openButton.appendTo(toolsTab);
 		//Draw Pallet Selector
 		var palletSelector = $("<div id='palletSelector'></div>");
 		palletSelector.css('border','1px solid #333333');
@@ -438,10 +446,36 @@ function displayToolPallet() {
 		buildPallet(pallet);
 		pallet.appendTo(palletSelector);
 		
-		palletSelector.appendTo(palletContent);
+		palletSelector.appendTo(toolsTab);
 		
-		openToolDialog('#dialog', palletContent, 10, 10);
+		//Player Tab
+		var playersTab = $("<div class='players' id='players'><p>players</p></div>");
+		playersTab.appendTo(palletContent);
 		
+		//Options Tab
+		var optionsTab = $("<div class='options' id='options'><p>options</p></div>");
+		optionsTab.appendTo(palletContent);
+		
+		openToolDialog('#dialog', palletContent, 1, 1);
+		
+		
+		//Enable tabs
+		var tabContainers = $('div.tabs > div');
+		/*tabContainers.hide();
+		$( "#tabs" ).tabs({
+            show: function(event, ui) {
+        }
+		});*/
+		$('div.tabs ul.tabNavigation a').click(function() {
+			tabContainers.hide();
+			tabContainers.filter(this.hash).show(); //TODO: This is not finding because the filters is using #tools not .Tools
+			
+			$('div.tabs ul.tabNavigation a').removeClass('selected');
+			$(this).addClass('selected');
+			
+			return false;
+		}
+		).filter(':first').click();
 	} else {
 		hideDialog();
 		GameCircle.activeDialog = null;
@@ -526,7 +560,7 @@ function buildPallet(targetPallet) {
 		}
 		
 }
-//TODO: Not working
+
 function resetMap() {
 	var newName = $('#saveName').val();
 	if(newName === '' ) {
@@ -537,3 +571,17 @@ function resetMap() {
 
 String.prototype.startsWith = function(str) 
 {return (this.match("^"+str)==str)}
+
+//Tab code
+$(function () {
+    var tabContainers = $('div.tabs > div');
+    
+    $('div.tabs ul.tabNavigation a').click(function () {
+        tabContainers.hide().filter(this.hash).show();
+        
+        $('div.tabs ul.tabNavigation a').removeClass('selected');
+        $(this).addClass('selected');
+        
+        return false;
+    }).filter(':first').click();
+});

@@ -1,6 +1,5 @@
 NOTES:
 
-Mover: Moving center point of users view and for moving Movable tiles.
 canvasUtils: Keep. Add drag/Drop functions here if not in the Main. should be doing drag/drop and verifying that new grid point is valid. Also it could limit move per round in later version.
 EntityManager: still needed for managing tiles but not for Player/weapon generation. Just tiles.
 GameEngine: Rename to MapBuilderManager and GameCircleManager

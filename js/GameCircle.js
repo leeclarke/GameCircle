@@ -30,6 +30,8 @@ GameCircle.dblClickTimeLimit = 8000;
 GameCircle.lastMouseEvent = 0; //in ms
 GameCircle.watchedMouseEvents = [];
 GameCircle.missiles = [];  //in flight
+GameCircle.windowHt = 0;
+GameCircle.windowWd = 0;
 /* selectedTile can indicate either a single tile or the starting tile in a range. 
 Ranges are only set when ctrl is held and only valid when selectedTileEnd is not null.*/
 GameCircle.selectedTile = null;
