@@ -389,6 +389,7 @@ function displayToolPallet() {
 		$('#dialog').css('width',  '200px');
 		$('#dialog').css('height', GameCircle.windowHt);//'400px');
 		$('#dialog').css('background-color',  '#ffffcc');
+		$('#dialog').css('z-index', 50);
 		GameCircle.activeDialog = 'toolPallet';
 		tileName = (typeof GameCircle.placementTile.name != 'undefined' || GameCircle.placementTile.name != null)?GameCircle.placementTile.name:"Blank Tile"
 		var palletContent = $("<div class='tabs'><ul class='tabNavigation'>"+
@@ -396,7 +397,7 @@ function displayToolPallet() {
 			'<li><a href="#players">Players</a></li>' +
 			'<li><a href="#options">Options</a></li>' + 
 			'</ul></div>');
-		
+		palletContent.css('z-index', 50);
 		// Mode indicators.
 		var toolsTab = $("<div class='tools' id='tools'></div>");
 		toolsTab.appendTo(palletContent);
@@ -453,7 +454,8 @@ function displayToolPallet() {
 		playersTab.appendTo(palletContent);
 		
 		//Options Tab
-		var optionsTab = $("<div class='options' id='options'><p>options</p></div>");
+		var optionsTab = $("<div class='options' id='options'><h3>Map Options</h3></div>");
+		buildOptionsTab(optionsTab);
 		optionsTab.appendTo(palletContent);
 		
 		openToolDialog('#dialog', palletContent, 1, 1);
@@ -480,6 +482,51 @@ function displayToolPallet() {
 		hideDialog();
 		GameCircle.activeDialog = null;
 	}
+}
+
+/*
+ * 16.1 ADV Prefs select starting square.
+16.2 ADV Prefs - set grid color.
+16.3 ADV Prefs - show/hide color.
+16.4 ADV Prefs - change Grid Size - defaults 32px
+16.5 ADV Prefs - set Name.
+16.6 ADV Prefs - save offline, web, both.
+16.7 ADV Prefs - set NPC border color. default to white.
+16.8 ADV Prefs - set map background color*/
+/**
+ * Build componets for the Map options tab
+ */
+function buildOptionsTab(optionsTab){
+	var mapName = $('<lable>Name:</label> <input id="opt-name"/>');
+	mapName.appendTo(optionsTab);
+	
+	var bgColor = $('<label>Background:</label><input id="opt-mapbg-color"/>')
+	bgColor.appendTo(optionsTab);
+	$('<label>Grid:</label><input id="opt-gridbg-color"/>').appendTo(optionsTab);
+	$('<label>NPC Border:</label><input id="opt-npc-color"/>').appendTo(optionsTab);
+	$('<br><label>Save Options Border:</label><br>').appendTo(optionsTab);
+	$('<input type="radio" id="opt-save" name="opt-save" value="Online"/>Online<br>').appendTo(optionsTab);
+	$('<input type="radio" id="opt-save" name="opt-save" value="Local"/>Local<br>').appendTo(optionsTab);
+	$('<input type="radio" id="opt-save" name="opt-save" value="Both"/>Both<br>').appendTo(optionsTab);
+	
+	bgColor.ColorPicker({
+		onSubmit: function(hsb, hex, rgb, el) {
+			$(el).val(hex);
+			$(el).ColorPickerHide();
+		},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+			$(this).zIndex = 100;
+			//var tabZ = $('#tabs').css('zIndex');
+			//alert('tabZ='+tabZ);
+			$(this).css('z-index', 100);
+		}
+	})
+	.bind('keyup', function(){
+		$(this).ColorPickerSetColor(this.value);
+	});
+
+	$('#opt-npc-color').ColorPicker({flat: true});
 }
 
 /**
@@ -585,3 +632,4 @@ $(function () {
         return false;
     }).filter(':first').click();
 });
+
