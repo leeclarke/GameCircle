@@ -463,11 +463,6 @@ function displayToolPallet() {
 		
 		//Enable tabs
 		var tabContainers = $('div.tabs > div');
-		/*tabContainers.hide();
-		$( "#tabs" ).tabs({
-            show: function(event, ui) {
-        }
-		});*/
 		$('div.tabs ul.tabNavigation a').click(function() {
 			tabContainers.hide();
 			tabContainers.filter(this.hash).show(); //TODO: This is not finding because the filters is using #tools not .Tools
@@ -502,8 +497,11 @@ function buildOptionsTab(optionsTab){
 	
 	var bgColor = $('<label>Background:</label><input id="opt-mapbg-color"/>')
 	bgColor.appendTo(optionsTab);
-	$('<label>Grid:</label><input id="opt-gridbg-color"/>').appendTo(optionsTab);
-	$('<label>NPC Border:</label><input id="opt-npc-color"/>').appendTo(optionsTab);
+	var gridBg  = $('<label>Grid:</label><input id="opt-gridbg-color"/>');
+	gridBg.appendTo(optionsTab);
+	var npcColor = $('<label>NPC Border:</label><input id="opt-npc-color"/>');
+	npcColor.appendTo(optionsTab);
+	
 	$('<br><label>Save Options Border:</label><br>').appendTo(optionsTab);
 	$('<input type="radio" id="opt-save" name="opt-save" value="Online"/>Online<br>').appendTo(optionsTab);
 	$('<input type="radio" id="opt-save" name="opt-save" value="Local"/>Local<br>').appendTo(optionsTab);
@@ -517,8 +515,6 @@ function buildOptionsTab(optionsTab){
 		onBeforeShow: function () {
 			$(this).ColorPickerSetColor(this.value);
 			$(this).zIndex = 100;
-			//var tabZ = $('#tabs').css('zIndex');
-			//alert('tabZ='+tabZ);
 			$(this).css('z-index', 100);
 		}
 	})
@@ -526,8 +522,46 @@ function buildOptionsTab(optionsTab){
 		$(this).ColorPickerSetColor(this.value);
 	});
 
-	$('#opt-npc-color').ColorPicker({flat: true});
+	gridBg.ColorPicker({
+		onSubmit: function(hsb, hex, rgb, el) {
+			$(el).val(hex);
+			$(el).ColorPickerHide();
+		},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+			$(this).zIndex = 100;
+			$(this).css('z-index', 100);
+		}
+	})
+	.bind('keyup', function(){
+		$(this).ColorPickerSetColor(this.value);
+	});
+	
+	npcColor.ColorPicker({
+		onSubmit: function(hsb, hex, rgb, el) {
+			$(el).val(hex);
+			$(el).ColorPickerHide();
+		},
+		onBeforeShow: function () {
+			$(this).ColorPickerSetColor(this.value);
+			$(this).zIndex = 100;
+			$(this).css('z-index', 100);
+		}
+	})
+	.bind('keyup', function(){
+		$(this).ColorPickerSetColor(this.value);
+	});
+	
+	
+	//$('#opt-npc-color').ColorPicker({flat: true});
+	//$('#opt-gridbg-color').ColorPicker({flat: true});
+	$('<button class="opt-buton" type="button" onclick="saveOptions();">Save Options</button>').appendTo(optionsTab);
 }
+
+function saveOptions() {
+		//TODO: Save data to Adventure
+}
+
 
 /**
  * Refresh the pallet display when diff tile selected. and set newly selected.
