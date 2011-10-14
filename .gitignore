@@ -1,0 +1,16 @@
+# Extracted from https://github.com/ulrich/macaron-factory/blob/master/.gitignore
+# Ignore all dotfiles...
+.*
+# except for .gitignore
+!.gitignore
+
+# Ignore Play! working directory #
+GameCircle/db
+GameCircle/eclipse
+GameCircle/log
+GameCircle/logs
+GameCircle/precompiled
+GameCircle/tmp
+GameCircle/test-result
+GameCircle/eclipse
+GameCircle/server.pid
