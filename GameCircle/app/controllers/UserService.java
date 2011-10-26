@@ -1,11 +1,8 @@
 package controllers;
 
-import java.util.HashMap;
 import java.util.List;
 
 import models.User;
-
-import play.db.jpa.JPABase;
 import play.mvc.Controller;
 
 /**
@@ -14,8 +11,14 @@ import play.mvc.Controller;
 public class UserService extends Controller{
 
 	public static void getUser(String uid) {
-		User user = User.find("byUserName", uid).first();
-		renderJSON(user);
+		User user = User.find("LOWER(UserName) = ?", uid.toLowerCase()).first();
+		
+		if(user == null){
+		        response.status = 405;
+		        render();
+		} else {
+		    renderJSON(user);
+		}
 	}
 	
 	public static void getAllUsers(){
