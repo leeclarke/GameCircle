@@ -6,14 +6,13 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 
-import play.mvc.Controller;
-
 /**
- * Responsible for Functions surrounding building and maintaining Adventures.
+ * Responsible for Functions surrounding building and maintaining Adventures. All functionality 
+ * is supported through JAX-WS and RESTEasy plug-in.
  * @author lee
  */
 @Path("/adventure")
-public class AdventureService extends Controller {
+public class AdventureService { 
 
 	/**
 	 * Returns the current conditions in JSON format
@@ -25,7 +24,7 @@ public class AdventureService extends Controller {
 	}
 	
 	@GET
-	@Produces("text/plain")
+	@Produces("application/json")
 	@Path("/{id}")
 	public String getAdventure(@PathParam("id") final String responseString){
 	    if(responseString.equalsIgnoreCase("boom")){
@@ -34,6 +33,6 @@ public class AdventureService extends Controller {
             throw new WebApplicationException(new IllegalArgumentException("2. Bad argument"), 500);
         }
 	    
-	    return "Hello REST";
+	    return "{greet:'Hello REST'}";
 	}
 }
