@@ -2,6 +2,7 @@ package models;
 
 import javax.persistence.Entity;
 
+import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
@@ -12,7 +13,7 @@ public class User extends Model {
     public String userName;
     public boolean isAGameMaster;
     
-    public User(String userName) {
+    public User(@Required(message="validation.user.uid.required") String userName) {
     	this.userName = userName;
     }
     
