@@ -14,3 +14,7 @@ tmp
 test-result
 eclipse
 server.pid
+.classpath
+.settings
+.project
+*.launch
