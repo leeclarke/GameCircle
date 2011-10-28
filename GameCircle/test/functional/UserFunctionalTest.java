@@ -11,7 +11,6 @@ import play.test.FunctionalTest;
 import play.utils.HTTP;
 import sun.net.www.http.HttpClient;
 
-import com.google.api.client.http.HttpResponse;
 import com.jayway.jsonpath.JsonPath;
 import com.ning.http.client.HttpContent;
 

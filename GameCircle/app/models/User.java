@@ -24,4 +24,13 @@ public class User extends Model {
     	this.userName = userName;
     }
     
+    
+    /**
+     * Common call simplified by making a helper.
+     * @param uid
+     * @return
+     */
+    public static User getUserByUID(String uid){
+    	return User.find("LOWER(UserName) = ?", uid.toLowerCase()).first();
+    }
 }
