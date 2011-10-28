@@ -1,5 +1,6 @@
 package functional;
 
+import net.minidev.json.JSONArray;
 import net.minidev.json.parser.ParseException;
 
 import org.junit.Test;
@@ -20,7 +21,7 @@ public class UserFunctionalTest extends FunctionalTest {
 	private static final String HTTP_CONTENT_TYPE = "Content-Type";
 
 	@Test
-    public void testGetAllUsers() throws ParseException {
+    public void testGetAllUsers() throws ParseException, java.text.ParseException {
         Response response = GET("/rest/users");
         assertStatus(200, response);
         assertHeaderEquals(HTTP_CONTENT_TYPE, CONTENT_APPLICATION_JSON, response);
@@ -28,8 +29,8 @@ public class UserFunctionalTest extends FunctionalTest {
         //TODO: Build tests from here: http://code.google.com/p/json-path/
         String json = getContent(response);
         
-        //String email = JsonPath.read(json, "$.[].email");
-    
+        JSONArray email = JsonPath.read(json, "$.[].email");
+        //TODO This test isnt getting the array
         
     }
     
@@ -43,13 +44,11 @@ public class UserFunctionalTest extends FunctionalTest {
         //TODO: Build tests from here: http://code.google.com/p/json-path/
         String json = getContent(response);
         
-        //TODO: Something about this isnt parsing.. giving error about loading Jackson..
         assertEquals("joeCool@gmail.com", JsonPath.read(json, "$.email"));
         assertEquals("JoeCoolDM", JsonPath.read(json, "$.userName"));
         assertEquals("Dave", JsonPath.read(json, "$.firstName"));
         assertEquals("DM", JsonPath.read(json, "$.lastName"));
         assertEquals(false, JsonPath.read(json, "$.isAGameMaster"));
-        
         
     }
     
