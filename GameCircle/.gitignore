@@ -18,3 +18,4 @@ server.pid
 .settings
 .project
 *.launch
+modules/resteasy-1.3.1

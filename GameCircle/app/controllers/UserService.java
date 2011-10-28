@@ -65,9 +65,10 @@ public class UserService{
 	}
     
     @PUT
+    @Path("/{id}")
     @Consumes("application/x-www-form-urlencoded")
     @Produces("application/json")
-    public User updateUser(MultivaluedMap<String, String> formParams)
+    public User updateUser(@PathParam("id") final String uid, MultivaluedMap<String, String> formParams)
 	{
     	User user = UserDataMapper.buildUser(formParams);
     	if(isExistingUser(user)){
