@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 
 import org.jboss.resteasy.spi.touri.ObjectToURI;
 import org.jboss.resteasy.spi.touri.URITemplate;
@@ -16,7 +17,7 @@ public class User extends Model {
     public String lastName;
     public String userName;
     public boolean isAGameMaster;
-    private String self;
+    @Transient public String self;
     
     public User(@Required(message="validation.user.uid.required") String userName) {
     	this.userName = userName;
