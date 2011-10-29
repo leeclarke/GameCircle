@@ -1,5 +1,7 @@
 package util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 
 import play.Play;
@@ -18,11 +20,18 @@ public class LinkBuilder {
      * @param params - key,value for replacement params.
      * @return - a URI String.
      */
-    public static String buildURI(String service, String action, Map<String,String> params){
+    public static URI buildURI(String service, String action, Map<String,String> params){
         configureRestPath();
-        String uri = constructURITemplate(service, action);
+        String uriStr = constructURITemplate(service, action);
         
-        return processTemplate(uri,params);
+        URI uri = null;
+		try {
+			uri = processTemplate(uriStr,params);
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		} 
+        
+        return uri;
     }
     
     
@@ -31,15 +40,16 @@ public class LinkBuilder {
      * @param uri
      * @param params
      * @return
+     * @throws URISyntaxException 
      */
-    private static String processTemplate(String uri, Map<String,String> params) {
+    private static URI processTemplate(String uri, Map<String,String> params) throws URISyntaxException {
         String finalURI = uri;
         
         for (String key : params.keySet()) {
-            finalURI.replaceAll("{"+key+"}", params.get(key));
+        	finalURI = finalURI.replace("{"+key+"}", params.get(key));
         }
-      //TODO: Might want to consider adding validation to the end result? make sure there are no {}s
-        return finalURI;
+      //TODO: Might want to consider adding validation to the end result? make sure there are no {}s left
+        return new URI(finalURI);
     }
 
         //TODO: Build a Unit test.

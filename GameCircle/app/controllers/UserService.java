@@ -1,6 +1,9 @@
 package controllers;
 
+import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -10,9 +13,13 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 
 import play.data.validation.Validation;
+import play.test.Fixtures;
+import util.LinkBuilder;
 
 import models.User;
 import models.util.UserDataMapper;
@@ -52,8 +59,10 @@ public class UserService{
     @POST
     @Consumes("application/x-www-form-urlencoded")
     @Produces("application/json")
-    public User createUser(MultivaluedMap<String, String> formParams)
+    public Response createUser(MultivaluedMap<String, String> formParams)
 	{
+    	reloadDataBase();
+    	
     	User newUser = UserDataMapper.buildUser(formParams);
     	if(!isExistingUser(newUser)){
     		validateAndSaveUser(newUser);
@@ -63,7 +72,10 @@ public class UserService{
     		//TODO: reconsider error handling on POSTs, might want to return JSON Error object.
     	}
     	
-    	return newUser;
+    	Map<String, String> params = new HashMap<String, String>();
+    	params.put("id", newUser.userName);
+    	
+		return sendRedirect("users", "get-user", params);
 	}
     
     @PUT
@@ -113,5 +125,15 @@ public class UserService{
 	private String toJSONString(Object o){
         return (new Gson().toJson(o));
     }
-    
+
+	protected void reloadDataBase(){
+		Fixtures.deleteAllModels();
+		Fixtures.loadModels("data.yml");
+	}
+	
+	protected Response sendRedirect(String service, String action, Map<String, String> params){
+		URI uri  = LinkBuilder.buildURI(service, action, params);
+		
+		return Response.status(303).contentLocation(uri).build();
+	}
 }

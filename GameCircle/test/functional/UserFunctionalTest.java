@@ -44,7 +44,7 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         String json = getContent(response);
         
         assertEquals("joeCool@gmail.com", JsonPath.read(json, "$.email"));
-        assertEquals("JoeCoolShmer", JsonPath.read(json, "$.userName"));
+        assertEquals("JoeCoolDM", JsonPath.read(json, "$.userName"));
         assertEquals("Dave", JsonPath.read(json, "$.firstName"));
         assertEquals("DM", JsonPath.read(json, "$.lastName"));
         assertEquals(false, JsonPath.read(json, "$.isAGameMaster"));
@@ -54,10 +54,12 @@ public class UserFunctionalTest extends BaseFunctionalTest {
     @Test
     public void testPostUser()
 	{
+    	String expectedURI = "http://localhost:9000/rest/users/JoeCoolShmer";
     	Response response = POST("/rest/users/", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeCool%40gmail.com&firstName=Joe&userName=JoeCoolShmer&lastName=DM&isAGameMaster=true");
-    	assertStatus(200, response);
-    	validateContentType(response);
-    	
+    	assertStatus(303, response);
+    	//Content-Location
+    	String actualURI = response.headers.get("Content-Location").value();
+    	assertEquals(expectedURI, actualURI);
 	}
     
 }
