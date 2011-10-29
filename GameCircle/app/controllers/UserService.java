@@ -12,6 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 
+import play.data.validation.Validation;
+
 import models.User;
 import models.util.UserDataMapper;
 
@@ -53,8 +55,8 @@ public class UserService{
     public User createUser(MultivaluedMap<String, String> formParams)
 	{
     	User newUser = UserDataMapper.buildUser(formParams);
-    	if(isExistingUser(newUser)){
-    		validateUser(newUser);
+    	if(!isExistingUser(newUser)){
+    		validateAndSaveUser(newUser);
         	newUser.save();
     	} else {
     		throw new GameCircleException(new IllegalArgumentException("User ID already in use."), 404);
@@ -71,8 +73,7 @@ public class UserService{
 	{
     	User user = UserDataMapper.buildUser(formParams);
     	if(isExistingUser(user)){
-    		validateUser(user);
-    		user.save();
+    		validateAndSaveUser(user);
     	}
     	return user;
 	}
@@ -82,15 +83,13 @@ public class UserService{
      * @param newUser
      * @throws WebApplicationException
      */
-    private void validateUser(User newUser) throws WebApplicationException
+    private void validateAndSaveUser(User newUser) throws WebApplicationException
 	{
     	try{
-    		User user = User.getUserByUID(newUser.userName);
-    		if(user == null) throw new NullPointerException("Unknown User");
-    		//TODO: Validate User fields
-    		
+    		if(newUser== null) throw new NullPointerException("Unknown User");
+    		newUser.save();
     	}catch (Exception e) {
-			throw new GameCircleException(e, 400); //TODO: consider to error Mapper once ready
+			throw new GameCircleException(e, 400 ); //TODO: consider to error Mapper once ready
 		}
 	}
 

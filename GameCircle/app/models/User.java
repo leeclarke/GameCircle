@@ -2,13 +2,16 @@ package models;
 
 import javax.persistence.Entity;
 
+import play.data.validation.CheckWith;
+import play.data.validation.Email;
 import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
 public class User extends Model {
-	public String email;
-    public String firstName;
+	
+	@Required @Email public String email;
+	@Required public String firstName;
     public String lastName;
     public String userName;
     public boolean isAGameMaster;
@@ -17,7 +20,7 @@ public class User extends Model {
     	this.userName = userName;
     }
     
-    public User(String email, String firstName, String lastName, String userName){
+    public User(String email, String firstName, String lastName, @Required(message="validation.user.uid.required") String userName){
     	this.email = email;
     	this.firstName = firstName;
     	this.lastName = lastName;
