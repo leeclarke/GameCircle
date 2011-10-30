@@ -29,13 +29,13 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         String json = getContent(response);
         
         JSONArray email = JsonPath.read(json, "$.[].email");
-        //TODO This test isnt getting the array
+        //TODO finish this test.
         
     }
     
     @Test
     public void testGetUser() throws ParseException, java.text.ParseException {
-        String uid = "JoeCoolDM";
+        String uid = "SuperEBear";
         Response response = GET("/rest/users/"+uid);
         assertStatus(200, response);
         validateContentType(response); 
@@ -43,10 +43,10 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         //TODO: Build tests from here: http://code.google.com/p/json-path/
         String json = getContent(response);
         
-        assertEquals("joeCool@gmail.com", JsonPath.read(json, "$.email"));
-        assertEquals("JoeCoolDM", JsonPath.read(json, "$.userName"));
-        assertEquals("Dave", JsonPath.read(json, "$.firstName"));
-        assertEquals("DM", JsonPath.read(json, "$.lastName"));
+        assertEquals("super.e.bear@gmail.com", JsonPath.read(json, "$.email"));
+        assertEquals("SuperEBear", JsonPath.read(json, "$.userName"));
+        assertEquals("Eli", JsonPath.read(json, "$.firstName"));
+        assertEquals("Clarke", JsonPath.read(json, "$.lastName"));
         assertEquals(false, JsonPath.read(json, "$.isAGameMaster"));
         
     }
@@ -56,6 +56,17 @@ public class UserFunctionalTest extends BaseFunctionalTest {
 	{
     	String expectedURI = "http://localhost:9000/rest/users/JoeCoolShmer";
     	Response response = POST("/rest/users/", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeCool%40gmail.com&firstName=Joe&userName=JoeCoolShmer&lastName=DM&isAGameMaster=true");
+    	assertStatus(303, response);
+    	//Content-Location
+    	String actualURI = response.headers.get("Content-Location").value();
+    	assertEquals(expectedURI, actualURI);
+	}
+    
+    @Test
+    public void testPutUser()
+	{
+    	String expectedURI = "http://localhost:9000/rest/users/JoeCoolDM";
+    	Response response = PUT("/rest/users/JoeCoolDM", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeIsCool%40gmail.com&firstName=Joe&userName=JoeCoolDM&lastName=DM&isAGameMaster=true");
     	assertStatus(303, response);
     	//Content-Location
     	String actualURI = response.headers.get("Content-Location").value();

@@ -7,3 +7,8 @@ User(JoeCoolDM):
    lastName: DM
    userName: JoeCoolDM
 
+User(SuperEBear):
+   email: super.e.bear@gmail.com
+   firstName: Eli
+   lastName: Clarke
+   userName: SuperEBear

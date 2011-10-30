@@ -82,13 +82,16 @@ public class UserService{
     @Path("/{id}")
     @Consumes("application/x-www-form-urlencoded")
     @Produces("application/json")
-    public User updateUser(@PathParam("id") final String uid, MultivaluedMap<String, String> formParams)
+    public Response updateUser(@PathParam("id") final String uid, MultivaluedMap<String, String> formParams)
 	{
-    	User user = UserDataMapper.buildUser(formParams);
+    	User user = UserDataMapper.updateUserFromPut(uid,formParams);
     	if(isExistingUser(user)){
     		validateAndSaveUser(user);
     	}
-    	return user;
+    	Map<String, String> params = new HashMap<String, String>();
+    	params.put("id", user.userName);
+    	
+    	return sendRedirect("users", "get-user", params);
 	}
     
     /**
@@ -102,7 +105,7 @@ public class UserService{
     		if(newUser== null) throw new NullPointerException("Unknown User");
     		newUser.save();
     	}catch (Exception e) {
-			throw new GameCircleException(e, 400 ); //TODO: consider to error Mapper once ready
+			throw new GameCircleException(e, 400 ); //TODO: consider adding error Mapper once ready
 		}
 	}
 
