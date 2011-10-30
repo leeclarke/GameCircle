@@ -1,6 +1,5 @@
 package controllers;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,20 +18,21 @@ import javax.ws.rs.core.Response;
 
 import play.data.validation.Validation;
 import play.test.Fixtures;
-import util.LinkBuilder;
 
 import models.User;
 import models.util.UserDataMapper;
 
-import com.google.gson.Gson;
 
 import exception.GameCircleException;
 
+//TODO: Add Links to User, Self, update for now.
+//TODO: Build out Error object that can be returned to client and id bad input.
 /**
+ * Provides all User management services.
  * @author lee
  */
 @Path("/users")
-public class UserService{ 
+public class UserService extends GameCircleService{ 
 
     @GET
     @Path("/{id}")
@@ -61,15 +61,13 @@ public class UserService{
     @Produces("application/json")
     public Response createUser(MultivaluedMap<String, String> formParams)
 	{
-    	reloadDataBase();
-    	
     	User newUser = UserDataMapper.buildUser(formParams);
     	if(!isExistingUser(newUser)){
     		validateAndSaveUser(newUser);
         	newUser.save();
     	} else {
     		throw new GameCircleException(new IllegalArgumentException("User ID already in use."), 404);
-    		//TODO: reconsider error handling on POSTs, might want to return JSON Error object.
+    		//TODO:Add Enhanced error handling on POSTs,  to return JSON Error object in Header.
     	}
     	
     	Map<String, String> params = new HashMap<String, String>();
@@ -122,21 +120,5 @@ public class UserService{
 			exists = false;
 		}
     	return exists;
-	}
-    
-    
-	private String toJSONString(Object o){
-        return (new Gson().toJson(o));
-    }
-
-	protected void reloadDataBase(){
-		Fixtures.deleteAllModels();
-		Fixtures.loadModels("data.yml");
-	}
-	
-	protected Response sendRedirect(String service, String action, Map<String, String> params){
-		URI uri  = LinkBuilder.buildURI(service, action, params);
-		
-		return Response.status(303).contentLocation(uri).build();
 	}
 }
