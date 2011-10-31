@@ -22,6 +22,7 @@ import models.util.UserDataMapper;
 import exception.GameCircleException;
 
 //TODO: Implement Error responses for POST/PUTs
+//TODO: Add negative tests to verify bad data is caught on POST/PUT. it isn't on POST and no messages returned on PUT. 
 /**
  * Provides all User management services.
  * @author lee

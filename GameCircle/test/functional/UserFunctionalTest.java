@@ -1,21 +1,11 @@
 package functional;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import net.minidev.json.JSONArray;
-import net.minidev.json.parser.ParseException;
-
+import org.codehaus.jettison.json.JSONArray;
 import org.junit.Test;
 
-import play.mvc.Http;
 import play.mvc.Http.Response;
-import play.test.FunctionalTest;
-import play.utils.HTTP;
-import sun.net.www.http.HttpClient;
 
 import com.jayway.jsonpath.JsonPath;
-import com.ning.http.client.HttpContent;
 
 public class UserFunctionalTest extends BaseFunctionalTest {
     
@@ -51,7 +41,7 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         assertEquals("http://localhost:9000/rest/users/SuperEBear", JsonPath.read(json, "$.links.self"));
         assertEquals("http://localhost:9000/rest/users/SuperEBear", JsonPath.read(json, "$.links.update"));
     }
-    
+//TODO: Add negative tests to verify bad data is caught. it isn't..    
     @Test
     public void testPostUser()
 	{
