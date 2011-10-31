@@ -2,10 +2,15 @@ package util;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.Map;
 
 import play.Play;
 
+/**
+ * Helps in building links for the return objects. 
+ * @author lee
+ */
 public class LinkBuilder {
     
     private static final String ACTION_KEY = "action.";
@@ -18,7 +23,7 @@ public class LinkBuilder {
      * @param service - service being called, defined in link-builder.conf
      * @param action - action defined in link-builder.conf
      * @param params - key,value for replacement params.
-     * @return - a URI String.
+     * @return - a URI.
      */
     public static URI buildURI(String service, String action, Map<String,String> params){
         configureRestPath();
@@ -34,7 +39,22 @@ public class LinkBuilder {
         return uri;
     }
     
-    
+	/**
+	 * Calls link builder with a single key,value pair replacement. Just makes the call easier when 
+	 * the Map isn't really important for the call. 
+	 * @param service - service being called, defined in link-builder.conf
+     * @param action - action defined in link-builder.conf
+	 * @param key - replacement key
+	 * @param value - value for replacement
+	 * @return - a URI.
+	 */
+	public static URI buildURI(String service, String action, String key, String value)
+	{
+		Map<String, String> params = new HashMap<String, String>();
+		params.put(key, value);
+		return LinkBuilder.buildURI(service, action, params);
+	}
+	
     /**
      * Processes key/values for template.
      * @param uri
@@ -74,5 +94,6 @@ public class LinkBuilder {
             LinkBuilder.restEasyPath = (String) Play.configuration.get("resteasy.path");
         }    
     }
-    
+
+
 }

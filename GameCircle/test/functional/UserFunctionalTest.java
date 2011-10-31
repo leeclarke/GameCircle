@@ -40,7 +40,6 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         assertStatus(200, response);
         validateContentType(response); 
         
-        //TODO: Build tests from here: http://code.google.com/p/json-path/
         String json = getContent(response);
         
         assertEquals("super.e.bear@gmail.com", JsonPath.read(json, "$.email"));
@@ -49,6 +48,8 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         assertEquals("Clarke", JsonPath.read(json, "$.lastName"));
         assertEquals(false, JsonPath.read(json, "$.isAGameMaster"));
         
+        assertEquals("http://localhost:9000/rest/users/SuperEBear", JsonPath.read(json, "$.links.self"));
+        assertEquals("http://localhost:9000/rest/users/SuperEBear", JsonPath.read(json, "$.links.update"));
     }
     
     @Test

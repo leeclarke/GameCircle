@@ -25,8 +25,8 @@ import models.util.UserDataMapper;
 
 import exception.GameCircleException;
 
-//TODO: Add Links to User, Self, update for now.
 //TODO: Build out Error object that can be returned to client and id bad input.
+//TODO: Build out a Collection Object with count and entries.
 /**
  * Provides all User management services.
  * @author lee
@@ -43,7 +43,8 @@ public class UserService extends GameCircleService{
 		if(user == null){
 		    throw new WebApplicationException(new IllegalArgumentException("Bad argument"), 404);
 		} else {
-		     return this.toJSONString(user);
+			user.initLinks();
+		    return this.toJSONString(user);
 		}
 	}
 	
@@ -51,7 +52,10 @@ public class UserService extends GameCircleService{
     @Produces("application/json")
 	public String getAllUsers(){
 		List<User> all = User.findAll();
-		
+		for (User user : all)
+		{
+			user.initLinks();
+		}
 		return this.toJSONString(all);
 	}
 
