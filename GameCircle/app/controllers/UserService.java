@@ -12,21 +12,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import play.data.validation.Validation;
-import play.test.Fixtures;
-
 import models.User;
+import models.util.ErrorMessages;
+import models.util.FieldError;
 import models.util.UserDataMapper;
-
-
 import exception.GameCircleException;
 
-//TODO: Build out Error object that can be returned to client and id bad input.
-//TODO: Build out a Collection Object with count and entries.
+//TODO: Implement Error responses for POST/PUTs
 /**
  * Provides all User management services.
  * @author lee
@@ -52,13 +47,28 @@ public class UserService extends GameCircleService{
     @Produces("application/json")
 	public String getAllUsers(){
 		List<User> all = User.findAll();
+		
 		for (User user : all)
 		{
 			user.initLinks();
 		}
+		
 		return this.toJSONString(all);
 	}
 
+    @POST
+    @Path("/error")
+    @Consumes("application/x-www-form-urlencoded")
+    @Produces("application/json")
+    public Response sendErr() {
+        
+        ErrorMessages errors = new ErrorMessages();
+        
+        errors.errors.add(new FieldError("firstName", "Required field.", true));
+        errors.errors.add(new FieldError("lastName", "invalid Char", false));
+        return sendError(errors);
+    }
+    
   
     @POST
     @Consumes("application/x-www-form-urlencoded")
