@@ -1,7 +1,7 @@
 package functional;
 
 import net.minidev.json.JSONArray;
-import net.minidev.json.parser.ParseException;
+
 import org.junit.Test;
 
 import play.mvc.Http.Response;
@@ -9,6 +9,12 @@ import play.mvc.Http.Response;
 import com.jayway.jsonpath.JsonPath;
 
 public class UserFunctionalTest extends BaseFunctionalTest {
+    
+//    @BeforeClass
+//    public static void clearData() {
+//        Fixtures.deleteDatabase();
+//        Fixtures.loadModels("data.yml");
+//    }
     
 	@Test
     public void testGetAllUsers() throws  java.text.ParseException {
@@ -60,7 +66,7 @@ public class UserFunctionalTest extends BaseFunctionalTest {
     	//Invalid email and missing first name.
     	String expectedURI = "http://localhost:9000/rest/users/JoeCoolShmer";
     	Response response = POST("/rest/users/", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeCool.dd&userName=InvalidShmer&lastName=DM&isAGameMaster=true");
-    	assertStatus(405, response);
+    	assertStatus(409, response);
     	//Content-Location
     	String actualURI = response.headers.get("Content-Location").value();
     	assertEquals(expectedURI, actualURI);
@@ -83,7 +89,7 @@ public class UserFunctionalTest extends BaseFunctionalTest {
 	{
     	String expectedURI = "http://localhost:9000/rest/users/JoeCoolDM";
     	Response response = PUT("/rest/users/JoeCoolDM", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeIsCoo$.com&firstName=&userName=JoeCoolDM&lastName=DM&isAGameMaster=true");
-    	assertStatus(303, response);
+    	assertStatus(409, response);
     	//Content-Location
     	String actualURI = response.headers.get("Content-Location").value();
     	assertEquals(expectedURI, actualURI);

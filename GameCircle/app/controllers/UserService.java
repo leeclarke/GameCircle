@@ -15,14 +15,12 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import play.data.validation.Validation;
-import play.data.validation.Validation.ValidationResult;
-
 import models.User;
 import models.util.ErrorMessages;
 import models.util.FieldError;
 import models.util.UserDataMapper;
-import exception.GameCircleException;
+import play.data.validation.Error;
+import play.data.validation.Validation;
 import exception.JSONException;
 
 //TODO: Implement Error responses for POST/PUTs
@@ -99,9 +97,7 @@ public class UserService extends GameCircleService
 			newUser.save();
 		} else
 		{
-			throw new GameCircleException(new IllegalArgumentException("User ID already in use."), 404);
-			// TODO:Add Enhanced error handling on POSTs, to return JSON Error
-			// object in Header.
+			return sendError(404,new FieldError("userName","User ID already in use.",true));
 		}
 
 		Map<String, String> params = new HashMap<String, String>();
@@ -128,6 +124,11 @@ public class UserService extends GameCircleService
 		} catch (JSONException e)
 		{
 			return sendError(e.errors);
+		} catch (Exception ex) {
+		    //TODO: Add mapper to map Runtime exceptions to an error message.
+		    ErrorMessages err = new ErrorMessages();
+		    err.addError(new FieldError("user",ex.getMessage(),false));
+		    return sendError(err);
 		}
 		return sendRedirect("users", "get-user", params);
 	}
@@ -141,35 +142,31 @@ public class UserService extends GameCircleService
 	 */
 	private void validateAndSaveUser(User newUser) throws WebApplicationException, JSONException
 	{
-		boolean valid = false;
+		int status = 303;
 		Validation validation = Validation.current();
-		try
+		if (newUser == null) {
+		    validation.addError("userName", "Invalid Account", "");
+		    status = 400;
+		}
+			
+		if(!newUser.validateAndSave()){
+		    validation.addError("user", "Unable to update User data.", "");
+		    status = 400;
+		}
+		validation.email(newUser.email);
+		validation.minSize("firstName", newUser.firstName, 2);
+		
+		ErrorMessages errors = new ErrorMessages();
+		if (validation.hasErrors())
 		{
-			if (newUser == null)
-				throw new NullPointerException("Unknown User");
-			valid = newUser.validateAndSave();
-			validation.email("email", newUser);
-			validation.minSize("firstName", newUser, 2);
-
-		} catch (Exception e)
-		{
-			throw new GameCircleException(e, 400); // TODO: consider adding
-													// error Mapper once ready
+		    for (Error err : validation.errors()) {
+                errors.errors.add(new FieldError(err.getKey(), err.toString(), false));
+            }
+			
+		     throw new JSONException(status, errors);
 		}
 
-		if (!valid)
-		{
 
-			ErrorMessages errors = new ErrorMessages();
-			errors.errors.add(new FieldError("Something", "Invalid data", false));
-			if (validation.hasErrors())
-			{
-				errors.errors.add(new FieldError("Validator", "HasErrors", false));
-//TODO:  remove all GameCircleExceptions and translate to JSONException Messages
-//TODO: Finish implementing Validation object used here, extract the errors and add to ErrorMessages.				
-			}
-			throw new JSONException(404, errors);
-		}
 	}
 
 	/**
@@ -177,10 +174,14 @@ public class UserService extends GameCircleService
 	 * 
 	 * @param newUser
 	 * @throws WebApplicationException
+	 * @throws JSONException 
 	 */
 	private boolean isExistingUser(User newUser) throws WebApplicationException
 	{
 		boolean exists = true;
+		if(newUser == null || newUser.userName == null){
+		    return false;
+		}
 		User user = User.getUserByUID(newUser.userName);
 		if (user == null)
 		{

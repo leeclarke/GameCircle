@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.ws.rs.core.Response;
 
 import models.util.ErrorMessages;
+import models.util.FieldError;
 import util.LinkBuilder;
 
 import com.google.gson.Gson;
@@ -45,11 +46,24 @@ public abstract class GameCircleService
 	/**
 	 * Returns an error of the specified status along with a structured JSON errorMessage collection for use by the front end.
 	 * @param errors
-	 * @return
+	 * @return - Response
 	 */
 	protected Response sendError(ErrorMessages errors)
     {
         Response resp = Response.status(errors.status).entity(toJSONString(errors)).build(); 
         return resp;
+    }
+
+    /**
+     * Returns an error of the specified status along with a structured JSON errorMessage collection for use by the front end.
+     * @param status - HTTP status
+     * @param fieldError - fieldError object
+     * @return - Response
+     */
+    protected Response sendError(int status, FieldError fieldError) {
+        ErrorMessages errors = new ErrorMessages();
+        errors.addError(fieldError);
+        errors.status = status;
+        return this.sendError(errors );
     }
 }

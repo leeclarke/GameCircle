@@ -1,6 +1,7 @@
 package exception;
 
 import models.util.ErrorMessages;
+import models.util.FieldError;
 
 
 /**
@@ -22,4 +23,16 @@ public class JSONException extends Exception
 		this.errors.status = status;
 	}
 
+	/**
+	 * @param status
+	 * @param fieldName
+	 * @param message
+	 */
+	public JSONException(int status, String fieldName, String message)
+    {
+        this.errors = new ErrorMessages();
+        this.errors.addError(new FieldError(fieldName, message, true));
+        this.errors.status = status;
+    }
+	
 }

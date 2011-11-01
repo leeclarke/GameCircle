@@ -1,10 +1,6 @@
 package models.util;
 
-import java.util.List;
-
 import javax.ws.rs.core.MultivaluedMap;
-
-import play.db.jpa.Model;
 
 import models.User;
 
@@ -23,11 +19,11 @@ public class UserDataMapper extends DataMapperUtils
 	 */
 	public static User buildUser(MultivaluedMap<String, String> formParams)
 	{
-		String userName = (String) getMapValue(formParams,"userName");
+		String userName = getMapValue(formParams,"userName");
 		User user = new User(userName);
-		user.email = (String) getMapValue(formParams,"email");
-		user.firstName = (String) getMapValue(formParams,"firstName");
-		user.lastName = (String) getMapValue(formParams,"lastName");
+		user.email = getMapValue(formParams,"email").toLowerCase();
+		user.firstName = getMapValue(formParams,"firstName");
+		user.lastName = getMapValue(formParams,"lastName");
 		user.isAGameMaster = getMapValueAsBoolean(formParams, "isAGameMaster");
 		return user;
 	}
@@ -42,9 +38,9 @@ public class UserDataMapper extends DataMapperUtils
 //		String userName = (String) getMapValue(formParams,"userName");
 		User user = User.getUserByUID(uid);
 		if(user != null){
-			updateIfChanged(user,"email", (String) getMapValue(formParams,"email"));
-			updateIfChanged(user,"firstName", (String) getMapValue(formParams,"firstName"));
-			updateIfChanged(user,"lastName", (String) getMapValue(formParams,"lastName"));
+			updateIfChanged(user,"email", getMapValue(formParams,"email").toLowerCase());
+			updateIfChanged(user,"firstName", getMapValue(formParams,"firstName"));
+			updateIfChanged(user,"lastName", getMapValue(formParams,"lastName"));
 			user.isAGameMaster = getMapValueAsBoolean(formParams, "isAGameMaster");
 		}
 		return user;
