@@ -7,6 +7,10 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import com.google.gson.Gson;
+
+import models.util.ErrorMessages;
+
 
 /**
  * Applications Exception handler, maps internal errors to HTTP Error codes and messages..
@@ -80,9 +84,23 @@ public class GameCircleException extends WebApplicationException
 	 * @param cause
 	 * @param status
 	 */
+	public GameCircleException(Throwable cause, int status, ErrorMessages errors)
+	{
+		super( Response.status(303).entity(toJSONString(errors)).build());
+	}
+	
+	/**
+	 * @param cause
+	 * @param status
+	 */
 	public GameCircleException(Throwable cause, Status status)
 	{
 		super(cause, status);
+		this.getResponse().getEntity();
 	}
 
+	protected static String toJSONString(Object o)
+	{
+	    return (new Gson().toJson(o));
+	}
 }

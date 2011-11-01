@@ -22,12 +22,12 @@ public class UserTest extends UnitTest {
 
 	@Test
 	public void testGetUser() {
-		User theDM = User.find("byUserName", "JoeCoolDM").first();
+		User theDM = User.find("byUserName", "SuperEBear").first();
 		
 		// Test
 		assertNotNull(theDM);
-		assertEquals("JoeCoolDM", theDM.userName);
-		assertEquals("Dave", theDM.firstName);
-		assertEquals("DM", theDM.lastName);
+		assertEquals("SuperEBear", theDM.userName);
+		assertEquals("Eli", theDM.firstName);
+		assertEquals("Clarke", theDM.lastName);
 	}
 }

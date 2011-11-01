@@ -1,6 +1,7 @@
 package functional;
 
-import org.codehaus.jettison.json.JSONArray;
+import net.minidev.json.JSONArray;
+import net.minidev.json.parser.ParseException;
 import org.junit.Test;
 
 import play.mvc.Http.Response;
@@ -10,7 +11,7 @@ import com.jayway.jsonpath.JsonPath;
 public class UserFunctionalTest extends BaseFunctionalTest {
     
 	@Test
-    public void testGetAllUsers() throws ParseException, java.text.ParseException {
+    public void testGetAllUsers() throws  java.text.ParseException {
         Response response = GET("/rest/users");
         assertStatus(200, response);
         validateContentType(response);
@@ -24,7 +25,7 @@ public class UserFunctionalTest extends BaseFunctionalTest {
     }
     
     @Test
-    public void testGetUser() throws ParseException, java.text.ParseException {
+    public void testGetUser() throws  java.text.ParseException {
         String uid = "SuperEBear";
         Response response = GET("/rest/users/"+uid);
         assertStatus(200, response);
@@ -41,7 +42,7 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         assertEquals("http://localhost:9000/rest/users/SuperEBear", JsonPath.read(json, "$.links.self"));
         assertEquals("http://localhost:9000/rest/users/SuperEBear", JsonPath.read(json, "$.links.update"));
     }
-//TODO: Add negative tests to verify bad data is caught. it isn't..    
+ 
     @Test
     public void testPostUser()
 	{
@@ -54,6 +55,19 @@ public class UserFunctionalTest extends BaseFunctionalTest {
 	}
     
     @Test
+    public void testPostUser_missingREquiredFields()
+	{
+    	//Invalid email and missing first name.
+    	String expectedURI = "http://localhost:9000/rest/users/JoeCoolShmer";
+    	Response response = POST("/rest/users/", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeCool.dd&userName=InvalidShmer&lastName=DM&isAGameMaster=true");
+    	assertStatus(405, response);
+    	//Content-Location
+    	String actualURI = response.headers.get("Content-Location").value();
+    	assertEquals(expectedURI, actualURI);
+	}
+    
+    
+    @Test
     public void testPutUser()
 	{
     	String expectedURI = "http://localhost:9000/rest/users/JoeCoolDM";
@@ -64,4 +78,14 @@ public class UserFunctionalTest extends BaseFunctionalTest {
     	assertEquals(expectedURI, actualURI);
 	}
     
+    @Test
+    public void testPutUser_badEmailFirstName()
+	{
+    	String expectedURI = "http://localhost:9000/rest/users/JoeCoolDM";
+    	Response response = PUT("/rest/users/JoeCoolDM", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeIsCoo$.com&firstName=&userName=JoeCoolDM&lastName=DM&isAGameMaster=true");
+    	assertStatus(303, response);
+    	//Content-Location
+    	String actualURI = response.headers.get("Content-Location").value();
+    	assertEquals(expectedURI, actualURI);
+	}
 }
