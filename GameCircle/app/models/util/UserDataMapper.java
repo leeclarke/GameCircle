@@ -38,7 +38,10 @@ public class UserDataMapper extends DataMapperUtils
 //		String userName = (String) getMapValue(formParams,"userName");
 		User user = User.getUserByUID(uid);
 		if(user != null){
-			updateIfChanged(user,"email", getMapValue(formParams,"email").toLowerCase());
+		    String email = getMapValue(formParams,"email");
+		    if(email != null) {
+		        updateIfChanged(user,"email", email.toLowerCase());
+		    }
 			updateIfChanged(user,"firstName", getMapValue(formParams,"firstName"));
 			updateIfChanged(user,"lastName", getMapValue(formParams,"lastName"));
 			user.isAGameMaster = getMapValueAsBoolean(formParams, "isAGameMaster");

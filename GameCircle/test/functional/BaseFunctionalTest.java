@@ -1,9 +1,13 @@
 package functional;
 
+import java.text.ParseException;
+
 import org.junit.Test;
 
 import play.mvc.Http.Response;
 import play.test.FunctionalTest;
+
+import com.jayway.jsonpath.JsonPath;
 
 
 public class BaseFunctionalTest extends FunctionalTest
@@ -29,5 +33,22 @@ public class BaseFunctionalTest extends FunctionalTest
     
     protected void validateContentType(Response response, String contentType){
     	assertHeaderEquals(HTTP_CONTENT_TYPE, contentType, response);
+    }
+    
+    /**
+     * Executes a JSONPath query on the response and returns that value.
+     * @param <T> expected value type in response
+     * @param path JSONPath expression
+     * @return value
+     */
+    protected <T> T getNode(String json, String path) {
+        
+        T value = null;
+        try {
+            value = JsonPath.<T>read(json, path);
+        } catch (ParseException e) {
+            fail(e.getLocalizedMessage());
+        }
+        return value;
     }
 }

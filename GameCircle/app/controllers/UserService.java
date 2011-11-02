@@ -66,20 +66,6 @@ public class UserService extends GameCircleService
 	}
 
 	@POST
-	@Path("/error")
-	@Consumes("application/x-www-form-urlencoded")
-	@Produces("application/json")
-	public Response sendErr()
-	{
-
-		ErrorMessages errors = new ErrorMessages();
-
-		errors.errors.add(new FieldError("firstName", "Required field.", true));
-		errors.errors.add(new FieldError("lastName", "invalid Char", false));
-		return sendError(errors);
-	}
-
-	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces("application/json")
 	public Response createUser(MultivaluedMap<String, String> formParams)
@@ -127,7 +113,7 @@ public class UserService extends GameCircleService
 		} catch (Exception ex) {
 		    //TODO: Add mapper to map Runtime exceptions to an error message.
 		    ErrorMessages err = new ErrorMessages();
-		    err.addError(new FieldError("user",ex.getMessage(),false));
+		    err.addError(new FieldError("user",ex.getMessage()+" ",false));
 		    return sendError(err);
 		}
 		return sendRedirect("users", "get-user", params);
@@ -146,27 +132,28 @@ public class UserService extends GameCircleService
 		Validation validation = Validation.current();
 		if (newUser == null) {
 		    validation.addError("userName", "Invalid Account", "");
-		    status = 400;
+		    status = 404;
 		}
-			
-		if(!newUser.validateAndSave()){
-		    validation.addError("user", "Unable to update User data.", "");
-		    status = 400;
-		}
+		
 		validation.email(newUser.email);
-		validation.minSize("firstName", newUser.firstName, 2);
+        validation.minSize("firstName", newUser.firstName, 2);
+		boolean updateSuccess = newUser.validateAndSave(); 
+		
+		//Catch a save error that wasn't from validation.
+		if(!updateSuccess && !validation.hasErrors()){
+            validation.addError("user", "Unable to update User data.", "");
+        }
 		
 		ErrorMessages errors = new ErrorMessages();
 		if (validation.hasErrors())
 		{
+		    status = 409;
 		    for (Error err : validation.errors()) {
                 errors.errors.add(new FieldError(err.getKey(), err.toString(), false));
             }
 			
 		     throw new JSONException(status, errors);
 		}
-
-
 	}
 
 	/**
