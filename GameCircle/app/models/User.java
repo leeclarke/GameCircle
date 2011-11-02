@@ -1,16 +1,14 @@
 package models;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.Transient;
 
-import org.jboss.resteasy.spi.touri.ObjectToURI;
-import org.jboss.resteasy.spi.touri.URITemplate;
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
 
-import play.data.validation.CheckWith;
 import play.data.validation.Email;
 import play.data.validation.Required;
 import play.db.jpa.Model;
@@ -58,5 +56,10 @@ public class User extends Model {
      */
     public static User getUserByUID(String uid){
     	return User.find("LOWER(UserName) = ?", uid.toLowerCase()).first();
+    }
+    
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }
