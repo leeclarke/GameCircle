@@ -10,11 +10,11 @@ import play.data.validation.Required;
 import play.db.jpa.Model;
 
 @Entity
-public class Adventure extends Model
-{
+public class Adventure extends Model {
 	public enum SaveType{
 		ONLINE, LOCAL, BOTH;
 	}
+
 	@Required  public String name;
 	public String backroundColor;
 	public String gridColor;
@@ -22,9 +22,11 @@ public class Adventure extends Model
 	public SaveType saveOptions;
 	
 	@ManyToOne
-    public User user;
+	public User user;
+	
 	
 	public Adventure(User user, String name){
+	    this.id = null;
 		this.user = user;
 		this.name = name;
 		this.saveOptions = SaveType.ONLINE;

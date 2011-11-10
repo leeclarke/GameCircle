@@ -23,8 +23,9 @@ import play.data.validation.Error;
 import play.data.validation.Validation;
 import exception.JSONException;
 
+//TODO: Add a getAdventuresForUser   /{id}/adventures/
 //TODO: Implement Error responses for POST/PUTs
-//TODO: Add negative tests to verify bad data is caught on POST/PUT. it isn't on POST and no messages returned on PUT. 
+ 
 /**
  * Provides all User management services.
  * 

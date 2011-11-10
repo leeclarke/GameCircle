@@ -3,7 +3,6 @@ import models.User;
 
 import org.junit.Test;
 
-import play.db.jpa.JPABase;
 import play.test.UnitTest;
 
 
@@ -22,9 +21,12 @@ public class AdventureTest  extends UnitTest
 		
 		Adventure resp = adv.save();
 		
-		assertEquals(advName, resp.name);
-		assertEquals(bgColor, resp.backroundColor);
-		assertEquals(aUser, resp.user);
+		Adventure adv1 = Adventure.findById(resp.id);
+		assertNotNull(adv1);
+		assertNotNull(adv1.id);
+		assertEquals(advName, adv1.name);
+		assertEquals(bgColor, adv1.backroundColor);
+		assertEquals(aUser, adv1.user);
 	}
 
 }

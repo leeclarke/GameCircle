@@ -1,5 +1,6 @@
 package models.render;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import models.Adventure;
@@ -13,12 +14,19 @@ import models.Adventure;
  */
 public class AdventureResource {
     
+    public String adventureId;
     public Preferences prefs;
     public SpriteMapping tileManConfig;
     public List<Map> mapData;  //TODO: consider rename when refactroring JSON model in UI.
     
     public AdventureResource(Adventure adventure) {
-
+        this.adventureId = adventure.name;
+        this.prefs = new Preferences();
+        this.prefs.bgColor = adventure.backroundColor;
+        this.prefs.gridColor = adventure.gridColor;
+        this.prefs.npcBorderColor = adventure.npcBorderColor;
+        this.prefs.placementTile = new MapTile("-1", "-1");
+        this.mapData = new ArrayList<Map>();
     }
     
     //JSON Example ,aka definition.

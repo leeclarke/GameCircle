@@ -46,9 +46,23 @@ public class DataMapperUtils
 	 */
 	public static Boolean getMapValueAsBoolean(MultivaluedMap<String, String> map, String key) {
 		if(key != null && map.containsKey(key)){
-			String strBool = (String) getMapValue(map,"isAGameMaster");
+			String strBool = getMapValue(map,key);
 			return (strBool != null && strBool.equalsIgnoreCase("true"))?Boolean.TRUE: Boolean.FALSE; 
 		}		
 		return Boolean.FALSE;
 	}
+	
+	/**
+	 * Returns a Long value based on map String value.
+	 * @param map - MultivaluedMap
+     * @param key - mapKey
+	 * @return - Long Value
+	 */
+	public static Long getMapValueAsLong(MultivaluedMap<String, String> map, String key) {
+        if(key != null && map.containsKey(key)){
+            String strLong = getMapValue(map,key);
+            return (strLong != null) ? Long.valueOf(strLong):new Long(-1); 
+        }       
+        return null;
+    }
 }

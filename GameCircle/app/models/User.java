@@ -1,9 +1,11 @@
 package models;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
@@ -25,6 +27,9 @@ public class User extends Model {
     @Required(message="validation.user.uid.required")public String userName;
     public boolean isAGameMaster;
     @Transient public Map<String,String> links;
+    
+    @OneToMany
+    List<Adventure> adventure;
     
     public User(String userName) {
     	this.userName = userName;
