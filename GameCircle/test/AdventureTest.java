@@ -1,3 +1,5 @@
+import java.util.List;
+
 import models.Adventure;
 import models.User;
 
@@ -29,4 +31,20 @@ public class AdventureTest  extends UnitTest
 		assertEquals(aUser, adv1.user);
 	}
 
+	@Test
+	public void findByUser(){
+		User aUser = User.find("byUserName", "SuperEBear").first();
+		assertNotNull(aUser);
+		
+		//Add an adv to be sure there is one.
+		String advName ="Eli's Grand Adventure";
+		String bgColor = "#FFFFFF";
+		Adventure adv = new Adventure(aUser,advName);
+		adv.backroundColor = bgColor;
+		
+		Adventure resp = adv.save();
+		
+		List<Adventure> advs = Adventure.findByUser(aUser);
+		assertTrue(advs.size()>0);
+	}
 }

@@ -15,6 +15,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import models.Adventure;
 import models.User;
 import models.util.ErrorMessages;
 import models.util.FieldError;
@@ -23,7 +24,6 @@ import play.data.validation.Error;
 import play.data.validation.Validation;
 import exception.JSONException;
 
-//TODO: Add a getAdventuresForUser   /{id}/adventures/
 //TODO: Implement Error responses for POST/PUTs
  
 /**
@@ -64,6 +64,14 @@ public class UserService extends GameCircleService
 		}
 
 		return this.toJSONString(all);
+	}
+	
+	@GET
+	@Path("/{id}/adventures")
+	@Produces("application/json")
+	public String getUserAdventures(@PathParam("id") final String uid){
+		User user = User.find("LOWER(UserName) = ?", uid.toLowerCase()).first();
+		return this.toJSONString(Adventure.findByUser(user));
 	}
 
 	@POST

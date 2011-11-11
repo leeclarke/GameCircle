@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -37,4 +39,7 @@ public class Adventure extends Model {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 	
+	public static  List<Adventure> findByUser(User user){
+		return Adventure.find("byUser", user).fetch();
+	}
 }

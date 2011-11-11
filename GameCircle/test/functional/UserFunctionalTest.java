@@ -96,4 +96,9 @@ public class UserFunctionalTest extends BaseFunctionalTest {
     	List<String> fieldNames = getNode(json, "$.errors.fieldName");
         assertTrue(fieldNames.contains(".firstName"));
 	}
+    
+    @Test
+    public void testGetUserAdventures(){
+    	assertFalse("Implement test!",true);
+    }
 }
