@@ -99,6 +99,15 @@ public class UserFunctionalTest extends BaseFunctionalTest {
     
     @Test
     public void testGetUserAdventures(){
+    	String expectedURI = "http://localhost:9000/rest/users/SuperEBear/adventures";
+    	String uid = "SuperEBear";
+		Response response = GET("/rest/users/"+uid +"/adventures");
+		assertStatus(200, response);
+		validateContentType(response);
+		String json = getContent(response);
+		assertNotNull(json);
+		List<String> fieldNames = getNode(json, "$.errors.fieldName");
+		
     	assertFalse("Implement test!",true);
     }
 }

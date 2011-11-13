@@ -21,7 +21,7 @@ public class AdventureDataMapper {
     public static Adventure buildAdventure(User user, MultivaluedMap<String, String> formParams) {
         
         Adventure newAdv = new Adventure(user, DataMapperUtils.getMapValue(formParams, "adventureName"));
-        newAdv.backroundColor = DataMapperUtils.getMapValue(formParams, "backroundColor");
+        newAdv.backgroundColor = DataMapperUtils.getMapValue(formParams, "backroundColor");
         newAdv.gridColor = DataMapperUtils.getMapValue(formParams, "gridColor");
         newAdv.id = DataMapperUtils.getMapValueAsLong(formParams, "id");
         

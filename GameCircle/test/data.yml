@@ -12,3 +12,13 @@ User(SuperEBear):
    firstName: Eli
    lastName: Clarke
    userName: SuperEBear
+
+Adventure(ADV_SuperEBear):
+   user: SuperEBear
+   name: Eli First Adv
+   backgroundColor: '#000000'
+   gridColor: '#345345'
+   npcBorderColor: '#110011'
+   
+
+

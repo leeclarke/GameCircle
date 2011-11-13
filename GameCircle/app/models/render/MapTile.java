@@ -7,4 +7,10 @@ public class MapTile {
     public MapTile(String id,String type){
         
     }
+
+	public MapTile()
+	{
+		this.id = "-1";
+		this.type = "-1";
+	}
 }

@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.Response;
 
 import models.Adventure;
 import models.User;
+import models.render.AdventureResource;
 import models.util.ErrorMessages;
 import models.util.FieldError;
 import models.util.UserDataMapper;
@@ -71,7 +73,14 @@ public class UserService extends GameCircleService
 	@Produces("application/json")
 	public String getUserAdventures(@PathParam("id") final String uid){
 		User user = User.find("LOWER(UserName) = ?", uid.toLowerCase()).first();
-		return this.toJSONString(Adventure.findByUser(user));
+		List<AdventureResource> advResources = new ArrayList<AdventureResource>();
+		List<Adventure> adventures = Adventure.findByUser(user);
+		for (Adventure adventure : adventures)
+		{
+			AdventureResource advRes = new AdventureResource(adventure);
+			advResources.add(advRes);
+		}
+		return this.toJSONString(advResources);
 	}
 
 	@POST
