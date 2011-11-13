@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Adventure;
-import models.SpriteSheetMapping;
 
 /**
  * The JSON model has already been determined for the UI so to simplify
@@ -29,8 +28,9 @@ public class AdventureResource {
         this.prefs.npcBorderColor = adventure.npcBorderColor;
         this.prefs.placementTile = new MapTile();
         this.mapData = new ArrayList<Map>();
-        this.tileManConfig = adventure.spriteMapping;
+        this.tileManConfig = new SpriteSheetMapping(adventure);
     }
+    
     
     //JSON Example ,aka definition.
     /*  emptyAdventureFile = {

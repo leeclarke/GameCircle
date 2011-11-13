@@ -20,5 +20,10 @@ Adventure(ADV_SuperEBear):
    gridColor: '#345345'
    npcBorderColor: '#110011'
    
-
+Sprite(testSprite):
+   name: WALL1
+   col: 0
+   row: 0
+   grouping: wall
+   adventure: ADV_SuperEBear
 

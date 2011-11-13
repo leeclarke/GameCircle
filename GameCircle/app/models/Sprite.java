@@ -16,7 +16,7 @@ public class Sprite extends Model{
     public String name;
     public Integer col;
     public Integer row;
-    public String group;
+    public String grouping;
     
     @ManyToOne
     public Adventure adventure; 

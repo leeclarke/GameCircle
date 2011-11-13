@@ -3,8 +3,8 @@ import java.util.List;
 
 import models.Adventure;
 import models.Sprite;
-import models.SpriteSheetMapping;
 import models.User;
+import models.render.SpriteSheetMapping;
 
 import org.junit.Test;
 
