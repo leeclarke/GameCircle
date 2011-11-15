@@ -10,5 +10,5 @@ public class SpriteMapping {
     public Integer tileWidth; 
     public Integer tileHeight;
     public String src;
-    public List<Sprite> namedTiles;
+    public List<SpriteResource> namedTiles;
 }

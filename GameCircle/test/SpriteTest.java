@@ -6,7 +6,6 @@ import models.User;
 
 import org.junit.Test;
 
-import play.db.jpa.JPABase;
 import play.test.UnitTest;
 
 public class SpriteTest extends UnitTest
@@ -33,5 +32,6 @@ public class SpriteTest extends UnitTest
 		
 		Sprite rtnSprite = Sprite.findById(resp.id);
 		assertNotNull(rtnSprite);
+		assertNotNull(rtnSprite.id);
 	}
 }

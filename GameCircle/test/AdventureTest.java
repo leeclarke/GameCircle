@@ -4,7 +4,6 @@ import java.util.List;
 import models.Adventure;
 import models.Sprite;
 import models.User;
-import models.render.SpriteSheetMapping;
 
 import org.junit.Test;
 
@@ -29,9 +28,17 @@ public class AdventureTest  extends UnitTest
 		adv.spriteTileHeight = tileSize;
 		adv.spriteSrc = "res/spriteSheet.jpg";
 		adv.spriteSheetNamedTiles = new ArrayList<Sprite>();
-		//TODO Add a sprite and test.
-			
 		Adventure resp = adv.save();
+		
+		//Test adding Sprites
+		//TODO Add a sprite and test.
+        Sprite testSprite = new Sprite("WALL1",1,2,"wall",adv);
+        testSprite.save();
+        new Sprite("FLOOR1",0,1,"floor",adv).save();
+//        adv.spriteSheetNamedTiles.add(testSprite);
+//        adv.save();
+//        adv.spriteSheetNamedTiles.add();
+		
 		
 		Adventure adv1 = Adventure.findById(resp.id);
 		assertNotNull(adv1);

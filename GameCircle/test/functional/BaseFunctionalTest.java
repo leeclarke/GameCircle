@@ -1,6 +1,7 @@
 package functional;
 
 import java.text.ParseException;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -10,6 +11,10 @@ import play.test.FunctionalTest;
 import com.jayway.jsonpath.JsonPath;
 
 
+/**
+ * The basis for all Functional Tests.
+ * @author leeclarke
+ */
 public class BaseFunctionalTest extends FunctionalTest
 {
     public static final String CONTENT_APPLICATION_JSON = "application/json";
@@ -50,5 +55,31 @@ public class BaseFunctionalTest extends FunctionalTest
             fail(e.getLocalizedMessage());
         }
         return value;
+    }
+
+    /**
+     * Validates that an JSONArray pulled from the given path contains a given value. 
+     * @param jsonPath - json path
+     * @param json - full json
+     * @param values - falues to validate are contained on the given apth.
+     */
+    protected void containsArrayValue(String jsonPath, String json, String... values) {
+        List<String> refNpcBorderColor = getNode(json, jsonPath);
+        for (int v = 0; v < values.length; v++) {
+            assertTrue(refNpcBorderColor.contains(values[v]));
+        }
+    }
+    
+    /**
+     * Validates that an JSONArray pulled from the given path contains a given value. 
+     * @param jsonPath - json path
+     * @param json - full json
+     * @param values - falues to validate are contained on the given apth.
+     */
+    protected void containsArrayValue(String jsonPath, String json, Integer... values) {
+        List<Integer> refNpcBorderColor = getNode(json, jsonPath);
+        for (int v = 0; v < values.length; v++) {
+            assertTrue(refNpcBorderColor.contains(values[v]));
+        }
     }
 }

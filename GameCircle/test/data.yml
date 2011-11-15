@@ -19,6 +19,9 @@ Adventure(ADV_SuperEBear):
    backgroundColor: '#000000'
    gridColor: '#345345'
    npcBorderColor: '#110011'
+   spriteTileWidth: 32
+   spriteTileHeight: 32
+   spriteSrc: res/spriteSheet.jpg
    
 Sprite(testSprite):
    name: WALL1
@@ -27,3 +30,16 @@ Sprite(testSprite):
    grouping: wall
    adventure: ADV_SuperEBear
 
+Sprite(testSprite1):
+   name: FLOOR1
+   col: 1
+   row: 2
+   grouping: floor
+   adventure: ADV_SuperEBear
+
+Sprite(testSprite2):
+   name: DOOR1
+   col: 2
+   row: 3
+   grouping: door
+   adventure: ADV_SuperEBear

@@ -17,6 +17,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import models.Adventure;
+import models.Sprite;
 import models.User;
 import models.render.AdventureResource;
 import models.util.AdventureDataMapper;
@@ -46,7 +47,8 @@ public class AdventureService extends GameCircleService{
         {
             List<AdventureResource> advColl = new ArrayList<AdventureResource>();
             for (Adventure adventure : adventures) {
-                AdventureResource advResource = new AdventureResource(adventure);
+                List<Sprite> sprites = Sprite.findByAdventure(adventure); //Sort of hack-ish but JPA is failing to populate and I'm tired of debugging the thing.
+                AdventureResource advResource = new AdventureResource(adventure, sprites);
                 advColl.add(advResource);
             }
            
@@ -65,7 +67,8 @@ public class AdventureService extends GameCircleService{
             throw new WebApplicationException(new IllegalArgumentException("Bad argument id="+id), 404);
         } else
         {
-    	    AdventureResource advResource = new AdventureResource(adventure);
+            List<Sprite> sprites = Sprite.findByAdventure(adventure); //Sort of hack-ish but JPA is failing to populate and I'm tired of debugging the thing.
+            AdventureResource advResource = new AdventureResource(adventure, sprites);
     	    return toJSONString(advResource);
         }
 	}

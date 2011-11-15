@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.Adventure;
+import models.Sprite;
 
 /**
  * The JSON model has already been determined for the UI so to simplify
@@ -19,7 +20,7 @@ public class AdventureResource {
     public SpriteSheetMapping tileManConfig;
     public List<Map> mapData;  //TODO: consider rename when refactroring JSON model in UI.
     
-    public AdventureResource(Adventure adventure) {
+    public AdventureResource(Adventure adventure, List<Sprite> sprites) {
     	this.userId = adventure.user.userName;
         this.adventureId = adventure.name;
         this.prefs = new Preferences();
@@ -28,7 +29,7 @@ public class AdventureResource {
         this.prefs.npcBorderColor = adventure.npcBorderColor;
         this.prefs.placementTile = new MapTile();
         this.mapData = new ArrayList<Map>();
-        this.tileManConfig = new SpriteSheetMapping(adventure);
+        this.tileManConfig = new SpriteSheetMapping(adventure,sprites);
     }
     
     

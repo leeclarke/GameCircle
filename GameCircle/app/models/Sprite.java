@@ -1,9 +1,9 @@
 package models;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 import play.db.jpa.Model;
 
@@ -20,4 +20,20 @@ public class Sprite extends Model{
     
     @ManyToOne
     public Adventure adventure; 
+    
+    public Sprite(){
+        
+    }
+    
+    public Sprite(String name, Integer col, Integer row, String grouping, Adventure adv){
+        this.name = name;
+        this.col = col;
+        this.row = row;
+        this.grouping = grouping;
+        this.adventure = adv;
+    }
+    
+    public static  List<Sprite> findByAdventure(Adventure adv){
+        return Sprite.find("byAdventure", adv).fetch();
+    }
 }

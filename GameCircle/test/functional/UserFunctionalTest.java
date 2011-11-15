@@ -3,8 +3,6 @@ package functional;
 import java.text.ParseException;
 import java.util.List;
 
-import net.minidev.json.JSONArray;
-
 import org.junit.Test;
 
 import play.mvc.Http.Response;
@@ -19,12 +17,8 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         assertStatus(200, response);
         validateContentType(response);
         
-        //TODO: Build tests from here: http://code.google.com/p/json-path/
         String json = getContent(response);
-        
-        JSONArray email = JsonPath.read(json, "$.[].email");
-        //TODO finish this test.
-        
+        containsArrayValue("$.email", json, "super.e.bear@gmail.com");
     }
     
     @Test
@@ -63,7 +57,6 @@ public class UserFunctionalTest extends BaseFunctionalTest {
     public void testPostUser_missingREquiredFields() throws ParseException
 	{
     	//Invalid email and missing first name.
-    	String expectedURI = "http://localhost:9000/rest/users";
     	Response response = POST("/rest/users/", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeCool.dd&userName=InvalidShmer&lastName=DM&isAGameMaster=true");
     	assertStatus(409, response);
     	validateContentType(response); 
@@ -88,7 +81,6 @@ public class UserFunctionalTest extends BaseFunctionalTest {
     @Test
     public void testPutUser_badEmailFirstName()
 	{
-    	String expectedURI = "http://localhost:9000/rest/users/SuperEBear";
     	Response response = PUT("/rest/users/JoeCoolDM", APPLICATION_X_WWW_FORM_URLENCODED,"email=joeIsCoo$.com&firstName=&userName=JoeCoolDM&lastName=DM&isAGameMaster=true");
     	assertStatus(409, response);
     	validateContentType(response); 
@@ -110,11 +102,16 @@ public class UserFunctionalTest extends BaseFunctionalTest {
 		List<String> uids = getNode(json, "$.userId");
 		assertNotNull(uids);
 		assertEquals(uid, uids.get(0));
-		List<String> names = getNode(json, "$.adventureId");
-		assertTrue(names.contains("Eli First Adv"));
+
+		containsArrayValue("$.adventureId",json, "Eli First Adv");
+		containsArrayValue("$.prefs.bgColor",json, "#000000");
+		containsArrayValue("$.prefs.gridColor",json, "#345345");
+		containsArrayValue("$.prefs.npcBorderColor",json, "#110011");
 		
-		//
-		
-    	assertFalse("Implement test!",true);
+		containsArrayValue("$.tileManConfig.tileWidth",json, 32);
+		containsArrayValue("$.tileManConfig.tileHeight",json, 32);
+		containsArrayValue("$.tileManConfig.src",json, "res/spriteSheet.jpg");
+		//containsArrayValue("$.tileManConfig.namedTiles.",json, "");
     }
+    
 }

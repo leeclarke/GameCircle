@@ -17,6 +17,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import models.Adventure;
+import models.Sprite;
 import models.User;
 import models.render.AdventureResource;
 import models.util.ErrorMessages;
@@ -75,9 +76,12 @@ public class UserService extends GameCircleService
 		User user = User.find("LOWER(UserName) = ?", uid.toLowerCase()).first();
 		List<AdventureResource> advResources = new ArrayList<AdventureResource>();
 		List<Adventure> adventures = Adventure.findByUser(user);
+		
 		for (Adventure adventure : adventures)
 		{
-			AdventureResource advRes = new AdventureResource(adventure);
+		    List<Sprite> sprites = Sprite.findByAdventure(adventure); //Sort of hack-ish but JPA is failing to populate and I'm tired of debugging the thing.
+			AdventureResource advRes = new AdventureResource(adventure, sprites);  
+			
 			advResources.add(advRes);
 		}
 		return this.toJSONString(advResources);
