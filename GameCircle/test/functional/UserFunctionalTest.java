@@ -44,6 +44,7 @@ public class UserFunctionalTest extends BaseFunctionalTest {
         
         assertEquals("http://localhost:9000/rest/users/SuperEBear", JsonPath.read(json, "$.links.self"));
         assertEquals("http://localhost:9000/rest/users/SuperEBear", JsonPath.read(json, "$.links.update"));
+        assertEquals("http://localhost:9000/rest/users/SuperEBear/adventures", JsonPath.read(json, "$.links.adventures"));
     }
  
     @Test
@@ -106,7 +107,13 @@ public class UserFunctionalTest extends BaseFunctionalTest {
 		validateContentType(response);
 		String json = getContent(response);
 		assertNotNull(json);
-		List<String> fieldNames = getNode(json, "$.errors.fieldName");
+		List<String> uids = getNode(json, "$.userId");
+		assertNotNull(uids);
+		assertEquals(uid, uids.get(0));
+		List<String> names = getNode(json, "$.adventureId");
+		assertTrue(names.contains("Eli First Adv"));
+		
+		//
 		
     	assertFalse("Implement test!",true);
     }

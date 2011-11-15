@@ -52,6 +52,7 @@ public class User extends Model {
     	}
     	this.links.put("self",LinkBuilder.buildURI(USERS, "get-user", ID,this.userName).toString());
     	this.links.put("update",LinkBuilder.buildURI(USERS, "update-user", ID,this.userName).toString());
+    	this.links.put("adventures",LinkBuilder.buildURI(USERS, "get-user-adventures", ID,this.userName).toString());
     }
     
     /**
