@@ -16,20 +16,20 @@ import models.Sprite;
 public class AdventureResource {
     public String userId;
     public String adventureId;
-    public Preferences prefs;
-    public SpriteSheetMapping tileManConfig;
-    public List<Map> mapData;  //TODO: consider rename when refactroring JSON model in UI.
+    public PreferencesResource prefs;
+    public SpriteSheetMappingResource tileManConfig;
+    public List<MapResource> mapData;  //TODO: consider rename when refactroring JSON model in UI.
     
     public AdventureResource(Adventure adventure, List<Sprite> sprites) {
     	this.userId = adventure.user.userName;
         this.adventureId = adventure.name;
-        this.prefs = new Preferences();
+        this.prefs = new PreferencesResource();
         this.prefs.bgColor = adventure.backgroundColor;
         this.prefs.gridColor = adventure.gridColor;
         this.prefs.npcBorderColor = adventure.npcBorderColor;
-        this.prefs.placementTile = new MapTile();
-        this.mapData = new ArrayList<Map>();
-        this.tileManConfig = new SpriteSheetMapping(adventure,sprites);
+        this.prefs.placementTile = new MapTileResource();
+        this.mapData = new ArrayList<MapResource>();
+        this.tileManConfig = new SpriteSheetMappingResource(adventure,sprites);
     }
     
     
