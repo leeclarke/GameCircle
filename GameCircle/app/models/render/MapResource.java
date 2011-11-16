@@ -20,6 +20,7 @@ import org.joda.time.DateTime;
  */
 public class MapResource {
 
+    public String title;
     public Integer rows;
     public Integer cols;
     public DateTime createTimeDate;

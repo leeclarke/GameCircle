@@ -1,10 +1,13 @@
 package models.render;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import models.Adventure;
 import models.Sprite;
+import util.LinkBuilder;
 
 /**
  * The JSON model has already been determined for the UI so to simplify
@@ -14,13 +17,20 @@ import models.Sprite;
  * @author leeclarke
  */
 public class AdventureResource {
+    //Note: marking things transient will prevent them from being rendered in JSON.
+    private transient static final String ADVENTURE = "adventure";
+    private transient static final String ID = "id";
+    
+    private transient Long id; 
     public String userId;
     public String adventureId;
     public PreferencesResource prefs;
     public SpriteSheetMappingResource tileManConfig;
     public List<MapResource> mapData;  //TODO: consider rename when refactroring JSON model in UI.
+    public Map<String,String> links;
     
     public AdventureResource(Adventure adventure, List<Sprite> sprites) {
+        this.id = adventure.id;
     	this.userId = adventure.user.userName;
         this.adventureId = adventure.name;
         this.prefs = new PreferencesResource();
@@ -30,8 +40,20 @@ public class AdventureResource {
         this.prefs.placementTile = new MapTileResource();
         this.mapData = new ArrayList<MapResource>();
         this.tileManConfig = new SpriteSheetMappingResource(adventure,sprites);
+        initLinks();
     }
     
+    /**
+     * Initialize links for json responses. Doing this in the constructor doesn't do much good because JPA doesn't 
+     * seem to call the constructor.
+     */
+    public void initLinks(){
+        if(this.links == null){
+            this.links = new HashMap<String, String>(); 
+        }
+        this.links.put("self",LinkBuilder.buildURI(ADVENTURE, "get-adventure", ID, this.id.toString()).toString());
+        this.links.put("update",LinkBuilder.buildURI(ADVENTURE, "update-user", ID,this.id.toString()).toString());
+    }
     
     //JSON Example ,aka definition.
     /*  emptyAdventureFile = {

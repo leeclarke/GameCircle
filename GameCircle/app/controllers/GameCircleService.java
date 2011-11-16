@@ -1,5 +1,6 @@
 package controllers;
 
+import java.lang.reflect.Modifier;
 import java.net.URI;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import models.util.FieldError;
 import util.LinkBuilder;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 
 /**
@@ -20,13 +22,17 @@ public abstract class GameCircleService
 {
 
 	/**
-	 * convert object to JSON.
-	 * @param o
+	 * Convert object to JSON.
+	 * Note: marking things transient will prevent them from being rendered in JSON.
+	 * @param o - object
 	 * @return - JSON stirng
 	 */
 	protected String toJSONString(Object o)
 	{
-	    return (new Gson().toJson(o));
+	    Gson gson = new GsonBuilder()
+        .excludeFieldsWithModifiers(Modifier.TRANSIENT)  
+        .create();
+	    return (gson.toJson(o));
 	}
 
 	/**
