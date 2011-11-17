@@ -11,13 +11,17 @@ import play.db.jpa.Model;
  */
 @Entity
 public class MapTile extends Model{
+	public Integer row;
+	public Integer col;
     public String spriteId;
     public String type;
     
     @ManyToOne
     public AdventureMap map;
     
-    public MapTile(AdventureMap map, String spriteId,String type){
+    public MapTile(AdventureMap map, Integer row, Integer col, String spriteId,String type){
+    	this.row = row;
+    	this.col = col;
         this.map = map;
         this.spriteId = spriteId;
         this.type = type;

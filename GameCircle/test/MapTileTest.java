@@ -30,7 +30,7 @@ public class MapTileTest extends UnitTest{
         assertNotNull(newMap);
         assertNotNull(newMap.id);
         
-        MapTile  mapTile = new MapTile(newMap,"1","2").save();
+        MapTile  mapTile = new MapTile(newMap, 1, 1,"1","2").save();
         assertNotNull(mapTile);
         assertNotNull(mapTile.id);
         assertEquals("1", mapTile.spriteId);

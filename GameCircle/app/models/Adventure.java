@@ -31,6 +31,9 @@ public class Adventure extends Model {
     
     @OneToMany
     public List<Sprite> spriteSheetNamedTiles;
+    
+    @OneToMany(mappedBy="adventure")
+    public List<AdventureMap> maps;
 	
 	@ManyToOne
 	public User user;

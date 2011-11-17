@@ -81,7 +81,7 @@ public class UserService extends GameCircleService
 		{
 		    List<Sprite> sprites = Sprite.findByAdventure(adventure); //Sort of hack-ish but JPA is failing to populate and I'm tired of debugging the thing.
 			AdventureResource advRes = new AdventureResource(adventure, sprites);  
-			
+			advRes.mapData = null;  //Hide field, not rendered at this level.
 			advResources.add(advRes);
 		}
 		return this.toJSONString(advResources);

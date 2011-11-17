@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.Adventure;
+import models.AdventureMap;
 import models.Sprite;
 import util.LinkBuilder;
 
@@ -38,12 +39,21 @@ public class AdventureResource {
         this.prefs.gridColor = adventure.gridColor;
         this.prefs.npcBorderColor = adventure.npcBorderColor;
         this.prefs.placementTile = new MapTileResource();
-        this.mapData = new ArrayList<MapResource>();
         this.tileManConfig = new SpriteSheetMappingResource(adventure,sprites);
+        initMaps(adventure);
         initLinks();
     }
     
-    /**
+    private void initMaps(Adventure adventure2)
+	{
+    	this.mapData = new ArrayList<MapResource>();
+    	for (AdventureMap advMap : adventure2.maps)
+		{
+    		this.mapData.add(new MapResource(advMap));
+		}
+	}
+
+	/**
      * Initialize links for json responses. Doing this in the constructor doesn't do much good because JPA doesn't 
      * seem to call the constructor.
      */

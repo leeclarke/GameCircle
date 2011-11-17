@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import play.db.jpa.JPABase;
 import play.db.jpa.Model;
 
@@ -23,8 +26,8 @@ public class AdventureMap extends Model{
     public Date createTimeDate;
     public Date updateTimeDate;
     
-    @OneToMany
-    public List<MapTile> map;
+    @OneToMany(mappedBy="map")
+    public List<MapTile> mapTiles;
     
     @ManyToOne
     public Adventure adventure;
@@ -40,5 +43,10 @@ public class AdventureMap extends Model{
         }
         this.updateTimeDate = new Date();
         return super.save();
+    }
+    
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }
