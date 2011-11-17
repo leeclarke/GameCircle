@@ -35,5 +35,17 @@ public class MapTileTest extends UnitTest{
         assertNotNull(mapTile.id);
         assertEquals("1", mapTile.spriteId);
         assertEquals("2", mapTile.type);
+        
+        MapTile mapTile2 = new MapTile(newMap, 1, 2,"1","2").save();
+        assertNotNull(mapTile2);
+        assertNotNull(mapTile2.id);
+        assertEquals("1", mapTile2.spriteId);
+        assertEquals("2", mapTile2.type);
+        
+        MapTile mapTile3 = new MapTile(newMap, 0, 1,"1","2").save();
+        assertNotNull(mapTile3);
+        assertNotNull(mapTile3.id);
+        assertEquals("1", mapTile3.spriteId);
+        assertEquals("2", mapTile3.type);
     }
 }

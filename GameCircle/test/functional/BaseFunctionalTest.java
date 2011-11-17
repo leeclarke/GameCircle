@@ -82,4 +82,14 @@ public class BaseFunctionalTest extends FunctionalTest
             assertTrue(refNpcBorderColor.contains(values[v]));
         }
     }
+
+	protected void validateJsonValue(Integer expected, String json, String path) throws ParseException
+	{
+		assertEquals(expected, JsonPath.read(json, path));
+	}
+
+	protected void validateJsonValue(String expected, String json, String path) throws ParseException
+	{
+		assertEquals(expected, JsonPath.read(json, path));
+	}
 }

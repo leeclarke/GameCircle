@@ -37,9 +37,9 @@ public class AdventureService extends GameCircleService{
 
     @GET
     @Produces("application/json")
-    public String getAdventure(){
+    public String getAllAdventures(){
         List<Adventure> adventures = Adventure.findAll();
-        
+ //TODO: Remove, this would expose all adventures to all users.       
         if (adventures == null)
         {
             throw new WebApplicationException(new IllegalArgumentException("Bad argument"), 404);
