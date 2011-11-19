@@ -58,4 +58,18 @@ public class AdventureFunctionalTest extends BaseFunctionalTest {
 //            assertTrue(refNpcBorderColor.contains(values[v]));
 //        }
 //	}
+    
+    @Test
+    public void testPostAdventure()
+	{
+        String uid = "test"+System.currentTimeMillis();
+    	String expectedURI = "http://localhost:9000/rest/adventure";
+    	Response response = POST("/rest/adventure/", APPLICATION_X_WWW_FORM_URLENCODED,"userId=SuperEBear&adventureId=Eli's+Next+Adventure&prefs.bgColor=%23000000&prefs.gridColor=%23556677&prefs.npcBorderColor=%23666666&prefs.saveType=ONLINE&prefs.placementTile.id=1&prefs.placementTile.type=1");
+    	assertStatus(303, response);
+    	//Content-Location
+    	String actualURI = response.headers.get("Content-Location").value();
+    	
+    	assertTrue(actualURI.contains(expectedURI));
+	}
+    
 }

@@ -25,6 +25,9 @@ public class Adventure extends Model {
 	public String npcBorderColor;
 	public SaveType saveOptions = SaveType.ONLINE;
 	
+	public String placementTileId;
+	public String placementTileType;
+	
 	public Integer spriteTileWidth; 
     public Integer spriteTileHeight;
     public String spriteSrc;
@@ -42,6 +45,8 @@ public class Adventure extends Model {
 	    this.id = null;
 		this.user = user;
 		this.name = name;
+		this.placementTileId = "-1";
+		this.placementTileType = "-1";
 	}
 	
 	@Override

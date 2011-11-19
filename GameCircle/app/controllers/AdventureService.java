@@ -73,12 +73,18 @@ public class AdventureService extends GameCircleService{
         }
 	}
 	
+	/**
+	 * Adds top level data not the entire map.
+	 * Fields: userId, adventureId, prefs.bgColor, prefs.gridColor, prefs.npcBorderColor, prefs.saveType, prefs.placementTile.id, prefs.placementTile.type
+	 * @param formParams
+	 * @return
+	 */
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
     @Produces("application/json")
     public Response addAdventure(MultivaluedMap<String, String> formParams){
 	    //get User
-	    String uid = formParams.getFirst("UID");
+	    String uid = formParams.getFirst("userId");
 	    User user = User.getUserByUID(uid);
 	    Adventure newAdv = AdventureDataMapper.buildAdventure(user, formParams);
         if (!isExistingAdventure(newAdv)) {
@@ -87,9 +93,7 @@ public class AdventureService extends GameCircleService{
             } catch (JSONException jsonE) {
                 return sendError(jsonE.errors);
             }
-//            newAdv.merge();
             newAdv = newAdv.save();
-            //user.addAdventure(newAdv);
         } else {
             return sendError(404, new FieldError("adventureName", "Adventure Name already in use by you.", true));
         }
@@ -108,7 +112,7 @@ public class AdventureService extends GameCircleService{
         Adventure newAdv;
         try {
             User user = AdventureDataMapper.retrieveUser(formParams);
-
+//TODO: Build this next. Need to decide if going to take the full JSON or simply take form params for part of the Adventure. UI would prefer to PUT the entire JSON.
             newAdv = AdventureDataMapper.buildAdventure(user, formParams);
             if (isExistingAdventure(newAdv)) {
                 try {

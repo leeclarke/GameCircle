@@ -4,6 +4,7 @@ import javax.ws.rs.core.MultivaluedMap;
 
 import models.Adventure;
 import models.User;
+import models.Adventure.SaveType;
 import exception.JSONException;
 
 /**
@@ -19,11 +20,15 @@ public class AdventureDataMapper {
      * @return
      */
     public static Adventure buildAdventure(User user, MultivaluedMap<String, String> formParams) {
+        Adventure newAdv = new Adventure(user, DataMapperUtils.getMapValue(formParams, "adventureId"));
+        newAdv.backgroundColor = DataMapperUtils.getMapValue(formParams, "prefs.bgColor");
+        newAdv.gridColor = DataMapperUtils.getMapValue(formParams, "prefs.gridColor");
+        newAdv.npcBorderColor = DataMapperUtils.getMapValue(formParams, "prefs.npcBorderColor");
+        String saveTypeString = DataMapperUtils.getMapValue(formParams, "prefs.saveType");
+        newAdv.saveOptions = SaveType.valueOf(saveTypeString);
         
-        Adventure newAdv = new Adventure(user, DataMapperUtils.getMapValue(formParams, "adventureName"));
-        newAdv.backgroundColor = DataMapperUtils.getMapValue(formParams, "backroundColor");
-        newAdv.gridColor = DataMapperUtils.getMapValue(formParams, "gridColor");
-        newAdv.id = DataMapperUtils.getMapValueAsLong(formParams, "id");
+        newAdv.placementTileId = DataMapperUtils.getMapValue(formParams, "prefs.placementTile.id");
+        newAdv.placementTileType = DataMapperUtils.getMapValue(formParams, "prefs.placementTile.type");
         
         return newAdv;
     }
