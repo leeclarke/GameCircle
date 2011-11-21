@@ -19,20 +19,31 @@ public class AdventureDataMapper {
      * @param formParams
      * @return
      */
-    public static Adventure buildAdventure(User user, MultivaluedMap<String, String> formParams) {
-        Adventure newAdv = new Adventure(user, DataMapperUtils.getMapValue(formParams, "adventureId"));
-        newAdv.backgroundColor = DataMapperUtils.getMapValue(formParams, "prefs.bgColor");
-        newAdv.gridColor = DataMapperUtils.getMapValue(formParams, "prefs.gridColor");
-        newAdv.npcBorderColor = DataMapperUtils.getMapValue(formParams, "prefs.npcBorderColor");
-        String saveTypeString = DataMapperUtils.getMapValue(formParams, "prefs.saveType");
-        newAdv.saveOptions = SaveType.valueOf(saveTypeString);
-        
-        newAdv.placementTileId = DataMapperUtils.getMapValue(formParams, "prefs.placementTile.id");
-        newAdv.placementTileType = DataMapperUtils.getMapValue(formParams, "prefs.placementTile.type");
-        
-        return newAdv;
-    }
+	public static Adventure buildAdventure(User user, MultivaluedMap<String, String> formParams)
+	{
+		Adventure newAdv = new Adventure(user, DataMapperUtils.getMapValue(formParams, "adventureId"));
+		AdventureDataMapper.mapFields(newAdv, formParams);
+		return newAdv;
+	}
 
+	/**
+	 * 
+	 * @param adventure
+	 * @param formParams
+	 */
+	public static void mapFields(Adventure adventure, MultivaluedMap<String, String> formParams)
+	{
+		adventure.backgroundColor = DataMapperUtils.getMapValue(formParams, "prefs.bgColor");
+		adventure.gridColor = DataMapperUtils.getMapValue(formParams, "prefs.gridColor");
+		adventure.npcBorderColor = DataMapperUtils.getMapValue(formParams, "prefs.npcBorderColor");
+		String saveTypeString = DataMapperUtils.getMapValue(formParams, "prefs.saveType");
+		adventure.saveOptions = SaveType.valueOf(saveTypeString);
+
+		adventure.placementTileId = DataMapperUtils.getMapValue(formParams, "prefs.placementTile.id");
+		adventure.placementTileType = DataMapperUtils.getMapValue(formParams, "prefs.placementTile.type");
+
+	}
+	
     /**
      * Retrieves a User to be used when persisting the Adventure.
      * @param formParams

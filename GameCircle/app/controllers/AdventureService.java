@@ -104,35 +104,41 @@ public class AdventureService extends GameCircleService{
 	    return sendRedirect("adventure", "get-adventure", params);
 	}
 	
+	/**
+	 * Updates the following parts of the Adventure.
+	 * Fields: userId, adventureId, prefs.bgColor, prefs.gridColor, prefs.npcBorderColor, prefs.saveType, prefs.placementTile.id, prefs.placementTile.type
+	 * @param formParams
+	 * @return
+	 */
 	@PUT
 	@Path("/{id}")
 	@Consumes("application/x-www-form-urlencoded")
     @Produces("application/json")
-    public Response saveAdventure(MultivaluedMap<String, String> formParams) {
-        Adventure newAdv;
-        try {
-            User user = AdventureDataMapper.retrieveUser(formParams);
-//TODO: Build this next. Need to decide if going to take the full JSON or simply take form params for part of the Adventure. UI would prefer to PUT the entire JSON.
-            newAdv = AdventureDataMapper.buildAdventure(user, formParams);
-            if (isExistingAdventure(newAdv)) {
-                try {
-                    validateAdventure(newAdv);
-                } catch (JSONException jsonE) {
-                    return sendError(jsonE.errors);
-                }
-                newAdv.save();
-            } else {
-                return sendError(404, new FieldError("adventureName", "Adventure Doesn't exist, post as new.", true));
+    public Response saveAdventure(@PathParam("id") final Long id, MultivaluedMap<String, String> formParams) {
+		
+	    String uid = formParams.getFirst("userId");
+	    User user = User.getUserByUID(uid);
+	    Adventure adventure = Adventure.findById(id);
+	    if(adventure.user != user){
+	    	return sendError(404, new FieldError("userId", "That adventure does not belong to you.", true));
+	    }
+	    
+	    AdventureDataMapper.mapFields(adventure, formParams);
+        if (isExistingAdventure(adventure)) {
+            try {
+                validateAdventure(adventure);
+            } catch (JSONException jsonE) {
+                return sendError(jsonE.errors);
             }
-
-        } catch (JSONException e) {
-            return sendError(e.errors);
+            adventure = adventure.save();
+        } else {
+            return sendError(404, new FieldError("adventureName", "Adventure Name already in use by you.", true));
         }
         
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("id", String.valueOf(newAdv.id));
-
-        return sendRedirect("adventure", "get-adventure", params);
+	    Map<String, String> params = new HashMap<String, String>();
+        params.put("id", String.valueOf(adventure.id));
+        
+	    return sendRedirect("adventure", "get-adventure", params);
     }
 	
 	@POST
