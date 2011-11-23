@@ -87,7 +87,7 @@ public class AdventureService extends GameCircleService{
 	    String uid = formParams.getFirst("userId");
 	    User user = User.getUserByUID(uid);
 	    Adventure newAdv = AdventureDataMapper.buildAdventure(user, formParams);
-        if (!isExistingAdventure(newAdv)) {
+        if (!isExistingAdventure(user,newAdv)) {
             try {
                 validateAdventure(newAdv);
             } catch (JSONException jsonE) {
@@ -95,7 +95,7 @@ public class AdventureService extends GameCircleService{
             }
             newAdv = newAdv.save();
         } else {
-            return sendError(404, new FieldError("adventureName", "Adventure Name already in use by you.", true));
+            return sendError(409, new FieldError("adventureName", "Adventure Name already in use by you.", true));
         }
         
 	    Map<String, String> params = new HashMap<String, String>();
@@ -124,7 +124,7 @@ public class AdventureService extends GameCircleService{
 	    }
 	    
 	    AdventureDataMapper.mapFields(adventure, formParams);
-        if (isExistingAdventure(adventure)) {
+        if (isExistingAdventure(user,adventure)) {
             try {
                 validateAdventure(adventure);
             } catch (JSONException jsonE) {
@@ -154,22 +154,26 @@ public class AdventureService extends GameCircleService{
     }
 	
 	/**
-     * Checks to see if uses already exists.
+     * Checks to see if adventure already exists enforcing that the Adventure name is unique for the user..
      * 
+	 * @param user 
      * @param newUser
      * @throws WebApplicationException
      * @throws JSONException 
      */
-    private boolean isExistingAdventure(Adventure newAdv) throws WebApplicationException
+    private boolean isExistingAdventure(User user, Adventure newAdv) throws WebApplicationException
     {
-        boolean exists = true;
-        
+        List<Adventure> advs = Adventure.findByUser(user);
+        for (Adventure adventure : advs) {
+            if(adventure.name.equalsIgnoreCase(newAdv.name)){
+                return true;
+            }
+        }
         if(newAdv == null || newAdv.id == null){
             return false;
         }
-        //TODO check name for match
         
-        return exists;
+        return false;
     }
     
     /**
@@ -187,15 +191,13 @@ public class AdventureService extends GameCircleService{
             validation.addError("adventure", "Invalid State", "");
             status = 404;
         }
-        //TODO: Replace user example with actual validation.
-//        validation.email(newUser.email);
-//        validation.minSize("firstName", newUser.firstName, 2);
-//        boolean updateSuccess = newUser.validateAndSave(); 
-//        
-//        //Catch a save error that wasn't from validation.
-//        if(!updateSuccess && !validation.hasErrors()){
-//            validation.addError("user", "Unable to update User data.", "");
-//        }
+
+        //TODO: Consider validating the color values with custom validator.
+        boolean updateSuccess = newAdv.validateAndSave(); 
+
+        if(!updateSuccess && !validation.hasErrors()){
+            validation.addError("user", "Unable to update User data.", "");
+        }
         
         ErrorMessages errors = new ErrorMessages();
         if (validation.hasErrors())

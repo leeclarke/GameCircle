@@ -22,6 +22,26 @@ Adventure(ADV_SuperEBear):
    spriteTileWidth: 32
    spriteTileHeight: 32
    spriteSrc: res/spriteSheet.jpg
+
+Adventure(ADV_SuperEBear2):
+   user: SuperEBear
+   name: Eli First Adv2
+   backgroundColor: '#000000'
+   gridColor: '#345345'
+   npcBorderColor: '#110011'
+   spriteTileWidth: 32
+   spriteTileHeight: 32
+   spriteSrc: res/spriteSheet.jpg
+
+Adventure(ADV_SuperEBearEdit):
+   user: SuperEBear
+   name: Eli First Adv For Edit
+   backgroundColor: '#000000'
+   gridColor: '#345345'
+   npcBorderColor: '#110011'
+   spriteTileWidth: 32
+   spriteTileHeight: 32
+   spriteSrc: res/spriteSheet.jpg
    
 Sprite(testSprite):
    name: WALL1

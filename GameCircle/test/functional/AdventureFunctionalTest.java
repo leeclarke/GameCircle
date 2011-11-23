@@ -1,10 +1,9 @@
 package functional;
 
 
-import java.util.List;
+import models.Adventure;
 
 import org.junit.Test;
-
 
 import play.mvc.Http.Response;
 
@@ -62,9 +61,14 @@ public class AdventureFunctionalTest extends BaseFunctionalTest {
     @Test
     public void testPostAdventure()
 	{
+        Adventure existing = Adventure.find("byName", "Eli's Next Crazy Adventure").first();
+        if(existing != null){
+            existing.delete();
+        }
+            
         String uid = "test"+System.currentTimeMillis();
     	String expectedURI = "http://localhost:9000/rest/adventure";
-    	Response response = POST("/rest/adventure/", APPLICATION_X_WWW_FORM_URLENCODED,"userId=SuperEBear&adventureId=Eli's+Next+Adventure&prefs.bgColor=%23000000&prefs.gridColor=%23556677&prefs.npcBorderColor=%23666666&prefs.saveType=ONLINE&prefs.placementTile.id=1&prefs.placementTile.type=1");
+    	Response response = POST("/rest/adventure/", APPLICATION_X_WWW_FORM_URLENCODED,"userId=SuperEBear&adventureId=Eli's+Next+Crazy+Adventure&prefs.bgColor=%23000000&prefs.gridColor=%23556677&prefs.npcBorderColor=%23666666&prefs.saveType=ONLINE&prefs.placementTile.id=1&prefs.placementTile.type=1");
     	assertStatus(303, response);
     	//Content-Location
     	String actualURI = response.headers.get("Content-Location").value();
@@ -72,4 +76,40 @@ public class AdventureFunctionalTest extends BaseFunctionalTest {
     	assertTrue(actualURI.contains(expectedURI));
 	}
     
+    @Test
+    public void testPostAdventure_withErrors() throws java.text.ParseException
+    {
+        Response response = POST("/rest/adventure/", APPLICATION_X_WWW_FORM_URLENCODED,"userId=SuperEBear&adventureId=Eli's+Next+Great+Adventure&prefs.gridColor=%23556677&prefs.npcBorderColor=%23666666&prefs.saveType=ONLINE&prefs.placementTile.id=1&prefs.placementTile.type=1");
+        assertStatus(409, response);
+        validateContentType(response);
+        
+        String json = getContent(response);
+        containsArrayValue("$.errors.fieldName", json, ".backgroundColor");
+    }
+    
+    @Test
+    public void testPostAdventure_withDuplacateName()
+    {
+        Response response = POST("/rest/adventure/", APPLICATION_X_WWW_FORM_URLENCODED,"userId=SuperEBear&adventureId=Eli+First+Adv2&prefs.bgColor=%23000000&prefs.gridColor=%23556677&prefs.npcBorderColor=%23666666&prefs.saveType=ONLINE&prefs.placementTile.id=1&prefs.placementTile.type=1");
+        
+        assertStatus(409, response);
+        validateContentType(response);
+        
+    }
+    
+    @Test
+    public void testUpdateAdventure()
+    {
+        String targetName = "Eli First Adv For Edit";
+        
+        Adventure existing = Adventure.find("byName", targetName).first();
+        String expectedURI = "http://localhost:9000/rest/adventure/"+existing.id;
+        assertNotNull(existing);
+        
+        Response response = PUT("/rest/adventure/"+existing.id, APPLICATION_X_WWW_FORM_URLENCODED,"userId=SuperEBear&adventureId=Eli+First+Adv+For+Edit&prefs.bgColor=%23101010&prefs.gridColor=%23202020&prefs.npcBorderColor=%23555555&prefs.saveType=ONLINE&prefs.placementTile.id=1&prefs.placementTile.type=2");
+        assertStatus(303, response);
+        
+        String actualURI = response.headers.get("Content-Location").value();
+        assertTrue(actualURI.contains(expectedURI));
+    }
 }

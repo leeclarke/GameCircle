@@ -3,8 +3,8 @@ package models.util;
 import javax.ws.rs.core.MultivaluedMap;
 
 import models.Adventure;
-import models.User;
 import models.Adventure.SaveType;
+import models.User;
 import exception.JSONException;
 
 /**
@@ -37,7 +37,9 @@ public class AdventureDataMapper {
 		adventure.gridColor = DataMapperUtils.getMapValue(formParams, "prefs.gridColor");
 		adventure.npcBorderColor = DataMapperUtils.getMapValue(formParams, "prefs.npcBorderColor");
 		String saveTypeString = DataMapperUtils.getMapValue(formParams, "prefs.saveType");
-		adventure.saveOptions = SaveType.valueOf(saveTypeString);
+        if (saveTypeString != null) {
+            adventure.saveOptions = SaveType.valueOf(saveTypeString);
+        }
 
 		adventure.placementTileId = DataMapperUtils.getMapValue(formParams, "prefs.placementTile.id");
 		adventure.placementTileType = DataMapperUtils.getMapValue(formParams, "prefs.placementTile.type");
